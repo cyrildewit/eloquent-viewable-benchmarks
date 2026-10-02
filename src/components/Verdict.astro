@@ -1,0 +1,32 @@
+---
+/**
+ * Faster, slower or within noise, as a word and an arrow beside a coloured mark, so it reads without colour too.
+ */
+import type { Verdict } from '../lib/compare.ts';
+
+interface Props {
+  verdict: Verdict;
+}
+
+const { verdict } = Astro.props;
+
+const LOOK: Record<Verdict, { label: string; glyph: string; color: string }> = {
+  faster: { label: 'Faster', glyph: '↓', color: 'var(--faster)' },
+  slower: { label: 'Slower', glyph: '↑', color: 'var(--slower)' },
+  noise: { label: 'Within noise', glyph: '≈', color: 'var(--noise)' },
+  added: { label: 'New', glyph: '+', color: 'var(--muted)' },
+  removed: { label: 'Gone', glyph: '−', color: 'var(--muted)' },
+};
+const look = LOOK[verdict];
+---
+
+<span class="inline-flex items-center gap-1.5 whitespace-nowrap">
+  <span
+    aria-hidden="true"
+    class="inline-flex h-4 w-4 items-center justify-center rounded-full text-[0.7rem] leading-none font-bold text-white"
+    style={`background:${look.color}`}
+  >
+    {look.glyph}
+  </span>
+  <span>{look.label}</span>
+</span>

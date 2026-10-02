@@ -1,0 +1,216 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import DriverName from '../../components/DriverName.astro';
+import { latestPerRef, summarise } from '../../lib/data.ts';
+import { DRIVER_LABELS } from '../../lib/drivers.ts';
+import {
+  formatBytes,
+  formatCount,
+  formatDate,
+  formatDeviation,
+  formatTime,
+} from '../../lib/format.ts';
+import { resultPaths } from '../../lib/importer.ts';
+import { compareRuns } from '../../lib/refs.ts';
+import { loadResults } from '../../lib/results.ts';
+import type { Result } from '../../lib/schema.ts';
+import { commitUrl, compareHref, dumpUrl, href } from '../../lib/site.ts';
+import { setLabel, subjectLabel } from '../../lib/benchmarks.ts';
+
+/** Above this, phpbench retries a subject; one that stays above it is shown with a warning. */
+const NOISY = 5;
+
+export const getStaticPaths = (async () => {
+  const results = await loadResults();
+  const summaries = results.map(summarise);
+
+  return results.map((result) => {
+    const own = summarise(result);
+    const series = summaries.filter((run) => run.series === own.series);
+    const trend = latestPerRef(series.filter((run) => run.kind === own.kind));
+    const position = trend.findIndex((run) => run.ref === own.ref);
+    const previous = position > 0 ? trend[position - 1] : undefined;
+    const reruns = series.filter((run) => run.ref === own.ref && run.id !== own.id).sort(compareRuns);
+
+    return { params: { id: result.id }, props: { result, previous, reruns } };
+  });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  result: Result;
+  previous?: ReturnType<typeof summarise>;
+  reruns: ReturnType<typeof summarise>[];
+}
+
+const { result, previous, reruns } = Astro.props;
+const driver = result.database.driver;
+const runner = result.runner === 'gha' ? 'GitHub Actions' : result.runner;
+const dataset = result.dataset;
+
+const facts: [string, string, string?][] = [
+  ['Commit', result.commit.slice(0, 7), commitUrl(result.commit)],
+  ['Committed', formatDate(result.committed_at)],
+  ['Ran', `${formatDate(result.ran_at)}, ${result.ran_at.slice(11, 16)} UTC`],
+  ['Runner', `${runner}: ${result.machine.label}`],
+  ['Machine', `${result.machine.os} ${result.machine.arch}, kernel ${result.machine.kernel}`],
+  ['PHP', `${result.php.version}${result.php.opcache ? ', OPcache on' : ''}`],
+  ['Laravel', result.laravel],
+  [
+    'Database',
+    `${DRIVER_LABELS[driver]} ${result.database.server_version}${result.database.image ? ` (${result.database.image})` : ''}`,
+  ],
+  [
+    'Dataset',
+    `${dataset.size}: ${formatCount(dataset.views)} views over ${formatCount(dataset.articles)} articles and ${formatCount(dataset.videos)} videos, seed ${dataset.seed}`,
+  ],
+  ['Optional indexes', dataset.indexes],
+  ['phpbench', result.phpbench],
+];
+if (result.workflow_run !== null) {
+  facts.push(['Workflow run', 'GitHub Actions log', result.workflow_run]);
+}
+facts.push(['Raw data', 'phpbench XML dump', dumpUrl(resultPaths(result).xml)]);
+---
+
+<Base title={`${result.ref} on ${DRIVER_LABELS[driver]}`} wide>
+  <p class="text-sm text-ink-2">
+    <a href={href('/')}>Overview</a> / Run
+  </p>
+  <h1 class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-2xl font-semibold tracking-tight">
+    <span>{result.ref}</span>
+    <span class="text-base font-normal"><DriverName driver={driver} /></span>
+    <span class="text-base font-normal text-ink-2">{dataset.size} dataset · {runner}</span>
+  </h1>
+
+  <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+    <dl class="card grid gap-x-6 gap-y-2 p-4 text-sm sm:grid-cols-[auto_1fr]">
+      {
+        facts.map(([label, value, link]) => (
+          <>
+            <dt class="text-ink-2">{label}</dt>
+            <dd class="min-w-0 break-words">{link ? <a href={link}>{value}</a> : value}</dd>
+          </>
+        ))
+      }
+    </dl>
+
+    <div class="card p-4 text-sm">
+      <h2 class="font-semibold">In this series</h2>
+      {
+        previous ? (
+          <p class="mt-2">
+            <a href={compareHref(previous.id, result.id)}>Compare with {previous.ref} →</a>
+          </p>
+        ) : (
+          <p class="mt-2 text-ink-2">The first {result.kind === 'release' ? 'release' : 'run'} measured in this series.</p>
+        )
+      }
+      {
+        reruns.length > 0 && (
+          <>
+            <p class="mt-4 text-ink-2">Other runs of {result.ref} here:</p>
+            <ul class="mt-1 space-y-1">
+              {reruns.map((run) => (
+                <li>
+                  <a href={href(`/runs/${run.id}/`)}>{formatDate(run.ran_at)}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+      <p class="mt-4">
+        <a
+          href={`${href('/trends/')}?runner=${encodeURIComponent(result.runner)}&size=${dataset.size}&indexes=${encodeURIComponent(dataset.indexes)}`}
+          >Trends for this series →</a
+        >
+      </p>
+    </div>
+  </div>
+
+  {
+    result.errors.length > 0 && (
+      <section class="card mt-6 border-slower p-4" aria-labelledby="errors">
+        <h2 id="errors" class="font-semibold">
+          {result.errors.length} benchmark{result.errors.length === 1 ? '' : 's'} failed
+        </h2>
+        <ul class="mt-2 space-y-2 text-sm">
+          {result.errors.map((error) => (
+            <li>
+              <code class="font-mono">
+                {error.benchmark}::{error.subject}
+              </code>{' '}
+              {error.set && <span class="text-ink-2">({error.set})</span>}
+              <pre class="mt-1 overflow-x-auto text-xs whitespace-pre-wrap text-ink-2">{error.message}</pre>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <h2 class="mt-10 text-lg font-semibold">{result.subjects.length} measurements</h2>
+  <p class="mt-1 text-sm text-ink-2">
+    Time per call: the mode over {result.subjects[0]?.iterations ?? 'several'} iterations. Click a column to sort.
+  </p>
+  <div class="table-wrap mt-3">
+    <table class="data-table" data-sortable>
+      <thead>
+        <tr>
+          <th data-sort="text">Benchmark</th>
+          <th data-sort="text">Subject</th>
+          <th data-sort="text">Parameters</th>
+          <th class="num" data-sort="number">Mode</th>
+          <th class="num" data-sort="number">Deviation</th>
+          <th class="num" data-sort="number">Min</th>
+          <th class="num" data-sort="number">Max</th>
+          <th class="num" data-sort="number">Memory</th>
+          <th class="num" data-sort="number">Revs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          result.subjects.map((subject) => (
+            <tr>
+              <td class="text-ink-2">{subject.benchmark}</td>
+              <td>
+                <code class="font-mono text-[0.8rem]">{subjectLabel(subject.subject)}</code>
+              </td>
+              <td class="text-ink-2">{setLabel(subject.set)}</td>
+              <td class="num font-medium" data-value={subject.mode_us}>
+                {formatTime(subject.mode_us)}
+              </td>
+              <td class="num" data-value={subject.rstdev}>
+                {subject.rstdev > NOISY && (
+                  <span title="Above phpbench's retry threshold even after retries" aria-label="Noisy">
+                    ⚠{' '}
+                  </span>
+                )}
+                {formatDeviation(subject.rstdev)}
+              </td>
+              <td class="num text-ink-2" data-value={subject.min_us}>
+                {formatTime(subject.min_us)}
+              </td>
+              <td class="num text-ink-2" data-value={subject.max_us}>
+                {formatTime(subject.max_us)}
+              </td>
+              <td class="num text-ink-2" data-value={subject.mem_peak}>
+                {formatBytes(subject.mem_peak)}
+              </td>
+              <td class="num text-ink-2" data-value={subject.revs}>
+                {subject.revs}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    import { setupSortableTables } from '../../scripts/sort-table.ts';
+
+    setupSortableTables();
+  </script>
+</Base>

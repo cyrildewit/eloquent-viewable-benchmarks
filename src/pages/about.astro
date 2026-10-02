@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import { href, PACKAGE_REPO, RESULTS_REPO } from '../lib/site.ts';
+
+const harness = `${PACKAGE_REPO}/blob/9.x/benchmarks/README.md`;
+---
+
+<Base title="About" current="about">
+  <article class="prose-lite">
+    <h1 class="text-2xl font-semibold tracking-tight">About these numbers</h1>
+
+    <p>
+      This site keeps the benchmark history of <a href={PACKAGE_REPO}>cyrildewit/eloquent-viewable</a>. Each run checks
+      out one release or branch of the package and runs that version's own benchmarks against a seeded database, so a
+      release is always measured with the harness it shipped with. The <a href={harness}>benchmark README</a> in the
+      package describes the harness in detail.
+    </p>
+
+    <h2>What is measured</h2>
+    <p>
+      The paths that get expensive as the <code>views</code> table grows: counting views and unique visitors, counting
+      them per interval, ordering models by views, recording and deleting views. Two groups only exercise PHP, building
+      a series of buckets and managing cooldowns in the session, so they show changes in the package's own code without
+      a database in the way.
+    </p>
+
+    <h2>The dataset</h2>
+    <p>
+      A deterministic dataset, the same rows on every machine for a given size and seed: a million views at
+      <code>small</code>, ten million at <code>medium</code> and fifty million at <code>large</code>. Views spread over
+      the articles on a power law, so a few articles are hot and most are cold; visitors return on a heavy tail;
+      timestamps follow a daily and weekly rhythm over the two years before 1 January 2026, and one in ten views belongs
+      to a video. Every period is measured relative to that date, so "the past 30 days" covers the same rows in every
+      run.
+    </p>
+
+    <h2>Reading a number</h2>
+    <ul>
+      <li>
+        <strong>Time per call.</strong> Each measurement is phpbench's mode over several iterations, each in a fresh PHP
+        process, divided by the number of calls per iteration. The deviation next to it is the relative standard
+        deviation of those iterations.
+      </li>
+      <li>
+        <strong>Faster, slower, or within noise.</strong> A change between two runs counts only when it is larger than
+        5% and than twice the two runs' combined deviation. Smaller differences are shown as within noise.
+      </li>
+      <li>
+        <strong>Only within a series.</strong> Runs are compared only with runs from the same runner, database, dataset
+        size, optional indexes and dataset version. Each of those is its own line on the trends page.
+      </li>
+    </ul>
+
+    <h2>Runners</h2>
+    <p>
+      <strong>GitHub Actions</strong> runs every release on all four databases at the medium size, and the
+      <code>9.x</code> branch once a week. Hosted runners are always available but drift by 10 to 30% from run to run,
+      so their numbers show trends rather than small differences; the weekly branch run shows that drift as a line that
+      moves while the code does not. Runs named after a person come from a maintainer's machine, which is quieter and
+      can run the large dataset.
+    </p>
+    <p>
+      The PHP, Laravel and database versions of every run are recorded. The package does not pin its dependencies, so a
+      release measured later runs on a newer Laravel than it shipped with; the trend charts mark the points where a
+      version changed.
+    </p>
+
+    <h2>The data</h2>
+    <p>
+      Every run is kept in <a href={RESULTS_REPO}>the results repository</a>: phpbench's XML dump exactly as it was
+      written, and a JSON file derived from it. <a href={href('/data/index.json')}>index.json</a> holds every run in the
+      compact form this site loads.
+    </p>
+  </article>
+</Base>

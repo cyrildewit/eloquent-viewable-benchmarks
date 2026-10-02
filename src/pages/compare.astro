@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import { latestPerRef, parseSeriesKey, referenceSeries, seriesKey, seriesLabel, type IndexedRun } from '../lib/data.ts';
+import { DRIVER_LABELS } from '../lib/drivers.ts';
+import { formatDate } from '../lib/format.ts';
+import { compareRuns } from '../lib/refs.ts';
+import { loadIndex } from '../lib/results.ts';
+
+const index = await loadIndex();
+
+// Runs grouped by series for the pickers; series in the order the index has them, runs newest first.
+const groups = new Map<string, IndexedRun[]>();
+for (const run of index.runs) {
+  groups.set(run.series, [...(groups.get(run.series) ?? []), run]);
+}
+for (const runs of groups.values()) {
+  runs.sort((a, b) => compareRuns(b, a));
+}
+
+// Without a choice in the URL: the last two releases of the reference series, on its first driver with two.
+const reference = referenceSeries(index.runs);
+let defaults: { a?: string; b?: string } = {};
+if (reference !== null) {
+  for (const driver of ['sqlite', 'mysql', 'mariadb', 'pgsql']) {
+    const key = seriesKey({ ...reference, driver });
+    const releases = latestPerRef((groups.get(key) ?? []).filter((run) => run.kind === 'release'));
+    const head = releases.at(-1);
+    const base = releases.at(-2);
+    if (head && base) {
+      defaults = { a: base.id, b: head.id };
+      break;
+    }
+  }
+}
+
+const runLabel = (run: IndexedRun) =>
+  run.kind === 'release'
+    ? `${run.ref} · ${formatDate(run.ran_at)}`
+    : `${run.ref} @ ${run.commit.slice(0, 7)} · ${formatDate(run.ran_at)}`;
+---
+
+<Base title="Compare" current="compare" wide>
+  <h1 class="text-2xl font-semibold tracking-tight">Compare two runs</h1>
+  <p class="mt-2 max-w-3xl text-ink-2">
+    Every measurement of one run against another. A change counts as real when it is larger than 5% and than twice the
+    two runs' combined relative deviation; anything smaller is shown as within noise. The address of this page keeps the
+    choice, so it can be shared.
+  </p>
+
+  {index.runs.length < 2 ? (
+    <div class="card mt-6 p-6">
+      <p class="font-medium">A comparison needs two runs.</p>
+    </div>
+  ) : (
+    <>
+      <form
+        id="compare-form"
+        class="mt-6 flex flex-wrap items-end gap-x-4 gap-y-3"
+        data-default-a={defaults.a}
+        data-default-b={defaults.b}
+      >
+        {(['a', 'b'] as const).map((side) => (
+          <label class="flex min-w-0 flex-col gap-1 text-xs text-ink-2">
+            {side === 'a' ? 'Before' : 'After'}
+            <select name={side} class="control w-80 max-w-full">
+              {[...groups.entries()].map(([key, runs]) => (
+                <optgroup label={seriesLabel(parseSeriesKey(key), DRIVER_LABELS)}>
+                  {runs.map((run) => (
+                    <option value={run.id} selected={run.id === defaults[side]}>
+                      {runLabel(run)}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+        ))}
+        <button type="button" id="compare-swap" class="control cursor-pointer hover:bg-wash">
+          Swap
+        </button>
+        <label class="flex items-center gap-2 self-center text-sm">
+          <input type="checkbox" name="changes" value="1" />
+          Only changes beyond noise
+        </label>
+      </form>
+
+      <p id="compare-note" class="mt-4 text-sm text-ink-2" aria-live="polite" />
+      <div id="compare-summary" class="mt-4 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4" />
+      <div id="compare-result" class="mt-6" data-base={import.meta.env.BASE_URL} />
+    </>
+  )}
+
+  <script>
+    import { setupCompare } from '../scripts/compare.ts';
+
+    setupCompare();
+  </script>
+</Base>

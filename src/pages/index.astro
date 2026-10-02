@@ -1,0 +1,200 @@
+---
+import Base from '../layouts/Base.astro';
+import DriverName from '../components/DriverName.astro';
+import Verdict from '../components/Verdict.astro';
+import { compare, largestChanges, summariseComparison, type ComparisonRow, type Summary } from '../lib/compare.ts';
+import { latestPerRef, measurements, referenceSeries, seriesKey, type IndexedRun } from '../lib/data.ts';
+import { DRIVER_ORDER, type Driver } from '../lib/drivers.ts';
+import { formatChange, formatDate, formatTime } from '../lib/format.ts';
+import { setLabel, subjectLabel } from '../lib/benchmarks.ts';
+import { loadIndex } from '../lib/results.ts';
+import { compareHref, href } from '../lib/site.ts';
+
+const index = await loadIndex();
+const reference = referenceSeries(index.runs);
+const keys = index.subjects.map((subject) => subject.key);
+const subjectsByKey = new Map(index.subjects.map((subject) => [subject.key, subject]));
+
+interface DriverOverview {
+  driver: Driver;
+  releases: IndexedRun[];
+  base?: IndexedRun;
+  head?: IndexedRun;
+  summary?: Summary;
+  rows: ComparisonRow[];
+}
+
+const overview: DriverOverview[] =
+  reference === null
+    ? []
+    : DRIVER_ORDER.map((driver) => {
+        const key = seriesKey({ ...reference, driver });
+        const releases = latestPerRef(index.runs.filter((run) => run.series === key && run.kind === 'release'));
+        const head = releases.at(-1);
+        const base = releases.at(-2);
+        if (base === undefined || head === undefined) {
+          return { driver, releases, head, rows: [] };
+        }
+        const rows = compare(measurements(index, base), measurements(index, head), keys);
+
+        return { driver, releases, base, head, summary: summariseComparison(rows), rows };
+      }).filter((item) => item.releases.length > 0);
+
+const changes = overview
+  .flatMap((item) => largestChanges(item.rows, 10).map((row) => ({ ...row, driver: item.driver })))
+  .sort((a, b) => Math.abs(b.change ?? 0) - Math.abs(a.change ?? 0))
+  .slice(0, 10);
+
+const recent = [...index.runs].sort((a, b) => b.ran_at.localeCompare(a.ran_at)).slice(0, 12);
+const runnerName = (runner: string) => (runner === 'gha' ? 'GitHub Actions' : runner);
+---
+
+<Base title="Overview" current="overview">
+  <h1 class="text-2xl font-semibold tracking-tight">Did the last release get slower?</h1>
+
+  {index.runs.length === 0 ? (
+    <div class="card mt-6 p-6">
+      <p class="font-medium">No runs yet.</p>
+      <p class="mt-2 text-ink-2">
+        Runs appear here once the first release has been benchmarked. The <a href={href('/about/')}>about page</a>{' '}
+        explains how they are produced.
+      </p>
+    </div>
+  ) : (
+    <>
+      <p class="mt-2 max-w-3xl text-ink-2">
+        The latest release against the one before it, per database, on{' '}
+        {reference && (
+          <>
+            {runnerName(reference.runner)} with the {reference.size} dataset
+            {reference.indexes === 'none' ? '' : ` and the ${reference.indexes} indexes`}
+          </>
+        )}
+        . A change counts only when it is larger than 5% and than twice the runs' combined deviation.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {overview.map((item) => (
+          <section class="card flex flex-col p-4" aria-label={item.driver}>
+            <div class="flex items-center justify-between gap-2">
+              <DriverName driver={item.driver} />
+              <span class="text-sm text-ink-2">
+                {item.head?.ref}
+                {item.base && <> vs {item.base.ref}</>}
+              </span>
+            </div>
+            {item.summary ? (
+              <>
+                <dl class="mt-4 grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <dt class="text-xs text-ink-2">Slower</dt>
+                    <dd class="text-2xl font-semibold">{item.summary.slower}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs text-ink-2">Faster</dt>
+                    <dd class="text-2xl font-semibold">{item.summary.faster}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs text-ink-2">Same</dt>
+                    <dd class="text-2xl font-semibold">{item.summary.noise}</dd>
+                  </div>
+                </dl>
+                <div class="mt-3 flex h-1.5 gap-0.5 overflow-hidden rounded-full" aria-hidden="true">
+                  <span class="bg-slower" style={`flex:${item.summary.slower}`} />
+                  <span class="bg-faster" style={`flex:${item.summary.faster}`} />
+                  <span class="bg-grid" style={`flex:${item.summary.noise}`} />
+                </div>
+                {item.base && item.head && (
+                  <a class="mt-4 text-sm" href={compareHref(item.base.id, item.head.id)}>
+                    Full comparison →
+                  </a>
+                )}
+              </>
+            ) : (
+              <p class="mt-4 text-sm text-ink-2">
+                Only {item.head?.ref} has been measured here so far; a comparison needs a second release.
+              </p>
+            )}
+          </section>
+        ))}
+      </div>
+
+      <h2 class="mt-10 text-lg font-semibold">Largest changes</h2>
+      {changes.length === 0 ? (
+        <p class="mt-2 text-ink-2">Nothing changed beyond noise between the last two releases.</p>
+      ) : (
+        <div class="table-wrap mt-3">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Database</th>
+                <th>Benchmark</th>
+                <th>Parameters</th>
+                <th class="num">Before</th>
+                <th class="num">After</th>
+                <th class="num">Change</th>
+                <th>Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              {changes.map((row) => {
+                const subject = subjectsByKey.get(row.key);
+
+                return (
+                  <tr>
+                    <td>
+                      <DriverName driver={row.driver} />
+                    </td>
+                    <td>
+                      <span class="text-ink-2">{subject?.benchmark}</span>{' '}
+                      <code class="font-mono text-[0.8rem]">{subjectLabel(subject?.subject ?? '')}</code>
+                    </td>
+                    <td class="text-ink-2">{setLabel(subject?.set ?? '')}</td>
+                    <td class="num">{row.base && formatTime(row.base.mode)}</td>
+                    <td class="num">{row.head && formatTime(row.head.mode)}</td>
+                    <td class="num font-medium">{row.change !== null && formatChange(row.change)}</td>
+                    <td>
+                      <Verdict verdict={row.verdict} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <h2 class="mt-10 text-lg font-semibold">Recent runs</h2>
+      <div class="table-wrap mt-3">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ran</th>
+              <th>Ref</th>
+              <th>Database</th>
+              <th>Size</th>
+              <th>Runner</th>
+              <th>Commit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recent.map((run) => (
+              <tr>
+                <td class="whitespace-nowrap">{formatDate(run.ran_at)}</td>
+                <td>
+                  <a href={href(`/runs/${run.id}/`)}>{run.ref}</a>
+                </td>
+                <td>
+                  <DriverName driver={run.driver} />
+                </td>
+                <td>{run.size}</td>
+                <td>{runnerName(run.runner)}</td>
+                <td class="font-mono text-[0.8rem] text-ink-2">{run.commit.slice(0, 7)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )}
+</Base>

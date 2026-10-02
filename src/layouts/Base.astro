@@ -1,0 +1,123 @@
+---
+import '../styles/global.css';
+import { isSample } from '../lib/source.ts';
+import { href, PACKAGE_REPO, RESULTS_REPO } from '../lib/site.ts';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** The nav item to mark as current. */
+  current?: 'overview' | 'trends' | 'compare' | 'about';
+  /** Wider content for pages of charts. */
+  wide?: boolean;
+}
+
+const {
+  title,
+  description = 'Benchmark history of cyrildewit/eloquent-viewable.',
+  current,
+  wide = false,
+} = Astro.props;
+
+const nav = [
+  { key: 'overview', label: 'Overview', path: '/' },
+  { key: 'trends', label: 'Trends', path: '/trends/' },
+  { key: 'compare', label: 'Compare', path: '/compare/' },
+  { key: 'about', label: 'About', path: '/about/' },
+] as const;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    {isSample && <meta name="robots" content="noindex" />}
+    <title>{title === 'Overview' ? 'Eloquent Viewable benchmarks' : `${title} · Eloquent Viewable benchmarks`}</title>
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <script is:inline>
+      // Apply a theme picked earlier before the first paint, so a dark page never flashes light.
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {
+        // Storage can be unavailable; the system preference applies then.
+      }
+    </script>
+  </head>
+  <body class="min-h-screen bg-page font-sans text-ink antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded focus:bg-raised focus:px-3 focus:py-2"
+    >
+      Skip to content
+    </a>
+    <header class="border-b border-border bg-surface">
+      <div
+        class:list={['mx-auto flex flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3', wide ? 'max-w-7xl' : 'max-w-6xl']}
+      >
+        <a href={href('/')} class="mr-auto flex items-baseline gap-2 text-ink hover:no-underline">
+          <span class="font-semibold">Eloquent Viewable</span>
+          <span class="text-ink-2">benchmarks</span>
+        </a>
+        <nav aria-label="Main" class="flex flex-wrap gap-1 text-sm">
+          {nav.map((item) => (
+            <a
+              href={href(item.path)}
+              aria-current={current === item.key ? 'page' : undefined}
+              class:list={[
+                'rounded-md px-2.5 py-1.5 text-ink-2 hover:bg-wash hover:text-ink hover:no-underline',
+                current === item.key && 'bg-wash font-medium text-ink',
+              ]}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <button
+          type="button"
+          id="theme-toggle"
+          class="rounded-md px-2.5 py-1.5 text-sm text-ink-2 hover:bg-wash hover:text-ink"
+          aria-label="Colour theme: follows the system"
+        >
+          <span data-theme-label>Theme: system</span>
+        </button>
+      </div>
+    </header>
+
+    {isSample && (
+      <div class="border-b border-border bg-wash">
+        <p class:list={['mx-auto px-4 py-2 text-sm text-ink', wide ? 'max-w-7xl' : 'max-w-6xl']}>
+          <strong>Sample data.</strong> Every number on this site is made up, for developing the site before real runs
+          exist.
+        </p>
+      </div>
+    )}
+
+    <main id="main" class:list={['mx-auto px-4 py-8', wide ? 'max-w-7xl' : 'max-w-6xl']}>
+      <slot />
+    </main>
+
+    <footer class="border-t border-border">
+      <div
+        class:list={[
+          'mx-auto flex flex-wrap gap-x-6 gap-y-1 px-4 py-6 text-sm text-ink-2',
+          wide ? 'max-w-7xl' : 'max-w-6xl',
+        ]}
+      >
+        <span>
+          Benchmarks of <a href={PACKAGE_REPO}>cyrildewit/eloquent-viewable</a>
+        </span>
+        <a href={RESULTS_REPO}>Data and source</a>
+        <a href={href('/data/index.json')}>index.json</a>
+      </div>
+    </footer>
+
+    <script>
+      import { setupThemeToggle } from '../scripts/theme.ts';
+
+      setupThemeToggle();
+    </script>
+  </body>
+</html>

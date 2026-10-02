@@ -1,0 +1,25 @@
+---
+/**
+ * A driver's name with its marker: the same colour and shape as its line in every chart.
+ */
+import { DRIVER_LABELS, type Driver } from '../lib/drivers.ts';
+
+interface Props {
+  driver: Driver;
+  /** Only the marker, with the name for screen readers. */
+  compact?: boolean;
+}
+
+const { driver, compact = false } = Astro.props;
+const fill = `var(--driver-${driver})`;
+---
+
+<span class="inline-flex items-center gap-1.5 whitespace-nowrap">
+  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" class="shrink-0">
+    {driver === 'sqlite' && <circle cx="5" cy="5" r="4.5" fill={fill} />}
+    {driver === 'mysql' && <rect x="0.5" y="0.5" width="9" height="9" rx="1" fill={fill} />}
+    {driver === 'mariadb' && <path d="M5 0.5 9.5 9.5H0.5Z" fill={fill} />}
+    {driver === 'pgsql' && <path d="M5 0 10 5 5 10 0 5Z" fill={fill} />}
+  </svg>
+  <span class:list={[compact && 'sr-only']}>{DRIVER_LABELS[driver]}</span>
+</span>

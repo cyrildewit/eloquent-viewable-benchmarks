@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import DriverName from '../components/DriverName.astro';
+import { referenceSeries } from '../lib/data.ts';
+import { DRIVER_ORDER, SIZE_ORDER } from '../lib/drivers.ts';
+import { GROUP_LABELS } from '../lib/benchmarks.ts';
+import { loadIndex } from '../lib/results.ts';
+
+const index = await loadIndex();
+const reference = referenceSeries(index.runs);
+
+const runners = [...new Set(index.runs.map((run) => run.runner))].sort((a, b) =>
+  a === 'gha' ? -1 : b === 'gha' ? 1 : a.localeCompare(b),
+);
+const sizes = SIZE_ORDER.filter((size) => index.runs.some((run) => run.size === size));
+const indexes = [...new Set(index.runs.map((run) => run.indexes))].sort((a, b) =>
+  a === 'none' ? -1 : b === 'none' ? 1 : a.localeCompare(b),
+);
+const groups = [...new Set(index.subjects.flatMap((subject) => subject.groups))];
+const drivers = DRIVER_ORDER.filter((driver) => index.runs.some((run) => run.driver === driver));
+const runnerName = (runner: string) => (runner === 'gha' ? 'GitHub Actions' : runner);
+---
+
+<Base title="Trends" current="trends" wide>
+  <h1 class="text-2xl font-semibold tracking-tight">Trends</h1>
+  <p class="mt-2 max-w-3xl text-ink-2">
+    Every measurement across the releases, one chart per benchmark and parameter set, one line per database. Lower is
+    faster. Hover a point for the exact time and its deviation; each chart also has a table.
+  </p>
+
+  {index.runs.length === 0 ? (
+    <div class="card mt-6 p-6">
+      <p class="font-medium">No runs yet.</p>
+    </div>
+  ) : (
+    <>
+      <form
+        id="trend-filters"
+        class="z-10 -mx-4 md:sticky md:top-0 mt-6 flex flex-wrap items-end gap-x-4 gap-y-3 border-b border-border bg-page/95 px-4 py-3 backdrop-blur"
+      >
+        <label class="flex flex-col gap-1 text-xs text-ink-2">
+          Runner
+          <select name="runner" class="control">
+            {runners.map((runner) => (
+              <option value={runner} selected={runner === reference?.runner}>
+                {runnerName(runner)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label class="flex flex-col gap-1 text-xs text-ink-2">
+          Dataset
+          <select name="size" class="control">
+            {sizes.map((size) => (
+              <option value={size} selected={size === reference?.size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label class="flex flex-col gap-1 text-xs text-ink-2">
+          Optional indexes
+          <select name="indexes" class="control">
+            {indexes.map((value) => (
+              <option value={value} selected={value === reference?.indexes}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label class="flex flex-col gap-1 text-xs text-ink-2">
+          Group
+          <select name="group" class="control">
+            <option value="">All</option>
+            {groups.map((group) => (
+              <option value={group}>{GROUP_LABELS[group] ?? group}</option>
+            ))}
+          </select>
+        </label>
+        <fieldset class="flex flex-col gap-1 text-xs text-ink-2">
+          <legend class="mb-1">Along</legend>
+          <div class="flex overflow-hidden rounded-md border border-border text-sm">
+            <label class="cursor-pointer px-3 py-1.5 text-ink has-checked:bg-wash has-checked:font-medium">
+              <input type="radio" name="view" value="releases" class="sr-only" checked />
+              Releases
+            </label>
+            <label class="cursor-pointer border-l border-border px-3 py-1.5 text-ink has-checked:bg-wash has-checked:font-medium">
+              <input type="radio" name="view" value="branch" class="sr-only" />
+              Weekly branch runs
+            </label>
+          </div>
+        </fieldset>
+        <ul class="ml-auto flex flex-wrap gap-x-4 gap-y-1 self-center text-sm" aria-label="Databases">
+          {drivers.map((driver) => (
+            <li>
+              <DriverName driver={driver} />
+            </li>
+          ))}
+        </ul>
+      </form>
+
+      <p id="trend-status" class="mt-4 text-sm text-ink-2" aria-live="polite">
+        Loading…
+      </p>
+      <div id="trends" class="mt-2" data-base={import.meta.env.BASE_URL} />
+      <noscript>
+        <p class="mt-4">The charts need JavaScript. Every number is also on the run pages, linked from the overview.</p>
+      </noscript>
+    </>
+  )}
+
+  <script>
+    import { setupTrends } from '../scripts/trends.ts';
+
+    setupTrends();
+  </script>
+</Base>
