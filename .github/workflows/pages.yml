@@ -1,0 +1,56 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'results/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/pages.yml'
+  # benchmark.yml calls this after committing a run: a push made with GITHUB_TOKEN starts no other workflow.
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Deploy the made-up sample data instead of results/, with a banner saying so'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Always main: when called from benchmark.yml, the triggering commit predates the data it just committed.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - uses: withastro/action@v6
+        with:
+          build-cmd: ${{ inputs.sample && 'pnpm sample && RESULTS_DIR=./.cache/sample/results pnpm build' || 'pnpm build' }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

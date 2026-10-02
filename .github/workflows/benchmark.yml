@@ -1,0 +1,191 @@
+name: Benchmark
+
+run-name: Benchmark ${{ inputs.ref }} at ${{ inputs.size }} on ${{ inputs.drivers }}
+
+# One run: a ref of the package on each driver, then a single commit of the results and a Pages deploy. Runs may
+# overlap: every job has its own VM, result paths never collide, and the final push rebases and retries.
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag, branch or commit of cyrildewit/eloquent-viewable
+        required: true
+      size:
+        description: Dataset size
+        type: choice
+        options: [small, medium]
+        default: small
+      drivers:
+        description: Comma-separated drivers
+        default: sqlite,mysql,mariadb,pgsql
+
+permissions:
+  contents: read
+
+env:
+  PACKAGE: cyrildewit/eloquent-viewable
+
+jobs:
+  prepare:
+    name: Resolve ${{ inputs.ref }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      commit: ${{ steps.ref.outputs.commit }}
+      committed_at: ${{ steps.ref.outputs.committed_at }}
+      drivers: ${{ steps.drivers.outputs.drivers }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ env.PACKAGE }}
+          ref: ${{ inputs.ref }}
+          path: package
+
+      - id: ref
+        working-directory: package
+        run: |
+          test -f benchmarks/describe.php || { echo "::error::${{ inputs.ref }} predates the benchmark harness"; exit 1; }
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "committed_at=$(git log -1 --format=%cI)" >> "$GITHUB_OUTPUT"
+
+      - id: drivers
+        env:
+          DRIVERS: ${{ inputs.drivers }}
+        run: |
+          drivers="$(jq -cn --arg list "$DRIVERS" '$list | split(",") | map(gsub("\\s"; "")) | map(select(. != ""))')"
+          echo "$drivers" | jq -e 'length > 0 and all(.[]; IN("sqlite", "mysql", "mariadb", "pgsql"))' > /dev/null \
+            || { echo "::error::drivers must be a comma-separated list of sqlite, mysql, mariadb and pgsql"; exit 1; }
+          echo "drivers=$drivers" >> "$GITHUB_OUTPUT"
+
+  run:
+    name: ${{ matrix.driver }}
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        driver: ${{ fromJSON(needs.prepare.outputs.drivers) }}
+    env:
+      DRIVER: ${{ matrix.driver }}
+      SIZE: ${{ inputs.size }}
+    defaults:
+      run:
+        working-directory: package
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ env.PACKAGE }}
+          ref: ${{ needs.prepare.outputs.commit }}
+          path: package
+
+      # The package's own Make targets, exactly as on a laptop: the same images and the same bench-* database settings,
+      # which GitHub's service containers could not reproduce. build/ is gitignored, so a fresh checkout lacks it.
+      - name: Build the image and install dependencies
+        run: |
+          mkdir -p build
+          make build
+          make install
+
+      - name: Seed the ${{ inputs.size }} dataset
+        run: make bench-seed DRIVER="$DRIVER" SIZE="$SIZE"
+
+      - name: Describe the dataset
+        run: make bench-describe DRIVER="$DRIVER" ARGS="--output=build/dataset.json"
+
+      # A failing subject makes phpbench exit non-zero but still write the dump; the import records it as an error.
+      - name: Run the benchmarks
+        run: |
+          make bench DRIVER="$DRIVER" ARGS="--dump-file=build/run.xml" || echo "::warning::phpbench exited with $?"
+          test -s build/run.xml || { echo "::error::phpbench wrote no dump"; exit 1; }
+
+      - name: Collect the run
+        env:
+          REF: ${{ inputs.ref }}
+          COMMIT: ${{ needs.prepare.outputs.commit }}
+          COMMITTED_AT: ${{ needs.prepare.outputs.committed_at }}
+          WORKFLOW_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          mkdir -p ../out
+          cp build/run.xml build/dataset.json ../out/
+          case "$DRIVER" in
+            mysql) service=bench-mysql ;;
+            mariadb) service=bench-mariadb ;;
+            pgsql) service=bench-postgres ;;
+            *) service="" ;;
+          esac
+          image="$([ -n "$service" ] && docker compose --profile bench config --images "$service" || true)"
+          label="$(. /etc/os-release && echo "$PRETTY_NAME"), $(nproc) vCPU, $(free -g | awk '/^Mem:/ { print $2 }') GB"
+          jq -n \
+            --arg ref "$REF" --arg commit "$COMMIT" --arg committed_at "$COMMITTED_AT" \
+            --arg label "$label" --arg image "$image" --arg workflow_run "$WORKFLOW_RUN" \
+            '{ref: $ref, commit: $commit, committed_at: $committed_at, runner: "gha", machine_label: $label,
+              database_image: (if $image == "" then null else $image end), workflow_run: $workflow_run}' \
+            > ../out/meta.json
+          cat ../out/meta.json
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: run-${{ matrix.driver }}
+          path: out/
+          retention-days: 90
+          if-no-files-found: error
+
+  collect:
+    name: Import and commit
+    needs: [prepare, run]
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: run-*
+          path: incoming
+
+      - name: Import
+        run: |
+          shopt -s nullglob
+          dirs=(incoming/run-*/)
+          [ ${#dirs[@]} -gt 0 ] || { echo "::error::no driver produced a run"; exit 1; }
+          for dir in "${dirs[@]}"; do pnpm run import "$dir"; done
+          pnpm validate
+
+      - name: Commit and push
+        env:
+          REF: ${{ inputs.ref }}
+          SIZE: ${{ inputs.size }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add runs results
+          drivers="$(find incoming -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sed 's/^run-//' | sort | paste -sd' ')"
+          git commit -m "data: $REF on gha, $SIZE, $drivers"
+          for attempt in 1 2 3 4 5; do
+            git push origin HEAD:main && exit 0
+            echo "Push rejected, rebasing (attempt $attempt)"
+            sleep $((attempt * 5))
+            git pull --rebase origin main
+          done
+          exit 1
+
+  pages:
+    needs: collect
+    uses: ./.github/workflows/pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

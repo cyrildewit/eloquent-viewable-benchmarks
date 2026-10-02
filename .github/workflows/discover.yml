@@ -1,0 +1,44 @@
+name: Discover
+
+# Starts a benchmark run for every release of the package without a complete reference run, and the weekly run of
+# the branch in the WEEKLY_BRANCH repository variable (off while it is unset). A missed day is picked up the next.
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # A workflow_dispatch made with GITHUB_TOKEN does start a run, unlike a push.
+  actions: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Plan
+        env:
+          WEEKLY_BRANCH: ${{ vars.WEEKLY_BRANCH }}
+        run: pnpm --silent discover | tee plan.json
+
+      - name: Start the runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          jq -c '.[]' plan.json | while read -r planned; do
+            ref="$(jq -r .ref <<< "$planned")"
+            size="$(jq -r .size <<< "$planned")"
+            drivers="$(jq -r '.drivers | join(",")' <<< "$planned")"
+            echo "Starting $ref at $size on $drivers ($(jq -r .reason <<< "$planned"))"
+            gh workflow run benchmark.yml -f ref="$ref" -f size="$size" -f drivers="$drivers"
+          done

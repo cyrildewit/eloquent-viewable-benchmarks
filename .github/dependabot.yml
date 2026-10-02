@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # The npm ecosystem covers pnpm projects.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      dependencies:
+        patterns: ['*']
+    ignore:
+      # @astrojs/check accepts TypeScript 5 and 6 only so far.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+      # Follows the Node major the site runs on, moved by hand.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']
