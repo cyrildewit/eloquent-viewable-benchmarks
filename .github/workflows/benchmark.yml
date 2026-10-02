@@ -165,9 +165,15 @@ jobs:
           pattern: run-*
           path: incoming
 
+      # download-artifact puts several artifacts in a directory each, but a lone one straight into incoming/.
       - name: Import
         run: |
           shopt -s nullglob
+          if [ -f incoming/run.xml ]; then
+            driver="$(jq -r .database.driver incoming/dataset.json)"
+            mkdir "incoming/run-$driver"
+            find incoming -maxdepth 1 -type f -exec mv {} "incoming/run-$driver/" \;
+          fi
           dirs=(incoming/run-*/)
           [ ${#dirs[@]} -gt 0 ] || { echo "::error::no driver produced a run"; exit 1; }
           for dir in "${dirs[@]}"; do pnpm run import "$dir"; done
