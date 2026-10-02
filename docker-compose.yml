@@ -6,6 +6,7 @@ services:
     working_dir: /app
     environment:
       COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+      ASTRO_TELEMETRY_DISABLED: '1'
       # The store lives on a volume, so a reinstall does not download everything again.
       pnpm_config_store_dir: /pnpm/store
     # Corepack provides the pnpm version pinned in package.json's packageManager.
