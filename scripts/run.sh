@@ -152,6 +152,17 @@ pkg_make bench DRIVER="$driver" ARGS="--dump-file=build/run.xml"
 cp "$package/build/run.xml" "$out/run.xml"
 cp "$package/$dataset" "$out/dataset.json"
 
+# The SQL and plan of every read variant. A ref whose explain.php predates --output prints its report and writes
+# nothing, and the run is imported without queries.
+step "Explaining the queries"
+rm -f "$package/build/queries.json"
+pkg_make bench-explain DRIVER="$driver" ARGS="--output=build/queries.json" || echo "bench-explain failed, continuing without queries"
+if [[ -s "$package/build/queries.json" ]]; then
+    cp "$package/build/queries.json" "$out/queries.json"
+else
+    echo "No queries.json was written, the run is imported without SQL"
+fi
+
 image="null"
 if [[ -n "$service" ]]; then
     image="\"$(docker compose --project-directory "$package" --profile bench config --images "$service")\""
