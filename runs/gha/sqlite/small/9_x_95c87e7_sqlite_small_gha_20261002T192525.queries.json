@@ -1,0 +1,2000 @@
+{
+    "schema_version": 1,
+    "driver": "sqlite",
+    "analyzed": false,
+    "group": "read",
+    "subjects": [
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "hot article,all time",
+            "params": {
+                "target": "hot",
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "110",
+                                "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "cold article,all time",
+            "params": {
+                "target": "cold",
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "110",
+                                "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "all articles,all time",
+            "params": {
+                "target": "type",
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "201",
+                                "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "hot article,past year",
+            "params": {
+                "target": "hot",
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "cold article,past year",
+            "params": {
+                "target": "cold",
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "all articles,past year",
+            "params": {
+                "target": "type",
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "hot article,past 30 days",
+            "params": {
+                "target": "hot",
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "cold article,past 30 days",
+            "params": {
+                "target": "cold",
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "all articles,past 30 days",
+            "params": {
+                "target": "type",
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "hot article,past day",
+            "params": {
+                "target": "hot",
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "cold article,past day",
+            "params": {
+                "target": "cold",
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchCount",
+            "set": "all articles,past day",
+            "params": {
+                "target": "type",
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "hot article,all time",
+            "params": {
+                "target": "hot",
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "122",
+                                "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "cold article,all time",
+            "params": {
+                "target": "cold",
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "122",
+                                "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "all articles,all time",
+            "params": {
+                "target": "type",
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "213",
+                                "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "hot article,past year",
+            "params": {
+                "target": "hot",
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "cold article,past year",
+            "params": {
+                "target": "cold",
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "all articles,past year",
+            "params": {
+                "target": "type",
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "hot article,past 30 days",
+            "params": {
+                "target": "hot",
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "cold article,past 30 days",
+            "params": {
+                "target": "cold",
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "all articles,past 30 days",
+            "params": {
+                "target": "type",
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "hot article,past day",
+            "params": {
+                "target": "hot",
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "cold article,past day",
+            "params": {
+                "target": "cold",
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+            "subject": "benchUniqueCount",
+            "set": "all articles,past day",
+            "params": {
+                "target": "type",
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "3",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "6",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "hot article,7 days by hour",
+            "params": {
+                "target": "hot",
+                "days": 7,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "15",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "all articles,7 days by hour",
+            "params": {
+                "target": "type",
+                "days": 7,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "21",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "hot article,30 days by hour",
+            "params": {
+                "target": "hot",
+                "days": 30,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "15",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "all articles,30 days by hour",
+            "params": {
+                "target": "type",
+                "days": 30,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "21",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "hot article,1 year by day",
+            "params": {
+                "target": "hot",
+                "days": 365,
+                "granularity": "day"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "15",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "all articles,1 year by day",
+            "params": {
+                "target": "type",
+                "days": 365,
+                "granularity": "day"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "21",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "hot article,2 years by week",
+            "params": {
+                "target": "hot",
+                "days": 730,
+                "granularity": "week"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "15",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "all articles,2 years by week",
+            "params": {
+                "target": "type",
+                "days": 730,
+                "granularity": "week"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "21",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "hot article,2 years by month",
+            "params": {
+                "target": "hot",
+                "days": 730,
+                "granularity": "month"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "15",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchCountByInterval",
+            "set": "all articles,2 years by month",
+            "params": {
+                "target": "type",
+                "days": 730,
+                "granularity": "month"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "6",
+                                "0",
+                                "169",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "21",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "hot article,7 days by hour",
+            "params": {
+                "target": "hot",
+                "days": 7,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "17",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "57",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "all articles,7 days by hour",
+            "params": {
+                "target": "type",
+                "days": 7,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "23",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "64",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "hot article,30 days by hour",
+            "params": {
+                "target": "hot",
+                "days": 30,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "17",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "57",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "all articles,30 days by hour",
+            "params": {
+                "target": "type",
+                "days": 30,
+                "granularity": "hour"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "23",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "64",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "hot article,1 year by day",
+            "params": {
+                "target": "hot",
+                "days": 365,
+                "granularity": "day"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "17",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "57",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "all articles,1 year by day",
+            "params": {
+                "target": "type",
+                "days": 365,
+                "granularity": "day"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "23",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "64",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "hot article,2 years by week",
+            "params": {
+                "target": "hot",
+                "days": 730,
+                "granularity": "week"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "17",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "63",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "all articles,2 years by week",
+            "params": {
+                "target": "type",
+                "days": 730,
+                "granularity": "week"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "23",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "70",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "hot article,2 years by month",
+            "params": {
+                "target": "hot",
+                "days": 730,
+                "granularity": "month"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "17",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "57",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+            "subject": "benchUniqueCountByInterval",
+            "set": "all articles,2 years by month",
+            "params": {
+                "target": "type",
+                "days": 730,
+                "granularity": "month"
+            },
+            "queries": [
+                {
+                    "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "7",
+                                "0",
+                                "177",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "23",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR GROUP BY"
+                            ],
+                            [
+                                "64",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByViews",
+            "set": "all time",
+            "params": {
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(*) from \"views\" where \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "110",
+                                "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                            ],
+                            [
+                                "34",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByViews",
+            "set": "past year",
+            "params": {
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(*) from \"views\" where \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "38",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByViews",
+            "set": "past 30 days",
+            "params": {
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(*) from \"views\" where \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "38",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByViews",
+            "set": "past day",
+            "params": {
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(*) from \"views\" where \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "58",
+                                "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "38",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByUniqueViews",
+            "set": "all time",
+            "params": {
+                "days": null
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "15",
+                                "7",
+                                "122",
+                                "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                            ],
+                            [
+                                "42",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByUniqueViews",
+            "set": "past year",
+            "params": {
+                "days": 365
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "15",
+                                "7",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "46",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByUniqueViews",
+            "set": "past 30 days",
+            "params": {
+                "days": 30
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "15",
+                                "7",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "46",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "class": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+            "subject": "benchOrderByUniqueViews",
+            "set": "past day",
+            "params": {
+                "days": 1
+            },
+            "queries": [
+                {
+                    "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+                    "plan": {
+                        "columns": [
+                            "id",
+                            "parent",
+                            "notused",
+                            "detail"
+                        ],
+                        "rows": [
+                            [
+                                "4",
+                                "0",
+                                "216",
+                                "SCAN articles"
+                            ],
+                            [
+                                "7",
+                                "0",
+                                "0",
+                                "CORRELATED SCALAR SUBQUERY 1"
+                            ],
+                            [
+                                "12",
+                                "7",
+                                "0",
+                                "USE TEMP B-TREE FOR count(DISTINCT)"
+                            ],
+                            [
+                                "15",
+                                "7",
+                                "66",
+                                "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                            ],
+                            [
+                                "46",
+                                "0",
+                                "0",
+                                "USE TEMP B-TREE FOR ORDER BY"
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

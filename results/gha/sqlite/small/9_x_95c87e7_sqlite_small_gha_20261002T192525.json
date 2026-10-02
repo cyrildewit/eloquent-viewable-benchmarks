@@ -1,0 +1,3241 @@
+{
+  "format": 2,
+  "id": "9_x_95c87e7_sqlite_small_gha_20261002T192525",
+  "package": "cyrildewit/eloquent-viewable",
+  "ref": "9.x",
+  "kind": "branch",
+  "commit": "95c87e7e191d2cf76240d0136c2d23cea0aa771f",
+  "committed_at": "2026-10-02T16:08:54Z",
+  "ran_at": "2026-10-02T19:25:25Z",
+  "runner": "gha",
+  "machine": {
+    "label": "Ubuntu 24.04.5 LTS, 4 vCPU, 15 GB",
+    "os": "Linux",
+    "arch": "x86_64",
+    "kernel": "6.17.0-1022-azure",
+    "load": [
+      0.92236328125,
+      0.484375,
+      0.19580078125
+    ]
+  },
+  "php": {
+    "version": "8.5.11",
+    "opcache": true,
+    "xdebug": true
+  },
+  "laravel": "13.34.0",
+  "database": {
+    "driver": "sqlite",
+    "image": null,
+    "server_version": "3.53.4"
+  },
+  "dataset": {
+    "schema_version": 1,
+    "size": "small",
+    "seed": 20260101,
+    "anchor": "2026-01-01 00:00:00",
+    "articles": 1000,
+    "videos": 100,
+    "views": 1000000,
+    "hot_article_views": 120031,
+    "cold_article_views": 95,
+    "indexes": "none"
+  },
+  "phpbench": "1.7.0",
+  "workflow_run": "https://github.com/cyrildewit/eloquent-viewable-benchmarks/actions/runs/37053694592",
+  "classes": {
+    "DestroyViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Recording\\DestroyViewsBench",
+    "RecordViewBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Recording\\RecordViewBench",
+    "CountViewsByIntervalBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+    "CountViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+    "OrderByViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+    "CooldownManagerBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Php\\CooldownManagerBench",
+    "ViewSeriesBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Php\\ViewSeriesBench"
+  },
+  "subjects": [
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "100 views",
+      "params": {
+        "views": 100
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 16679.182,
+      "mean_us": 16599.8,
+      "min_us": 16139,
+      "max_us": 17050,
+      "stdev_us": 314.562,
+      "rstdev": 1.895,
+      "mem_peak": 6479288,
+      "rejects": 0
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "1,000 views",
+      "params": {
+        "views": 1000
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 18751.368,
+      "mean_us": 18929.2,
+      "min_us": 18557,
+      "max_us": 19494,
+      "stdev_us": 355.617,
+      "rstdev": 1.879,
+      "mem_peak": 7249440,
+      "rejects": 1
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "10,000 views",
+      "params": {
+        "views": 10000
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 48845.56,
+      "mean_us": 49094.4,
+      "min_us": 48676,
+      "max_us": 50009,
+      "stdev_us": 494.57,
+      "rstdev": 1.007,
+      "mem_peak": 7249448,
+      "rejects": 0
+    },
+    {
+      "benchmark": "RecordViewBench",
+      "subject": "benchRecord",
+      "set": "",
+      "params": {},
+      "groups": [
+        "write"
+      ],
+      "revs": 50,
+      "iterations": 5,
+      "mode_us": 625.714,
+      "mean_us": 615.004,
+      "min_us": 593.36,
+      "max_us": 631.28,
+      "stdev_us": 15.278,
+      "rstdev": 2.484,
+      "mem_peak": 6870104,
+      "rejects": 1
+    },
+    {
+      "benchmark": "RecordViewBench",
+      "subject": "benchRecordQueued",
+      "set": "",
+      "params": {},
+      "groups": [
+        "write"
+      ],
+      "revs": 50,
+      "iterations": 5,
+      "mode_us": 862.261,
+      "mean_us": 857.508,
+      "min_us": 822.02,
+      "max_us": 885.88,
+      "stdev_us": 20.95,
+      "rstdev": 2.443,
+      "mem_peak": 7079024,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,7 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 5072.587,
+      "mean_us": 5100.933,
+      "min_us": 5041.667,
+      "max_us": 5189.333,
+      "stdev_us": 54.536,
+      "rstdev": 1.069,
+      "mem_peak": 6780704,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,7 days by hour",
+      "params": {
+        "target": "type",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 20825.699,
+      "mean_us": 20849.467,
+      "min_us": 20564.333,
+      "max_us": 21168.667,
+      "stdev_us": 194.91,
+      "rstdev": 0.935,
+      "mem_peak": 6781344,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,30 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 19955.78,
+      "mean_us": 20091.8,
+      "min_us": 19897.667,
+      "max_us": 20361.667,
+      "stdev_us": 190.704,
+      "rstdev": 0.949,
+      "mem_peak": 7251968,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,30 days by hour",
+      "params": {
+        "target": "type",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 77401.72,
+      "mean_us": 77758.667,
+      "min_us": 77148.667,
+      "max_us": 79078.667,
+      "stdev_us": 706.655,
+      "rstdev": 0.909,
+      "mem_peak": 7252968,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,1 year by day",
+      "params": {
+        "target": "hot",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 73163.892,
+      "mean_us": 72760.333,
+      "min_us": 71083.667,
+      "max_us": 73527.333,
+      "stdev_us": 861.707,
+      "rstdev": 1.184,
+      "mem_peak": 6780704,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,1 year by day",
+      "params": {
+        "target": "type",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 630591.156,
+      "mean_us": 632107.6,
+      "min_us": 620271.333,
+      "max_us": 645146,
+      "stdev_us": 8262.341,
+      "rstdev": 1.307,
+      "mem_peak": 6781344,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,2 years by week",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 169390.875,
+      "mean_us": 169316.667,
+      "min_us": 167251.333,
+      "max_us": 171315.667,
+      "stdev_us": 1326.798,
+      "rstdev": 0.784,
+      "mem_peak": 6780704,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,2 years by week",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1478211.719,
+      "mean_us": 1481415.333,
+      "min_us": 1458805,
+      "max_us": 1508638.333,
+      "stdev_us": 16154.079,
+      "rstdev": 1.09,
+      "mem_peak": 6781344,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,2 years by month",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 101629.577,
+      "mean_us": 101851.667,
+      "min_us": 101514.333,
+      "max_us": 102529.667,
+      "stdev_us": 386.337,
+      "rstdev": 0.379,
+      "mem_peak": 6780704,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,2 years by month",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 951672.228,
+      "mean_us": 951019.467,
+      "min_us": 948322,
+      "max_us": 953213.333,
+      "stdev_us": 1681.072,
+      "rstdev": 0.177,
+      "mem_peak": 6781344,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,7 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 7033.733,
+      "mean_us": 6990.8,
+      "min_us": 6865.333,
+      "max_us": 7067.333,
+      "stdev_us": 74.468,
+      "rstdev": 1.065,
+      "mem_peak": 6780752,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,7 days by hour",
+      "params": {
+        "target": "type",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 36217.116,
+      "mean_us": 36133.933,
+      "min_us": 35543,
+      "max_us": 36629.667,
+      "stdev_us": 359.568,
+      "rstdev": 0.995,
+      "mem_peak": 6781392,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,30 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 27150.037,
+      "mean_us": 27002.133,
+      "min_us": 26650.667,
+      "max_us": 27203,
+      "stdev_us": 222.133,
+      "rstdev": 0.823,
+      "mem_peak": 7252016,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,30 days by hour",
+      "params": {
+        "target": "type",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 173809.452,
+      "mean_us": 174457.733,
+      "min_us": 172190,
+      "max_us": 177330,
+      "stdev_us": 1745.279,
+      "rstdev": 1,
+      "mem_peak": 7253016,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,1 year by day",
+      "params": {
+        "target": "hot",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 170281.68,
+      "mean_us": 170710.467,
+      "min_us": 169110.333,
+      "max_us": 172972,
+      "stdev_us": 1289.677,
+      "rstdev": 0.755,
+      "mem_peak": 6780752,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,1 year by day",
+      "params": {
+        "target": "type",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1994922.13,
+      "mean_us": 1984644.067,
+      "min_us": 1964580.667,
+      "max_us": 2003536.667,
+      "stdev_us": 15887.172,
+      "rstdev": 0.801,
+      "mem_peak": 6781392,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,2 years by week",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 359611.068,
+      "mean_us": 360730.333,
+      "min_us": 358815.667,
+      "max_us": 364235,
+      "stdev_us": 2005.928,
+      "rstdev": 0.556,
+      "mem_peak": 6780752,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,2 years by week",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 3904429.265,
+      "mean_us": 3907747.4,
+      "min_us": 3884424.333,
+      "max_us": 3933103,
+      "stdev_us": 16416.121,
+      "rstdev": 0.42,
+      "mem_peak": 6781392,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,2 years by month",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 308041.914,
+      "mean_us": 309798.067,
+      "min_us": 306842,
+      "max_us": 312853.333,
+      "stdev_us": 2536.958,
+      "rstdev": 0.819,
+      "mem_peak": 6780752,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,2 years by month",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 4121565.102,
+      "mean_us": 4105158.4,
+      "min_us": 4060245,
+      "max_us": 4133800.333,
+      "stdev_us": 27456.014,
+      "rstdev": 0.669,
+      "mem_peak": 6781392,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,all time",
+      "params": {
+        "target": "hot",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 9028.213,
+      "mean_us": 9020.8,
+      "min_us": 8895.667,
+      "max_us": 9135,
+      "stdev_us": 77.087,
+      "rstdev": 0.855,
+      "mem_peak": 5449936,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,all time",
+      "params": {
+        "target": "cold",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 262.492,
+      "mean_us": 262.533,
+      "min_us": 253.667,
+      "max_us": 272,
+      "stdev_us": 6.141,
+      "rstdev": 2.339,
+      "mem_peak": 5449936,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,all time",
+      "params": {
+        "target": "type",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 64957.461,
+      "mean_us": 64938.4,
+      "min_us": 64025.667,
+      "max_us": 65857,
+      "stdev_us": 601.873,
+      "rstdev": 0.927,
+      "mem_peak": 5449936,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past year",
+      "params": {
+        "target": "hot",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 6620.759,
+      "mean_us": 6583.067,
+      "min_us": 6508,
+      "max_us": 6651.333,
+      "stdev_us": 58.125,
+      "rstdev": 0.883,
+      "mem_peak": 6780496,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past year",
+      "params": {
+        "target": "cold",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 391.062,
+      "mean_us": 393.467,
+      "min_us": 380.667,
+      "max_us": 408.333,
+      "stdev_us": 9.249,
+      "rstdev": 2.351,
+      "mem_peak": 6780496,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past year",
+      "params": {
+        "target": "type",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 90905.429,
+      "mean_us": 91333.2,
+      "min_us": 90746,
+      "max_us": 93073.667,
+      "stdev_us": 873.911,
+      "rstdev": 0.957,
+      "mem_peak": 6781136,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past 30 days",
+      "params": {
+        "target": "hot",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 917.242,
+      "mean_us": 926.667,
+      "min_us": 909.667,
+      "max_us": 958.667,
+      "stdev_us": 18.035,
+      "rstdev": 1.946,
+      "mem_peak": 6780496,
+      "rejects": 2
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past 30 days",
+      "params": {
+        "target": "cold",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 420.879,
+      "mean_us": 427.267,
+      "min_us": 415.333,
+      "max_us": 441.333,
+      "stdev_us": 10.294,
+      "rstdev": 2.409,
+      "mem_peak": 6780496,
+      "rejects": 12
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past 30 days",
+      "params": {
+        "target": "type",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 13483.775,
+      "mean_us": 13438.533,
+      "min_us": 13239.667,
+      "max_us": 13560.333,
+      "stdev_us": 116.19,
+      "rstdev": 0.865,
+      "mem_peak": 6781136,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past day",
+      "params": {
+        "target": "hot",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 436.594,
+      "mean_us": 432.333,
+      "min_us": 420,
+      "max_us": 446.333,
+      "stdev_us": 9.96,
+      "rstdev": 2.304,
+      "mem_peak": 6780496,
+      "rejects": 6
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past day",
+      "params": {
+        "target": "cold",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 444.204,
+      "mean_us": 447.8,
+      "min_us": 434.333,
+      "max_us": 466.667,
+      "stdev_us": 11.153,
+      "rstdev": 2.491,
+      "mem_peak": 6780496,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past day",
+      "params": {
+        "target": "type",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 5404.064,
+      "mean_us": 5370.467,
+      "min_us": 5232.667,
+      "max_us": 5478,
+      "stdev_us": 90.269,
+      "rstdev": 1.681,
+      "mem_peak": 6781136,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,all time",
+      "params": {
+        "target": "hot",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 477138.987,
+      "mean_us": 478251,
+      "min_us": 463350.333,
+      "max_us": 494527.333,
+      "stdev_us": 10101.721,
+      "rstdev": 2.112,
+      "mem_peak": 5449984,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,all time",
+      "params": {
+        "target": "cold",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 464.707,
+      "mean_us": 466.667,
+      "min_us": 451.333,
+      "max_us": 485.333,
+      "stdev_us": 11.679,
+      "rstdev": 2.503,
+      "mem_peak": 5449984,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,all time",
+      "params": {
+        "target": "type",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 4480434.167,
+      "mean_us": 4534386.067,
+      "min_us": 4364251,
+      "max_us": 4747280.667,
+      "stdev_us": 131936.5,
+      "rstdev": 2.91,
+      "mem_peak": 5449984,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past year",
+      "params": {
+        "target": "hot",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 264777.117,
+      "mean_us": 258109.467,
+      "min_us": 247113.333,
+      "max_us": 266318,
+      "stdev_us": 8934.646,
+      "rstdev": 3.462,
+      "mem_peak": 6780544,
+      "rejects": 3
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past year",
+      "params": {
+        "target": "cold",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 690.523,
+      "mean_us": 693.733,
+      "min_us": 685.333,
+      "max_us": 708,
+      "stdev_us": 7.71,
+      "rstdev": 1.111,
+      "mem_peak": 6780544,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past year",
+      "params": {
+        "target": "type",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 3076589.898,
+      "mean_us": 3014941.733,
+      "min_us": 2876701,
+      "max_us": 3125224.667,
+      "stdev_us": 96795.561,
+      "rstdev": 3.211,
+      "mem_peak": 6781184,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past 30 days",
+      "params": {
+        "target": "hot",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 12316.851,
+      "mean_us": 12428.667,
+      "min_us": 12254,
+      "max_us": 12645.667,
+      "stdev_us": 162.621,
+      "rstdev": 1.308,
+      "mem_peak": 6780544,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past 30 days",
+      "params": {
+        "target": "cold",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 572.553,
+      "mean_us": 562.267,
+      "min_us": 538.667,
+      "max_us": 575.667,
+      "stdev_us": 15.105,
+      "rstdev": 2.686,
+      "mem_peak": 6780544,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past 30 days",
+      "params": {
+        "target": "type",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 196872.01,
+      "mean_us": 195780.467,
+      "min_us": 191367,
+      "max_us": 197909,
+      "stdev_us": 2309.494,
+      "rstdev": 1.18,
+      "mem_peak": 6781184,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past day",
+      "params": {
+        "target": "hot",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 945.658,
+      "mean_us": 953.067,
+      "min_us": 916.333,
+      "max_us": 998.667,
+      "stdev_us": 27.279,
+      "rstdev": 2.862,
+      "mem_peak": 6780544,
+      "rejects": 5
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past day",
+      "params": {
+        "target": "cold",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 606.849,
+      "mean_us": 601.467,
+      "min_us": 579,
+      "max_us": 614.667,
+      "stdev_us": 13.024,
+      "rstdev": 2.165,
+      "mem_peak": 6780544,
+      "rejects": 8
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past day",
+      "params": {
+        "target": "type",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 8445.941,
+      "mean_us": 8383.267,
+      "min_us": 8132.667,
+      "max_us": 8509.333,
+      "stdev_us": 132.544,
+      "rstdev": 1.581,
+      "mem_peak": 6781184,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "all time",
+      "params": {
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 69799.315,
+      "mean_us": 69710.8,
+      "min_us": 69354,
+      "max_us": 70110,
+      "stdev_us": 281.64,
+      "rstdev": 0.404,
+      "mem_peak": 5449880,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past year",
+      "params": {
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 51170.294,
+      "mean_us": 51308,
+      "min_us": 51016,
+      "max_us": 51873,
+      "stdev_us": 298.079,
+      "rstdev": 0.581,
+      "mem_peak": 6410216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past 30 days",
+      "params": {
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 8634.233,
+      "mean_us": 8679.2,
+      "min_us": 8591,
+      "max_us": 8854,
+      "stdev_us": 94.842,
+      "rstdev": 1.093,
+      "mem_peak": 6410216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past day",
+      "params": {
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 4210.683,
+      "mean_us": 4171.6,
+      "min_us": 4007,
+      "max_us": 4256,
+      "stdev_us": 85.955,
+      "rstdev": 2.06,
+      "mem_peak": 6410216,
+      "rejects": 1
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "all time",
+      "params": {
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 2662549.008,
+      "mean_us": 2641360.6,
+      "min_us": 2562161,
+      "max_us": 2680907,
+      "stdev_us": 43784.093,
+      "rstdev": 1.658,
+      "mem_peak": 5449880,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past year",
+      "params": {
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 1412769.658,
+      "mean_us": 1425637.2,
+      "min_us": 1405761,
+      "max_us": 1452273,
+      "stdev_us": 18567.523,
+      "rstdev": 1.302,
+      "mem_peak": 6410216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past 30 days",
+      "params": {
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 100535.714,
+      "mean_us": 100182.4,
+      "min_us": 98824,
+      "max_us": 100821,
+      "stdev_us": 721.593,
+      "rstdev": 0.72,
+      "mem_peak": 6410216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past day",
+      "params": {
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 5966.233,
+      "mean_us": 5991.6,
+      "min_us": 5927,
+      "max_us": 6106,
+      "stdev_us": 60.238,
+      "rstdev": 1.005,
+      "mem_peak": 6410216,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "empty session",
+      "params": {
+        "entries": 0
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 4.404,
+      "mean_us": 4.404,
+      "min_us": 4.28,
+      "max_us": 4.57,
+      "stdev_us": 0.112,
+      "rstdev": 2.547,
+      "mem_peak": 5653200,
+      "rejects": 2
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "100 cooldowns",
+      "params": {
+        "entries": 100
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 10.48,
+      "mean_us": 10.604,
+      "min_us": 10.36,
+      "max_us": 10.87,
+      "stdev_us": 0.2,
+      "rstdev": 1.89,
+      "mem_peak": 5653200,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "1,000 cooldowns",
+      "params": {
+        "entries": 1000
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 64.146,
+      "mean_us": 64.608,
+      "min_us": 62.88,
+      "max_us": 67,
+      "stdev_us": 1.435,
+      "rstdev": 2.221,
+      "mem_peak": 5653200,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "10,000 cooldowns",
+      "params": {
+        "entries": 10000
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 709.316,
+      "mean_us": 705.592,
+      "min_us": 690,
+      "max_us": 713.67,
+      "stdev_us": 8.257,
+      "rstdev": 1.17,
+      "mem_peak": 7575160,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "168 buckets",
+      "params": {
+        "hours": 168
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 7081.926,
+      "mean_us": 7147.06,
+      "min_us": 7017.3,
+      "max_us": 7380.2,
+      "stdev_us": 130.052,
+      "rstdev": 1.82,
+      "mem_peak": 5092264,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "720 buckets",
+      "params": {
+        "hours": 720
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 17521.537,
+      "mean_us": 17470.96,
+      "min_us": 17149.2,
+      "max_us": 17708.8,
+      "stdev_us": 209.241,
+      "rstdev": 1.198,
+      "mem_peak": 5092264,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "8,760 buckets",
+      "params": {
+        "hours": 8760
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 166217.836,
+      "mean_us": 165409,
+      "min_us": 162272,
+      "max_us": 167509.2,
+      "stdev_us": 1803.66,
+      "rstdev": 1.09,
+      "mem_peak": 17192432,
+      "rejects": 0
+    }
+  ],
+  "errors": [],
+  "queries": {
+    "analyzed": false,
+    "group": "read",
+    "subjects": [
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "hot article,all time",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "110",
+                  "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "cold article,all time",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "110",
+                  "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "all articles,all time",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "201",
+                  "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "hot article,past year",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "cold article,past year",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "all articles,past year",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "hot article,past 30 days",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "cold article,past 30 days",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "all articles,past 30 days",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "hot article,past day",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "cold article,past day",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchCount",
+        "set": "all articles,past day",
+        "queries": [
+          {
+            "sql": "select count(*) as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "hot article,all time",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "122",
+                  "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "cold article,all time",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "122",
+                  "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "all articles,all time",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "213",
+                  "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "hot article,past year",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "cold article,past year",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "all articles,past year",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "hot article,past 30 days",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "cold article,past 30 days",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "all articles,past 30 days",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "hot article,past day",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "cold article,past day",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 979 and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsBench",
+        "subject": "benchUniqueCount",
+        "set": "all articles,past day",
+        "queries": [
+          {
+            "sql": "select count(distinct \"visitor\") as \"aggregate\" from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00'",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "3",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "6",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "hot article,7 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "15",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "all articles,7 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "21",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "hot article,30 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "15",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "all articles,30 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "21",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "hot article,1 year by day",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "15",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "all articles,1 year by day",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "21",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "hot article,2 years by week",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "15",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "all articles,2 years by week",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "21",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "hot article,2 years by month",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "15",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchCountByInterval",
+        "set": "all articles,2 years by month",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(*) as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "6",
+                  "0",
+                  "169",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "21",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "hot article,7 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "17",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "57",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "all articles,7 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-25 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "23",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "64",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "hot article,30 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "17",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "57",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "all articles,30 days by hour",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d %H:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d %H:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "23",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "64",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "hot article,1 year by day",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "17",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "57",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "all articles,1 year by day",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "23",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "64",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "hot article,2 years by week",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "17",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "63",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "all articles,2 years by week",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days') as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-%d 00:00:00', \"viewed_at\", '-' || ((strftime('%w', \"viewed_at\") + 6) % 7) || ' days')",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "23",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "70",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "hot article,2 years by month",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewable_id\" = 1 and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "17",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "57",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "CountViewsByIntervalBench",
+        "subject": "benchUniqueCountByInterval",
+        "set": "all articles,2 years by month",
+        "queries": [
+          {
+            "sql": "select strftime('%Y-%m-01 00:00:00', \"viewed_at\") as interval_start, count(distinct \"views\".\"visitor\") as aggregate from \"views\" where \"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"viewed_at\" >= '2024-01-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' group by strftime('%Y-%m-01 00:00:00', \"viewed_at\")",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "7",
+                  "0",
+                  "177",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (ANY(viewable_type) AND ANY(viewable_id) AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "23",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR GROUP BY"
+                ],
+                [
+                  "64",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByViews",
+        "set": "all time",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(*) from \"views\" where \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "110",
+                  "SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                ],
+                [
+                  "34",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByViews",
+        "set": "past year",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(*) from \"views\" where \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "38",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByViews",
+        "set": "past 30 days",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(*) from \"views\" where \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "38",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByViews",
+        "set": "past day",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(*) from \"views\" where \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"views_count\" from \"articles\" order by \"views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "58",
+                  "SEARCH views USING COVERING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "38",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByUniqueViews",
+        "set": "all time",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "15",
+                  "7",
+                  "122",
+                  "SEARCH views USING INDEX views_viewable_type_viewable_id_index (viewable_type=? AND viewable_id=?)"
+                ],
+                [
+                  "42",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByUniqueViews",
+        "set": "past year",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"viewed_at\" >= '2025-01-01 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "15",
+                  "7",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "46",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByUniqueViews",
+        "set": "past 30 days",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"viewed_at\" >= '2025-12-02 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "15",
+                  "7",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "46",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "benchmark": "OrderByViewsBench",
+        "subject": "benchOrderByUniqueViews",
+        "set": "past day",
+        "queries": [
+          {
+            "sql": "select \"articles\".*, (select count(distinct \"views\".\"visitor\") from \"views\" where \"viewed_at\" >= '2025-12-31 00:00:00' and \"viewed_at\" < '2026-01-01 00:00:00' and \"views\".\"viewable_type\" = 'CyrildeWit\\EloquentViewable\\Benchmarks\\Models\\Article' and \"views\".\"viewable_id\" = \"articles\".\"id\") as \"unique_views_count\" from \"articles\" order by \"unique_views_count\" desc limit 20",
+            "plan": {
+              "columns": [
+                "id",
+                "parent",
+                "notused",
+                "detail"
+              ],
+              "rows": [
+                [
+                  "4",
+                  "0",
+                  "216",
+                  "SCAN articles"
+                ],
+                [
+                  "7",
+                  "0",
+                  "0",
+                  "CORRELATED SCALAR SUBQUERY 1"
+                ],
+                [
+                  "12",
+                  "7",
+                  "0",
+                  "USE TEMP B-TREE FOR count(DISTINCT)"
+                ],
+                [
+                  "15",
+                  "7",
+                  "66",
+                  "SEARCH views USING INDEX views_viewable_viewed_at_index (viewable_type=? AND viewable_id=? AND viewed_at>? AND viewed_at<?)"
+                ],
+                [
+                  "46",
+                  "0",
+                  "0",
+                  "USE TEMP B-TREE FOR ORDER BY"
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
