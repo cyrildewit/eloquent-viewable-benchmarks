@@ -1,0 +1,25 @@
+# Node
+node_modules/
+
+# Astro
+/dist/
+/.astro/
+
+# The package checkout and runner settings used by scripts/run.sh
+/.cache/
+
+# Scratch files from a run before they are imported
+/build/
+
+# Environment
+.env
+.env.*
+
+# Editors and OS
+/.idea/
+/.vscode/
+.DS_Store
+
+# Claude Code
+/.claude/settings.local.json
+/.claude/*.local.json

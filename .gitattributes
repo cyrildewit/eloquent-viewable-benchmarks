@@ -1,0 +1,9 @@
+# Normalise line endings to LF everywhere.
+* text=auto eol=lf
+
+# Benchmark data is generated. Collapse it in pull request diffs and keep it
+# out of the language statistics.
+/runs/**/*.xml     linguist-generated -diff
+/results/**/*.json linguist-generated
+
+pnpm-lock.yaml     linguist-generated -diff
