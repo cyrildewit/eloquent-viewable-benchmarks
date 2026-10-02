@@ -9,7 +9,7 @@ export const SIZES = ['small', 'medium', 'large'] as const;
 export const KINDS = ['release', 'branch', 'commit'] as const;
 
 /** Bump when the result file changes shape, and migrate the existing files in the same commit. */
-export const RESULT_FORMAT = 1;
+export const RESULT_FORMAT = 2;
 
 const runner = z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'lowercase letters, digits and dashes');
 const commit = z.string().regex(/^[0-9a-f]{40}$/, 'a full 40-character commit hash');
@@ -54,6 +54,46 @@ export const datasetSchema = z.object({
 });
 
 const paramValue = z.union([z.string(), z.number(), z.boolean(), z.null()]);
+
+/** The result of an explain statement, as the driver returned it: column names and every value as a string. */
+const planSchema = z.strictObject({
+  columns: z.array(z.string()),
+  rows: z.array(z.array(z.string().nullable())),
+});
+
+/** One statement a variant ran, bindings substituted, with the plan the driver gave for it. */
+const querySchema = z.strictObject({
+  sql: z.string().min(1),
+  plan: planSchema,
+});
+
+/**
+ * `queries.json`, written by `make bench-explain ARGS=--output=<file>` in the package: the SQL and query plan of
+ * every variant of a group, keyed as phpbench names them. Unknown keys are ignored, as with `dataset.json`.
+ */
+export const queriesSchema = z.object({
+  schema_version: z.int().positive(),
+  driver: z.enum(DRIVERS),
+  analyzed: z.boolean(),
+  group: z.string().min(1),
+  subjects: z.array(
+    z.object({
+      class: z.string().min(1),
+      subject: z.string().min(1),
+      set: z.string(),
+      params: z.record(z.string(), paramValue),
+      queries: z.array(querySchema),
+    }),
+  ),
+});
+
+/** The queries of one variant as the result file keeps them: by short class name, without the parameters. */
+export const subjectQueriesSchema = z.strictObject({
+  benchmark: z.string().min(1),
+  subject: z.string().min(1),
+  set: z.string(),
+  queries: z.array(querySchema),
+});
 
 /** One variant of a subject: a benchmark method with one parameter set. */
 export const subjectSchema = z.strictObject({
@@ -131,13 +171,26 @@ export const resultSchema = z.strictObject({
   }),
   phpbench: z.string().min(1),
   workflow_run: z.url().nullable(),
+  /** Every short class name in `subjects` and `errors` to its fully qualified name, as the dump has it. */
+  classes: z.record(z.string().min(1), z.string().min(1)),
   subjects: z.array(subjectSchema).min(1),
   errors: z.array(subjectErrorSchema),
+  /** The SQL from `queries.json`, or null when the run was imported without one. */
+  queries: z
+    .strictObject({
+      analyzed: z.boolean(),
+      group: z.string().min(1),
+      subjects: z.array(subjectQueriesSchema),
+    })
+    .nullable(),
 });
 
 export type Meta = z.infer<typeof metaSchema>;
 export type MetaInput = z.input<typeof metaSchema>;
 export type Dataset = z.infer<typeof datasetSchema>;
+export type QueriesFile = z.infer<typeof queriesSchema>;
+export type Query = z.infer<typeof querySchema>;
+export type SubjectQueries = z.infer<typeof subjectQueriesSchema>;
 export type Subject = z.infer<typeof subjectSchema>;
 export type SubjectError = z.infer<typeof subjectErrorSchema>;
 export type Result = z.infer<typeof resultSchema>;

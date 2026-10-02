@@ -17,6 +17,7 @@ more, and keeps the results. It contains no benchmark code.
 | Path                                         | Contents                                                           |
 |----------------------------------------------|--------------------------------------------------------------------|
 | `runs/<runner>/<driver>/<size>/<id>.xml`     | the raw phpbench dump of a run, exactly as phpbench wrote it       |
+| `runs/<runner>/<driver>/<size>/<id>.queries.json` | the SQL and query plans the package captured for that run, when it did |
 | `results/<runner>/<driver>/<size>/<id>.json` | the same run reduced to what the website draws, plus its metadata  |
 
 Both are generated. Do not edit them by hand; import a run again instead.
@@ -48,7 +49,7 @@ need.
 make install                              # once, and after package.json changes
 make check                                # types, tests, validation, lint, workflow lint, as CI does
 make dev-sample                           # the site on made-up data, at http://localhost:4321/eloquent-viewable-benchmarks/
-make import DIR=tests/fixtures/main_sqlite # import a run: run.xml, meta.json and dataset.json from one directory
+make import DIR=tests/fixtures/main_sqlite # import a run: run.xml, meta.json, dataset.json and optionally queries.json
 ```
 
 To add a run from your own machine, which needs git, make and Docker:

@@ -13,6 +13,8 @@ export interface Dump {
   ranAt: string;
   machine: { os: string; arch: string; kernel: string; load: [number, number, number] | null };
   php: { version: string; opcache: boolean; xdebug: boolean };
+  /** Short class name to fully qualified name, without the leading backslash. */
+  classes: Record<string, string>;
   subjects: Subject[];
   errors: SubjectError[];
 }
@@ -63,7 +65,7 @@ export function parseDump(xml: string): Dump {
   const classes = new Map<string, string>();
 
   for (const benchmark of list(suite.benchmark)) {
-    const className = text(benchmark.class, 'a benchmark class');
+    const className = text(benchmark.class, 'a benchmark class').replace(/^\\/, '');
     const name = className.split('\\').at(-1) ?? className;
     const seen = classes.get(name);
     if (seen !== undefined && seen !== className) {
@@ -132,6 +134,7 @@ export function parseDump(xml: string): Dump {
       opcache: opcache.enabled === true,
       xdebug: php.xdebug === true,
     },
+    classes: Object.fromEntries(classes),
     subjects,
     errors,
   };

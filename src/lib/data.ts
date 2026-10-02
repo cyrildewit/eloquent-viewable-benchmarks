@@ -29,6 +29,8 @@ export interface RunSummary {
   phpbench: string;
   series: string;
   errors: number;
+  /** Whether the run was imported with the SQL of its queries. */
+  hasQueries: boolean;
 }
 
 export interface SubjectInfo {
@@ -110,6 +112,7 @@ export function summarise(result: Result): RunSummary {
     phpbench: result.phpbench,
     series: seriesKey(parts),
     errors: result.errors.length,
+    hasQueries: result.queries !== null,
   };
 }
 

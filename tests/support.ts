@@ -8,6 +8,59 @@ export const fixture = {
   dataset: JSON.parse(read('main_sqlite/dataset.json')),
 };
 
+/**
+ * A hand-built `queries.json` for two read variants of the fixture run, until the package's `bench-explain --output`
+ * produces a real one. Its names must match variants in the fixture dump.
+ */
+export const queries = {
+  schema_version: 1,
+  driver: 'sqlite',
+  analyzed: false,
+  group: 'read',
+  subjects: [
+    {
+      class: 'CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench',
+      subject: 'benchCount',
+      set: 'hot article,all time',
+      params: { target: 'hot', days: null },
+      queries: [
+        {
+          sql: 'select count(*) as aggregate from "views" where "views"."viewable_type" = \'article\' and "views"."viewable_id" = 1',
+          plan: {
+            columns: ['id', 'parent', 'notused', 'detail'],
+            rows: [
+              [
+                '3',
+                '0',
+                '0',
+                'SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_viewed_at_index (viewable_type=? AND viewable_id=?)',
+              ],
+            ],
+          },
+        },
+      ],
+    },
+    {
+      class: 'CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench',
+      subject: 'benchOrderByViews',
+      set: 'all time',
+      params: { days: null },
+      queries: [
+        {
+          sql: 'select * from "articles" order by (select count(*) from "views" where "articles"."id" = "views"."viewable_id" and "views"."viewable_type" = \'article\') desc limit 20',
+          plan: {
+            columns: ['id', 'parent', 'notused', 'detail'],
+            rows: [
+              ['2', '0', '0', 'SCAN articles'],
+              ['9', '0', '0', 'CORRELATED SCALAR SUBQUERY 1'],
+            ],
+          },
+        },
+      ],
+    },
+  ],
+};
+
 function read(path: string): string {
   return readFileSync(fileURLToPath(new URL(`fixtures/${path}`, import.meta.url)), 'utf8');
 }

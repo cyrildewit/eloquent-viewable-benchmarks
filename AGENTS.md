@@ -26,7 +26,7 @@ make typecheck  # tsc
 make validate   # every result against the schema and its dump
 make lint       # Prettier, check only
 make format     # Prettier, in place
-make import DIR=<dir>  # import run.xml, meta.json and dataset.json from one directory
+make import DIR=<dir>  # import run.xml, meta.json, dataset.json and optionally queries.json from one directory
 make run REF= DRIVER= SIZE=  # run a package ref on this machine and import it, see scripts/run.sh
 make discover   # the runs the nightly schedule would start now
 make sample     # made-up results in .cache/sample, for working on the site

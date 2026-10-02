@@ -39,6 +39,8 @@ The plan is written against the harness on the package's `feature/benchmarks` br
 | Commits from CI       | One collector job commits all drivers of a run at once, rebasing and retrying when the push races  |
 | Run ids               | `<ref>_<sha7>_<driver>_<size>_<runner>_<time>`, unique across the repository and the page address  |
 | Retention             | Keep everything                                                                                    |
+| Benchmark pages       | One page per benchmark class at `/benchmarks/<slug>/`, see [plan-benchmark-pages.md](plan-benchmark-pages.md) |
+| SQL and query plans   | `queries.json` from the package's `make bench-explain --output`, kept raw in `runs/` and derived into the result |
 
 The reasoning behind the less obvious ones:
 
@@ -123,7 +125,7 @@ eloquent-viewable-benchmarks/
 ├── scripts/
 │   ├── run.sh                   local: check out a ref, drive its make targets, import
 │   ├── import.ts                run.xml + metadata → runs/ and results/
-│   ├── validate.ts              check every results/ file against the schema and its XML
+│   ├── validate.ts              check every results/ file against the schema, its XML and its queries file
 │   ├── discover.ts              which runs the schedule should start
 │   └── sample.ts                made-up results in .cache/sample, for working on the site
 ├── src/
@@ -136,15 +138,18 @@ eloquent-viewable-benchmarks/
 │   │   ├── data.ts              run summaries, series, the compact index the browser loads
 │   │   ├── compare.ts           two runs subject by subject, the noise rule
 │   │   ├── trends.ts            the points, lines and version markers of a trend chart
+│   │   ├── snapshot.ts          the last point of a trend as tables, for a benchmark page
+│   │   ├── queries.ts           which run's SQL and plans a benchmark page shows, and whether a plan changed
 │   │   ├── discover.ts          the schedule's rules
 │   │   └── refs.ts, format.ts, drivers.ts, benchmarks.ts, site.ts, source.ts, results.ts
-│   ├── scripts/                 browser code: trends, compare, charts, sortable tables, the theme toggle
-│   ├── components/              DriverName, Verdict
+│   ├── scripts/                 browser code: trends, benchmark, compare, charts, sortable tables, the theme toggle
+│   ├── components/              DriverName, Verdict, SeriesFilters
 │   ├── layouts/Base.astro       header, sample banner, footer
 │   ├── styles/global.css        Tailwind, and the validated colour roles for light and dark
 │   └── pages/
 │       ├── index.astro          the overview
 │       ├── trends.astro         one chart per subject across refs
+│       ├── benchmarks/          the list of benchmark classes, and one page per class
 │       ├── runs/[id].astro      one run in full
 │       ├── compare.astro        any two runs, picked in the URL
 │       ├── about.astro          the dataset, the runners, how to read the numbers
@@ -152,6 +157,7 @@ eloquent-viewable-benchmarks/
 ├── public/favicon.svg
 ├── tests/                       Vitest, with a real run in tests/fixtures/main_sqlite/
 ├── runs/<runner>/<driver>/<size>/<id>.xml        raw phpbench dumps
+├── runs/<runner>/<driver>/<size>/<id>.queries.json   raw queries files, for runs that came with one
 ├── results/<runner>/<driver>/<size>/<id>.json    derived, one per dump
 └── .github/
     ├── dependabot.yml           the npm ecosystem (which covers pnpm) and github-actions, grouped, monthly
@@ -226,13 +232,15 @@ line ends and a new one starts. The package's `benchmarks/README.md` says so (se
 
 ### The input files
 
-`make import DIR=<dir>` reads three files from one directory, which is also the shape of a workflow artifact:
+`make import DIR=<dir>` reads three files from one directory, which is also the shape of a workflow artifact, and a
+fourth when it is there:
 
 | File           | Written by                                  | Contents                                                |
 |----------------|---------------------------------------------|---------------------------------------------------------|
 | `run.xml`      | `make bench ARGS="--dump-file=build/run.xml"` | phpbench's dump, kept byte for byte in `runs/`        |
 | `meta.json`    | the workflow, or `scripts/run.sh`           | what neither phpbench nor the package can know          |
 | `dataset.json` | `make bench-describe` in the package        | the seeded dataset and the database server             |
+| `queries.json` | `make bench-explain ARGS="--output=build/queries.json"`, optional | the SQL and query plan of every read variant, kept byte for byte in `runs/`; its format is in [plan-benchmark-pages.md](plan-benchmark-pages.md#the-queries-file) |
 
 ```json
 {
@@ -271,7 +279,7 @@ An import never overwrites an existing run; it fails instead.
 
 ```json
 {
-  "format": 1,
+  "format": 2,
   "id": "v9_0_0_a1b2c3d_mysql_medium_gha_20261005T031244",
   "package": "cyrildewit/eloquent-viewable",
   "ref": "v9.0.0",
@@ -294,6 +302,7 @@ An import never overwrites an existing run; it fails instead.
   },
   "phpbench": "1.7.0",
   "workflow_run": "https://github.com/cyrildewit/eloquent-viewable-benchmarks/actions/runs/123",
+  "classes": { "CountViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench" },
   "subjects": [
     {
       "benchmark": "CountViewsBench",
@@ -308,7 +317,17 @@ An import never overwrites an existing run; it fails instead.
       "rejects": 0
     }
   ],
-  "errors": []
+  "errors": [],
+  "queries": {
+    "analyzed": false,
+    "group": "read",
+    "subjects": [
+      {
+        "benchmark": "CountViewsBench", "subject": "benchUniqueCount", "set": "hot article,all time",
+        "queries": [{ "sql": "select count(distinct `visitor`) …", "plan": { "columns": ["id", "select_type", "…"], "rows": [["1", "SIMPLE", "…"]] } }]
+      }
+    ]
+  }
 }
 ```
 
@@ -324,12 +343,15 @@ than it shipped with, and the framework builds the queries being timed. `format`
 the same commit. `machine`, `php` and
 `phpbench` come from the `<env>` and root elements of the dump. `dataset` and `database.server_version` come from the
 package, see below. A subject whose `rstdev` stays above the retry threshold even after retries is kept, and the site
-shows it with a warning instead of hiding it.
+shows it with a warning instead of hiding it. `classes` maps every short class name to the fully qualified one from
+the dump, so the site can link a benchmark to its file in the package. `queries` is the package's `queries.json`
+with each class shortened and the parameters dropped, or `null` for a run imported without one; the import refuses a
+queries file whose class, subject or parameter set name is not a variant in the dump.
 
 The schema lives once, as zod, in `src/lib/schema.ts`, imported from `astro/zod` so the scripts and the site share
 Astro's copy. `src/content.config.ts` uses it for the collection, and the import and `validate.ts` use it too, so a
-malformed file fails CI before it can break the site. `validate.ts` also parses each result's dump again and compares,
-so a number edited by hand in a result file fails as well.
+malformed file fails CI before it can break the site. `validate.ts` also parses each result's dump and queries file again and
+compares, so a number or a statement edited by hand in a result file fails as well.
 
 ### Optional indexes
 
@@ -353,9 +375,11 @@ or `medium`, default `small`) and `drivers` (comma-separated, default all four).
    `mkdir -p build` (gitignored, and phpbench only warns when it cannot write its dump there), `make build`,
    `make install`, `make bench-seed`, `make bench-describe ARGS=--output=build/dataset.json`, and
    `make bench ARGS=--dump-file=build/run.xml`. A failing subject makes phpbench exit non-zero but still write the dump,
-   so that step only warns and then requires the dump to exist; the import records the failure in `errors`. The job
+   so that step only warns and then requires the dump to exist; the import records the failure in `errors`. Then
+   `make bench-explain ARGS=--output=build/queries.json`, which only warns when it fails or writes nothing, as on a
+   ref whose `explain.php` predates `--output`; the run is imported without queries then. The job
    writes `meta.json` with `jq` (the database image from the package's compose file, a machine label from the OS, CPU
-   count and memory, the workflow run URL) and uploads the three files as an artifact `run-<driver>`, kept 90 days.
+   count and memory, the workflow run URL) and uploads the files as an artifact `run-<driver>`, kept 90 days.
 3. **`collect`** runs when `prepare` succeeded, even if some drivers failed. It checks out `main`, installs with pnpm,
    downloads every `run-*` artifact, imports each, validates everything, and commits `runs/` and `results/` as
    `data: <ref> on gha, <size>, <drivers>`. The push rebases and retries up to five times, since another run may have
@@ -422,7 +446,7 @@ make run REF=9.x DRIVER=pgsql SIZE=large ARGS="--indexes=visitor"
    MySQL dataset is seeded once rather than once per release. A dataset from an older seeder fails to describe and is
    seeded again. The seed is deterministic, so a reused dataset is the same data a fresh seed would give.
 5. Sets the optional indexes to `--indexes` (default `none`), describes the dataset, and runs the benchmarks with
-   `--dump-file`.
+   `--dump-file`. Then `make bench-explain` with `--output`, tolerated when it fails or writes nothing, as in CI.
 6. Writes `meta.json`, with the database image read from the package's compose file, and runs `make import` from
    `build/<runner>-<driver>-<size>/`.
 
@@ -454,6 +478,16 @@ gap rather than a line drawn through it. The y axis starts at zero, in one unit 
 database at that point, the value first, with its deviation, and the PHP and Laravel versions. A vertical hairline marks
 each point where PHP or Laravel changed, explained once above the charts. Each chart has a table of the same numbers,
 each linking to its run. Charts are drawn as they scroll into view and redrawn when the theme changes.
+
+**Benchmarks (`/benchmarks/`, `/benchmarks/<slug>/`).** A list of the benchmark classes, and one page per class,
+generated at build time: its description and a link to its source at the latest measured commit; the series
+filters of the trends page without the group; a table per subject with the parameter sets against the databases at
+the last point of the series, each cell the mode with its deviation linking to the run; the trend cards of its
+subjects; and, at build time for the reference series, the SQL and query plan of every read variant per database,
+the first database open, with a note where the plan differs from the release before. The slug is the class name
+without `Bench` in kebab-case, `CountViewsBench` → `count-views`; two classes on one slug fail the build. Benchmark
+names link here from the overview, the run page, the compare table and the trends headings.
+[plan-benchmark-pages.md](plan-benchmark-pages.md) is the plan it was built from.
 
 **Run (`/runs/<id>/`).** Generated at build time, one page per result file: every metadata field, links to the commit,
 the raw XML and the workflow run, a comparison with the previous run in the same series, other runs of the same ref,
@@ -516,6 +550,11 @@ Small, and each useful on its own:
 4. **A stable `make` interface.** The workflow relies on `make build`, `make install`, `make bench-seed`,
    `make bench-describe` and `make bench` with `DRIVER`, `SIZE` and `ARGS`. That is noted in `benchmarks/README.md`
    too, so a refactor of the Makefile keeps those working or updates this repository in the same breath.
+5. **`make bench-explain ARGS=--output=<file>`**, writing the SQL and plan of every read variant as `queries.json`,
+   keyed on class, subject and parameter set name as phpbench names them. Planned in
+   [plan-package-queries.md](plan-package-queries.md); until it lands, runs are imported without queries and the
+   benchmark pages say so. The real `tests/fixtures/main_sqlite/queries.json` here waits for it too; the tests use
+   a hand-built file from `tests/support.ts` meanwhile.
 
 The `git` env provider in `phpbench.json` stays off, since the harness runs inside containers that cannot see a
 worktree. The commit is recorded by this repository instead.
@@ -542,6 +581,10 @@ Nothing has to be added to the package's workflows, secrets or release process.
    remote. Set `WEEKLY_BRANCH` once the harness is on 9.x.
 8. **Backfill.** Once 9.0 is tagged, run it on every driver at medium on `gha` and on one maintainer's machine, so the
    first release has a complete baseline in both series.
+9. **Benchmark pages.** *Done* on sample data: result format 2 with `classes` and `queries`, the raw queries file,
+   the import, validation, workflow and local script steps, the `/benchmarks/` pages, and the trends page refactored
+   onto the shared filter row and subject cards. Waits for the package's `bench-explain --output` for real SQL and
+   the fixture.
 
 If running this turns out to be rare, a few times a year before releases, phases 6 and 7 can wait. Phases 2 to 5 and
 8 alone give a versioned store of runs and a site to read them, fed by hand.

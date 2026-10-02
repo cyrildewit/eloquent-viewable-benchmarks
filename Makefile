@@ -36,7 +36,7 @@ lint-ci: ## Lint the workflows (actionlint) and the shell script (shellcheck)
 format: ## Fix formatting in place
 	$(RUN) pnpm format
 
-import: ## Import a run from DIR, which holds run.xml, meta.json and dataset.json
+import: ## Import a run from DIR, which holds run.xml, meta.json, dataset.json and optionally queries.json
 	@test -n "$(DIR)" || (echo "Usage: make import DIR=<directory>" && exit 1)
 	$(RUN) pnpm run import "$(DIR)"
 

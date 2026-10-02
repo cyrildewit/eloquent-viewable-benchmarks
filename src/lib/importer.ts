@@ -1,8 +1,16 @@
 /**
  * Turns a phpbench dump and the two metadata files beside it into a result file.
  */
-import { parseDump, utc } from './phpbench.ts';
-import { RESULT_FORMAT, datasetSchema, metaSchema, resultSchema, type MetaInput, type Result } from './schema.ts';
+import { parseDump, utc, type Dump } from './phpbench.ts';
+import {
+  RESULT_FORMAT,
+  datasetSchema,
+  metaSchema,
+  queriesSchema,
+  resultSchema,
+  type MetaInput,
+  type Result,
+} from './schema.ts';
 
 /** `v9.0.0` → `v9_0_0`, `feature/My-Change` → `feature_my_change`. */
 export function slugRef(ref: string): string {
@@ -42,17 +50,28 @@ export function runId(
   return `${slugRef(run.ref)}_${run.commit.slice(0, 7)}_${run.driver}_${run.size}_${run.runner}_${stamp}`;
 }
 
-/** Where a result and its dump are kept, relative to the repository root. */
+/**
+ * Where a result, its dump and its raw queries file are kept, relative to the repository root. The queries file
+ * only exists for runs imported with one.
+ */
 export function resultPaths(result: Pick<Result, 'id' | 'runner' | 'database' | 'dataset'>): {
   xml: string;
   json: string;
+  queries: string;
 } {
   const dir = `${result.runner}/${result.database.driver}/${result.dataset.size}`;
 
-  return { xml: `runs/${dir}/${result.id}.xml`, json: `results/${dir}/${result.id}.json` };
+  return {
+    xml: `runs/${dir}/${result.id}.xml`,
+    json: `results/${dir}/${result.id}.json`,
+    queries: `runs/${dir}/${result.id}.queries.json`,
+  };
 }
 
-export function buildResult(xml: string, meta: MetaInput, dataset: unknown): Result {
+/**
+ * @param queries the parsed contents of `queries.json`, when the run came with one
+ */
+export function buildResult(xml: string, meta: MetaInput, dataset: unknown, queries?: unknown): Result {
   const run = metaSchema.parse(meta);
   const data = datasetSchema.parse(dataset);
   const dump = parseDump(xml);
@@ -85,9 +104,44 @@ export function buildResult(xml: string, meta: MetaInput, dataset: unknown): Res
     },
     phpbench: dump.phpbench,
     workflow_run: run.workflow_run,
+    classes: dump.classes,
     subjects: dump.subjects,
     errors: dump.errors,
+    queries: queries === undefined ? null : deriveQueries(queries, dump, data.database.driver),
   });
+}
+
+/**
+ * The `queries` field of a result from the package's `queries.json`: the same subjects by short class name, without
+ * the parameters the dump already has. Every subject must be a variant of the dump, so a renamed benchmark cannot
+ * be stored with queries filed under its old name.
+ */
+export function deriveQueries(raw: unknown, dump: Dump, driver: string): NonNullable<Result['queries']> {
+  const file = queriesSchema.parse(raw);
+  if (file.driver !== driver) {
+    throw new Error(`queries.json is for ${file.driver}, the run is on ${driver}`);
+  }
+
+  const known = new Set(
+    [...dump.subjects, ...dump.errors].map((subject) => `${subject.benchmark}::${subject.subject}::${subject.set}`),
+  );
+
+  return {
+    analyzed: file.analyzed,
+    group: file.group,
+    subjects: file.subjects.map((subject) => {
+      const benchmark = subject.class.split('\\').at(-1) ?? subject.class;
+      const label = `${benchmark}::${subject.subject} (${subject.set === '' ? 'no parameters' : subject.set})`;
+      if (dump.classes[benchmark] !== subject.class) {
+        throw new Error(`queries.json names ${subject.class}, which is not a benchmark class in the dump`);
+      }
+      if (!known.has(`${benchmark}::${subject.subject}::${subject.set}`)) {
+        throw new Error(`queries.json has ${label}, which is not a variant in the dump; the names have drifted`);
+      }
+
+      return { benchmark, subject: subject.subject, set: subject.set, queries: subject.queries };
+    }),
+  };
 }
 
 /** The optional indexes as one stable string, so it can be part of a series key: `none` or `type-viewed-at,visitor`. */
@@ -104,6 +158,7 @@ export function fromDump(result: Result): unknown {
     ranAt: result.ran_at,
     machine,
     php: result.php,
+    classes: result.classes,
     subjects: result.subjects,
     errors: result.errors,
   };

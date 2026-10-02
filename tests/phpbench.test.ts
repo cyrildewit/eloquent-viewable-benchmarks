@@ -10,6 +10,11 @@ describe('parseDump on a real run', () => {
     expect(parsed.errors).toEqual([]);
   });
 
+  it('maps every short class name to its namespace, without the leading backslash', () => {
+    expect(Object.keys(parsed.classes)).toHaveLength(7);
+    expect(parsed.classes.ViewSeriesBench).toBe('CyrildeWit\\EloquentViewable\\Benchmarks\\Php\\ViewSeriesBench');
+  });
+
   it('reads the run itself', () => {
     expect(parsed.phpbench).toBe('1.7.0');
     expect(parsed.ranAt).toBe('2026-10-02T10:53:51Z');

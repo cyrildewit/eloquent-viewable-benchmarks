@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildResult, indexKey, refKind, resultPaths, runId, serialise, slugRef } from '../src/lib/importer.ts';
 import { resultSchema } from '../src/lib/schema.ts';
-import { fixture } from './support.ts';
+import { fixture, queries } from './support.ts';
 
 const COMMIT = 'b4cb9993b30724a1b83aaa2e2830e008dcd1f8a9';
 
@@ -57,11 +57,21 @@ describe('buildResult', () => {
   const result = buildResult(fixture.xml, fixture.meta, fixture.dataset);
 
   it('combines the dump, the metadata and the dataset', () => {
-    const { subjects, ...rest } = result;
+    const { subjects, classes, ...rest } = result;
 
     expect(subjects).toHaveLength(64);
+    expect(Object.keys(classes).sort()).toEqual([
+      'CooldownManagerBench',
+      'CountViewsBench',
+      'CountViewsByIntervalBench',
+      'DestroyViewsBench',
+      'OrderByViewsBench',
+      'RecordViewBench',
+      'ViewSeriesBench',
+    ]);
+    expect(classes.CountViewsBench).toBe('CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench');
     expect(rest).toEqual({
-      format: 1,
+      format: 2,
       id: 'main_b4cb999_sqlite_small_cyril_20261002T105351',
       package: 'cyrildewit/eloquent-viewable',
       ref: 'main',
@@ -95,6 +105,7 @@ describe('buildResult', () => {
       phpbench: '1.7.0',
       workflow_run: null,
       errors: [],
+      queries: null,
     });
   });
 
@@ -102,6 +113,7 @@ describe('buildResult', () => {
     expect(resultPaths(result)).toEqual({
       xml: 'runs/cyril/sqlite/small/main_b4cb999_sqlite_small_cyril_20261002T105351.xml',
       json: 'results/cyril/sqlite/small/main_b4cb999_sqlite_small_cyril_20261002T105351.json',
+      queries: 'runs/cyril/sqlite/small/main_b4cb999_sqlite_small_cyril_20261002T105351.queries.json',
     });
   });
 
@@ -132,5 +144,62 @@ describe('buildResult', () => {
     const dataset = { ...fixture.dataset, database: { driver: 'oracle', server_version: '23' } };
 
     expect(() => buildResult(fixture.xml, fixture.meta, dataset)).toThrow();
+  });
+});
+
+describe('buildResult with queries', () => {
+  const result = buildResult(fixture.xml, fixture.meta, fixture.dataset, queries);
+
+  it('keeps the queries by short class name, without the parameters', () => {
+    expect(result.queries).toEqual({
+      analyzed: false,
+      group: 'read',
+      subjects: [
+        {
+          benchmark: 'CountViewsBench',
+          subject: 'benchCount',
+          set: 'hot article,all time',
+          queries: queries.subjects[0]?.queries,
+        },
+        {
+          benchmark: 'OrderByViewsBench',
+          subject: 'benchOrderByViews',
+          set: 'all time',
+          queries: queries.subjects[1]?.queries,
+        },
+      ],
+    });
+    expect(resultSchema.parse(JSON.parse(serialise(result)))).toEqual(result);
+  });
+
+  it('ignores keys it does not know, so the package can add fields first', () => {
+    const extended = { ...queries, extra: true, subjects: queries.subjects.map((s) => ({ ...s, note: 'x' })) };
+
+    expect(buildResult(fixture.xml, fixture.meta, fixture.dataset, extended).queries).toEqual(result.queries);
+  });
+
+  it('refuses a parameter set name the dump does not have', () => {
+    const drifted = { ...queries, subjects: [{ ...queries.subjects[0], set: 'hot article, all time' }] };
+
+    expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, drifted)).toThrow(/names have drifted/);
+  });
+
+  it('refuses a class the dump does not have', () => {
+    const moved = {
+      ...queries,
+      subjects: [{ ...queries.subjects[0], class: 'CyrildeWit\\EloquentViewable\\Benchmarks\\CountViewsBench' }],
+    };
+
+    expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, moved)).toThrow(/not a benchmark class/);
+  });
+
+  it('refuses a queries file from another driver', () => {
+    expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, { ...queries, driver: 'mysql' })).toThrow(
+      /for mysql, the run is on sqlite/,
+    );
+  });
+
+  it('refuses a malformed queries file', () => {
+    expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, { subjects: [] })).toThrow();
   });
 });
