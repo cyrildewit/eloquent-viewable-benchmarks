@@ -1,0 +1,1454 @@
+{
+  "format": 1,
+  "id": "9_x_2ce292f_pgsql_small_gha_20261002T150954",
+  "package": "cyrildewit/eloquent-viewable",
+  "ref": "9.x",
+  "kind": "branch",
+  "commit": "2ce292f8c62f0f26432b816cd6976117a28ff6f7",
+  "committed_at": "2026-10-02T14:49:10Z",
+  "ran_at": "2026-10-02T15:09:54Z",
+  "runner": "gha",
+  "machine": {
+    "label": "Ubuntu 24.04.5 LTS, 4 vCPU, 15 GB",
+    "os": "Linux",
+    "arch": "x86_64",
+    "kernel": "6.17.0-1022-azure",
+    "load": [
+      1.013671875,
+      0.62548828125,
+      0.29443359375
+    ]
+  },
+  "php": {
+    "version": "8.5.11",
+    "opcache": true,
+    "xdebug": true
+  },
+  "laravel": "13.34.0",
+  "database": {
+    "driver": "pgsql",
+    "image": "postgres:17",
+    "server_version": "17.11 (Debian 17.11-1.pgdg13+2)"
+  },
+  "dataset": {
+    "schema_version": 1,
+    "size": "small",
+    "seed": 20260101,
+    "anchor": "2026-01-01 00:00:00",
+    "articles": 1000,
+    "videos": 100,
+    "views": 1000000,
+    "hot_article_views": 120031,
+    "cold_article_views": 95,
+    "indexes": "none"
+  },
+  "phpbench": "1.7.0",
+  "workflow_run": "https://github.com/cyrildewit/eloquent-viewable-benchmarks/actions/runs/37024649421",
+  "subjects": [
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "100 views",
+      "params": {
+        "views": 100
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 16129.278,
+      "mean_us": 16359.2,
+      "min_us": 16021,
+      "max_us": 17027,
+      "stdev_us": 387.174,
+      "rstdev": 2.367,
+      "mem_peak": 6410200,
+      "rejects": 0
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "1,000 views",
+      "params": {
+        "views": 1000
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 16775.264,
+      "mean_us": 16728.6,
+      "min_us": 16424,
+      "max_us": 16978,
+      "stdev_us": 183.047,
+      "rstdev": 1.094,
+      "mem_peak": 7842208,
+      "rejects": 1
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "10,000 views",
+      "params": {
+        "views": 10000
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 21364.834,
+      "mean_us": 21421.6,
+      "min_us": 21178,
+      "max_us": 21646,
+      "stdev_us": 169.753,
+      "rstdev": 0.792,
+      "mem_peak": 7842216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "RecordViewBench",
+      "subject": "benchRecord",
+      "set": "",
+      "params": {},
+      "groups": [
+        "write"
+      ],
+      "revs": 50,
+      "iterations": 5,
+      "mode_us": 612.15,
+      "mean_us": 618.084,
+      "min_us": 598.08,
+      "max_us": 645.38,
+      "stdev_us": 17.069,
+      "rstdev": 2.762,
+      "mem_peak": 6866744,
+      "rejects": 1
+    },
+    {
+      "benchmark": "RecordViewBench",
+      "subject": "benchRecordQueued",
+      "set": "",
+      "params": {},
+      "groups": [
+        "write"
+      ],
+      "revs": 50,
+      "iterations": 5,
+      "mode_us": 803.118,
+      "mean_us": 807.508,
+      "min_us": 796.78,
+      "max_us": 825.44,
+      "stdev_us": 9.918,
+      "rstdev": 1.228,
+      "mem_peak": 7075664,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,7 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 5715.712,
+      "mean_us": 5665.2,
+      "min_us": 5458.667,
+      "max_us": 5828.667,
+      "stdev_us": 131.163,
+      "rstdev": 2.315,
+      "mem_peak": 6778456,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,7 days by hour",
+      "params": {
+        "target": "type",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 58649.956,
+      "mean_us": 58400.733,
+      "min_us": 57842.667,
+      "max_us": 58791,
+      "stdev_us": 369.8,
+      "rstdev": 0.633,
+      "mem_peak": 6498376,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,30 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 19001.179,
+      "mean_us": 19176.533,
+      "min_us": 18926,
+      "max_us": 19694.333,
+      "stdev_us": 299.599,
+      "rstdev": 1.562,
+      "mem_peak": 7053240,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,30 days by hour",
+      "params": {
+        "target": "type",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 81384.663,
+      "mean_us": 80595.133,
+      "min_us": 79137.333,
+      "max_us": 81884.667,
+      "stdev_us": 1130.051,
+      "rstdev": 1.402,
+      "mem_peak": 6847664,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,1 year by day",
+      "params": {
+        "target": "hot",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 55850.377,
+      "mean_us": 55765.2,
+      "min_us": 55593.333,
+      "max_us": 55942.667,
+      "stdev_us": 142.106,
+      "rstdev": 0.255,
+      "mem_peak": 6778456,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,1 year by day",
+      "params": {
+        "target": "type",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 419791.584,
+      "mean_us": 421144.533,
+      "min_us": 418124.667,
+      "max_us": 426315,
+      "stdev_us": 2855.126,
+      "rstdev": 0.678,
+      "mem_peak": 6498376,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,2 years by week",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 86230.676,
+      "mean_us": 86449.8,
+      "min_us": 85952.333,
+      "max_us": 87374.667,
+      "stdev_us": 499.958,
+      "rstdev": 0.578,
+      "mem_peak": 6778456,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,2 years by week",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 661135.968,
+      "mean_us": 662752.133,
+      "min_us": 660203,
+      "max_us": 668716.333,
+      "stdev_us": 3187.048,
+      "rstdev": 0.481,
+      "mem_peak": 6498376,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,2 years by month",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 79636.81,
+      "mean_us": 80297.133,
+      "min_us": 79076.667,
+      "max_us": 82997.667,
+      "stdev_us": 1429.061,
+      "rstdev": 1.78,
+      "mem_peak": 6778456,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,2 years by month",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 627399.245,
+      "mean_us": 629363.8,
+      "min_us": 626220.333,
+      "max_us": 637376.333,
+      "stdev_us": 4050.441,
+      "rstdev": 0.644,
+      "mem_peak": 6498376,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,7 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 7036.706,
+      "mean_us": 7044.533,
+      "min_us": 7032,
+      "max_us": 7069,
+      "stdev_us": 13.92,
+      "rstdev": 0.198,
+      "mem_peak": 6778504,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,7 days by hour",
+      "params": {
+        "target": "type",
+        "days": 7,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 68207.555,
+      "mean_us": 67896.333,
+      "min_us": 66732.333,
+      "max_us": 68434,
+      "stdev_us": 627.792,
+      "rstdev": 0.925,
+      "mem_peak": 6498424,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,30 days by hour",
+      "params": {
+        "target": "hot",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 26055.286,
+      "mean_us": 26012.2,
+      "min_us": 25862.667,
+      "max_us": 26120.333,
+      "stdev_us": 98.145,
+      "rstdev": 0.377,
+      "mem_peak": 7053288,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,30 days by hour",
+      "params": {
+        "target": "type",
+        "days": 30,
+        "granularity": "hour"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 126889.912,
+      "mean_us": 126384.933,
+      "min_us": 124830.333,
+      "max_us": 127474.667,
+      "stdev_us": 970.375,
+      "rstdev": 0.768,
+      "mem_peak": 6847712,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,1 year by day",
+      "params": {
+        "target": "hot",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 169142.288,
+      "mean_us": 169643.533,
+      "min_us": 168644.667,
+      "max_us": 171708.333,
+      "stdev_us": 1093.155,
+      "rstdev": 0.644,
+      "mem_peak": 6778504,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,1 year by day",
+      "params": {
+        "target": "type",
+        "days": 365,
+        "granularity": "day"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 735167.851,
+      "mean_us": 741822,
+      "min_us": 728025.667,
+      "max_us": 757697.667,
+      "stdev_us": 11081.98,
+      "rstdev": 1.494,
+      "mem_peak": 6498424,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,2 years by week",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 277163.297,
+      "mean_us": 277944.467,
+      "min_us": 276536.333,
+      "max_us": 280261.667,
+      "stdev_us": 1366.616,
+      "rstdev": 0.492,
+      "mem_peak": 6778504,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,2 years by week",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "week"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1318182.928,
+      "mean_us": 1329754.2,
+      "min_us": 1305396,
+      "max_us": 1369456,
+      "stdev_us": 22883.104,
+      "rstdev": 1.721,
+      "mem_peak": 6498424,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,2 years by month",
+      "params": {
+        "target": "hot",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 299892.766,
+      "mean_us": 300330.333,
+      "min_us": 299093.333,
+      "max_us": 302119.333,
+      "stdev_us": 1040.648,
+      "rstdev": 0.347,
+      "mem_peak": 6778504,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,2 years by month",
+      "params": {
+        "target": "type",
+        "days": 730,
+        "granularity": "month"
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1416515.808,
+      "mean_us": 1426912.067,
+      "min_us": 1408354.667,
+      "max_us": 1467931,
+      "stdev_us": 21532.99,
+      "rstdev": 1.509,
+      "mem_peak": 6498424,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,all time",
+      "params": {
+        "target": "hot",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 6943.598,
+      "mean_us": 6972.667,
+      "min_us": 6918.667,
+      "max_us": 7048.667,
+      "stdev_us": 48.936,
+      "rstdev": 0.702,
+      "mem_peak": 5514832,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,all time",
+      "params": {
+        "target": "cold",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1172.836,
+      "mean_us": 1142.533,
+      "min_us": 1087.333,
+      "max_us": 1197.667,
+      "stdev_us": 45.361,
+      "rstdev": 3.97,
+      "mem_peak": 5514832,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,all time",
+      "params": {
+        "target": "type",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 28450.225,
+      "mean_us": 28526.2,
+      "min_us": 28399,
+      "max_us": 28808,
+      "stdev_us": 150.865,
+      "rstdev": 0.529,
+      "mem_peak": 5514832,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past year",
+      "params": {
+        "target": "hot",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 7999.288,
+      "mean_us": 8044.133,
+      "min_us": 7832,
+      "max_us": 8329,
+      "stdev_us": 160.709,
+      "rstdev": 1.998,
+      "mem_peak": 6778248,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past year",
+      "params": {
+        "target": "cold",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1256.324,
+      "mean_us": 1252.533,
+      "min_us": 1231.667,
+      "max_us": 1267.667,
+      "stdev_us": 11.822,
+      "rstdev": 0.944,
+      "mem_peak": 6778248,
+      "rejects": 5
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past year",
+      "params": {
+        "target": "type",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 62768.701,
+      "mean_us": 62447.2,
+      "min_us": 61118.667,
+      "max_us": 63131,
+      "stdev_us": 707.359,
+      "rstdev": 1.133,
+      "mem_peak": 6498168,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past 30 days",
+      "params": {
+        "target": "hot",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1994.885,
+      "mean_us": 1988.933,
+      "min_us": 1916,
+      "max_us": 2055,
+      "stdev_us": 46.097,
+      "rstdev": 2.318,
+      "mem_peak": 6778248,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past 30 days",
+      "params": {
+        "target": "cold",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1342.277,
+      "mean_us": 1342.867,
+      "min_us": 1317,
+      "max_us": 1368.667,
+      "stdev_us": 16.932,
+      "rstdev": 1.261,
+      "mem_peak": 6778248,
+      "rejects": 11
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past 30 days",
+      "params": {
+        "target": "type",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 51873.652,
+      "mean_us": 51751.867,
+      "min_us": 51254.333,
+      "max_us": 52030,
+      "stdev_us": 283.333,
+      "rstdev": 0.547,
+      "mem_peak": 6498168,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past day",
+      "params": {
+        "target": "hot",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1355.282,
+      "mean_us": 1335,
+      "min_us": 1278,
+      "max_us": 1379,
+      "stdev_us": 37.709,
+      "rstdev": 2.825,
+      "mem_peak": 6778248,
+      "rejects": 3
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past day",
+      "params": {
+        "target": "cold",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1213.123,
+      "mean_us": 1219.533,
+      "min_us": 1185.667,
+      "max_us": 1262.333,
+      "stdev_us": 25.255,
+      "rstdev": 2.071,
+      "mem_peak": 6778248,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past day",
+      "params": {
+        "target": "type",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 50445.845,
+      "mean_us": 50507.267,
+      "min_us": 50321,
+      "max_us": 50800.667,
+      "stdev_us": 159.736,
+      "rstdev": 0.316,
+      "mem_peak": 6498168,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,all time",
+      "params": {
+        "target": "hot",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 206746.241,
+      "mean_us": 208523.8,
+      "min_us": 203394.333,
+      "max_us": 216469.333,
+      "stdev_us": 4882.945,
+      "rstdev": 2.342,
+      "mem_peak": 5514880,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,all time",
+      "params": {
+        "target": "cold",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1129.273,
+      "mean_us": 1143.867,
+      "min_us": 1107.333,
+      "max_us": 1191,
+      "stdev_us": 30.41,
+      "rstdev": 2.659,
+      "mem_peak": 5514880,
+      "rejects": 3
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,all time",
+      "params": {
+        "target": "type",
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1685929.152,
+      "mean_us": 1684133.133,
+      "min_us": 1665531.667,
+      "max_us": 1702104,
+      "stdev_us": 12369.139,
+      "rstdev": 0.734,
+      "mem_peak": 5514880,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past year",
+      "params": {
+        "target": "hot",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 137920.809,
+      "mean_us": 136496,
+      "min_us": 133439.333,
+      "max_us": 138815,
+      "stdev_us": 2107.244,
+      "rstdev": 1.544,
+      "mem_peak": 6778296,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past year",
+      "params": {
+        "target": "cold",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1288.283,
+      "mean_us": 1289,
+      "min_us": 1256,
+      "max_us": 1323.333,
+      "stdev_us": 21.964,
+      "rstdev": 1.704,
+      "mem_peak": 6778296,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past year",
+      "params": {
+        "target": "type",
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1019080.567,
+      "mean_us": 1027901.067,
+      "min_us": 1014123.667,
+      "max_us": 1043238.333,
+      "stdev_us": 12522.752,
+      "rstdev": 1.218,
+      "mem_peak": 6498216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past 30 days",
+      "params": {
+        "target": "hot",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 9726.302,
+      "mean_us": 9658,
+      "min_us": 9368.333,
+      "max_us": 9841,
+      "stdev_us": 172.016,
+      "rstdev": 1.781,
+      "mem_peak": 6778296,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past 30 days",
+      "params": {
+        "target": "cold",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1243.717,
+      "mean_us": 1239.733,
+      "min_us": 1215.333,
+      "max_us": 1264.667,
+      "stdev_us": 17.209,
+      "rstdev": 1.388,
+      "mem_peak": 6778296,
+      "rejects": 4
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past 30 days",
+      "params": {
+        "target": "type",
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 98123.387,
+      "mean_us": 97125,
+      "min_us": 93160,
+      "max_us": 99613.667,
+      "stdev_us": 2308.598,
+      "rstdev": 2.377,
+      "mem_peak": 6498216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past day",
+      "params": {
+        "target": "hot",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1407.626,
+      "mean_us": 1443.267,
+      "min_us": 1392.667,
+      "max_us": 1514,
+      "stdev_us": 51.257,
+      "rstdev": 3.551,
+      "mem_peak": 6778296,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past day",
+      "params": {
+        "target": "cold",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 1208.035,
+      "mean_us": 1220.333,
+      "min_us": 1192,
+      "max_us": 1272.333,
+      "stdev_us": 28.475,
+      "rstdev": 2.333,
+      "mem_peak": 6778296,
+      "rejects": 3
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past day",
+      "params": {
+        "target": "type",
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 3,
+      "iterations": 5,
+      "mode_us": 52632.31,
+      "mean_us": 52044.067,
+      "min_us": 50816.333,
+      "max_us": 53041.667,
+      "stdev_us": 872.847,
+      "rstdev": 1.677,
+      "mem_peak": 6498216,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "all time",
+      "params": {
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 50539.36,
+      "mean_us": 50663.4,
+      "min_us": 50233,
+      "max_us": 51243,
+      "stdev_us": 340.194,
+      "rstdev": 0.671,
+      "mem_peak": 5514776,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past year",
+      "params": {
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 62787.025,
+      "mean_us": 62778.4,
+      "min_us": 62410,
+      "max_us": 63086,
+      "stdev_us": 238.942,
+      "rstdev": 0.381,
+      "mem_peak": 6406640,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past 30 days",
+      "params": {
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 11135.466,
+      "mean_us": 11189.2,
+      "min_us": 11109,
+      "max_us": 11403,
+      "stdev_us": 109.711,
+      "rstdev": 0.981,
+      "mem_peak": 6406640,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past day",
+      "params": {
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 4355.836,
+      "mean_us": 4399.6,
+      "min_us": 4312,
+      "max_us": 4487,
+      "stdev_us": 69.365,
+      "rstdev": 1.577,
+      "mem_peak": 6406640,
+      "rejects": 3
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "all time",
+      "params": {
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 1239106.767,
+      "mean_us": 1229322.4,
+      "min_us": 1180528,
+      "max_us": 1276778,
+      "stdev_us": 33512.684,
+      "rstdev": 2.726,
+      "mem_peak": 5514776,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past year",
+      "params": {
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 726637.092,
+      "mean_us": 727345.6,
+      "min_us": 720516,
+      "max_us": 733883,
+      "stdev_us": 4638.881,
+      "rstdev": 0.638,
+      "mem_peak": 6406640,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past 30 days",
+      "params": {
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 58310.89,
+      "mean_us": 58610.8,
+      "min_us": 57631,
+      "max_us": 60095,
+      "stdev_us": 822.055,
+      "rstdev": 1.403,
+      "mem_peak": 6406640,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past day",
+      "params": {
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 5938.313,
+      "mean_us": 6045.2,
+      "min_us": 5924,
+      "max_us": 6242,
+      "stdev_us": 144.548,
+      "rstdev": 2.391,
+      "mem_peak": 6406640,
+      "rejects": 3
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "empty session",
+      "params": {
+        "entries": 0
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 100.032,
+      "mean_us": 100.012,
+      "min_us": 99.47,
+      "max_us": 100.53,
+      "stdev_us": 0.341,
+      "rstdev": 0.341,
+      "mem_peak": 5650272,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "100 cooldowns",
+      "params": {
+        "entries": 100
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 1310.174,
+      "mean_us": 1312.978,
+      "min_us": 1305.37,
+      "max_us": 1320.81,
+      "stdev_us": 5.666,
+      "rstdev": 0.432,
+      "mem_peak": 5650272,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "1,000 cooldowns",
+      "params": {
+        "entries": 1000
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 12159.504,
+      "mean_us": 12207.228,
+      "min_us": 12118.71,
+      "max_us": 12296.88,
+      "stdev_us": 74.455,
+      "rstdev": 0.61,
+      "mem_peak": 5650272,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "10,000 cooldowns",
+      "params": {
+        "entries": 10000
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 120550.169,
+      "mean_us": 120893.994,
+      "min_us": 120175.11,
+      "max_us": 122353.01,
+      "stdev_us": 753.739,
+      "rstdev": 0.623,
+      "mem_peak": 9049176,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "168 buckets",
+      "params": {
+        "hours": 168
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 6656.723,
+      "mean_us": 6694.38,
+      "min_us": 6621.7,
+      "max_us": 6829.8,
+      "stdev_us": 75.513,
+      "rstdev": 1.128,
+      "mem_peak": 5092536,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "720 buckets",
+      "params": {
+        "hours": 720
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 15802.554,
+      "mean_us": 15888.72,
+      "min_us": 15742.9,
+      "max_us": 16081.6,
+      "stdev_us": 133.947,
+      "rstdev": 0.843,
+      "mem_peak": 5092536,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "8,760 buckets",
+      "params": {
+        "hours": 8760
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 151370.291,
+      "mean_us": 151951.16,
+      "min_us": 151003.6,
+      "max_us": 153800.3,
+      "stdev_us": 1056.123,
+      "rstdev": 0.695,
+      "mem_peak": 14744128,
+      "rejects": 0
+    }
+  ],
+  "errors": []
+}
