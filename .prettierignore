@@ -1,0 +1,6 @@
+runs/
+results/
+tests/fixtures/
+pnpm-lock.yaml
+benchmark-repo.md
+*.md

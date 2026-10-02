@@ -1,0 +1,22 @@
+services:
+  node:
+    build:
+      context: docker
+      dockerfile: node.Dockerfile
+    working_dir: /app
+    environment:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+      # The store lives on a volume, so a reinstall does not download everything again.
+      pnpm_config_store_dir: /pnpm/store
+    # Corepack provides the pnpm version pinned in package.json's packageManager.
+    entrypoint: ['sh', '-c', 'corepack enable && exec "$$@"', '--']
+    ports:
+      - '4321:4321'
+    volumes:
+      - .:/app
+      - pnpm-store:/pnpm/store
+      - corepack:/root/.cache/node/corepack
+
+volumes:
+  pnpm-store:
+  corepack:

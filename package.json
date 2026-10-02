@@ -1,0 +1,44 @@
+{
+  "name": "eloquent-viewable-benchmarks",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=12"
+  },
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview --host",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "validate": "node scripts/validate.ts",
+    "import": "node scripts/import.ts",
+    "sample": "node scripts/sample.ts",
+    "discover": "node scripts/discover.ts",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write . && eslint --fix ."
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "echarts": "^6.1.0",
+    "fast-xml-parser": "^5.11.2",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "typescript": "^6",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
+  },
+  "packageManager": "pnpm@12.8.1"
+}
