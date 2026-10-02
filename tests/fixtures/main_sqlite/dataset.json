@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "size": "small",
+  "seed": 20260101,
+  "anchor": "2026-01-01 00:00:00",
+  "articles": 1000,
+  "videos": 100,
+  "views": 1000000,
+  "max_view_id": 1000000,
+  "hot_article_id": 1,
+  "hot_article_views": 120031,
+  "cold_article_id": 979,
+  "cold_article_views": 95,
+  "indexes": [],
+  "seeded_at": "2026-10-02 10:27:15",
+  "database": {
+    "driver": "sqlite",
+    "server_version": "3.53.4"
+  },
+  "laravel": "13.34.0"
+}
