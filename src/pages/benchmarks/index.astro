@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import { BENCHMARK_DESCRIPTIONS, GROUP_LABELS, benchmarkSlugs } from '../../lib/benchmarks.ts';
+import { GROUP_ORDER } from '../../lib/data.ts';
+import { loadIndex } from '../../lib/results.ts';
+import { benchmarkHref } from '../../lib/site.ts';
+
+const index = await loadIndex();
+const slugs = benchmarkSlugs(index.subjects.map((subject) => subject.benchmark));
+
+const benchmarks = [...slugs].map(([slug, benchmark]) => {
+  const subjects = index.subjects.filter((subject) => subject.benchmark === benchmark);
+  const groups = [...new Set(subjects.flatMap((subject) => subject.groups))].sort(
+    (a, b) => GROUP_ORDER.indexOf(a) - GROUP_ORDER.indexOf(b),
+  );
+
+  return {
+    slug,
+    benchmark,
+    groups,
+    methods: new Set(subjects.map((subject) => subject.subject)).size,
+    variants: subjects.length,
+  };
+});
+---
+
+<Base title="Benchmarks" current="benchmarks">
+  <h1 class="text-2xl font-semibold tracking-tight">Benchmarks</h1>
+  <p class="mt-2 max-w-3xl text-ink-2">
+    One page per benchmark class: how fast each of its queries is on every database right now, how that developed over
+    the releases, and the SQL and query plan behind the numbers.
+  </p>
+
+  {benchmarks.length === 0 ? (
+    <div class="card mt-6 p-6">
+      <p class="font-medium">No runs yet.</p>
+    </div>
+  ) : (
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      {benchmarks.map((item) => (
+        <li class="card p-4">
+          <h2 class="font-semibold">
+            <a href={benchmarkHref(item.slug)}>{item.benchmark}</a>
+          </h2>
+          <p class="mt-1 text-sm text-ink-2">{BENCHMARK_DESCRIPTIONS[item.benchmark] ?? ''}</p>
+          <p class="mt-2 text-xs text-ink-2">
+            {item.groups.map((group) => GROUP_LABELS[group] ?? group).join(', ')} · {item.methods}{' '}
+            {item.methods === 1 ? 'subject' : 'subjects'}, {item.variants}{' '}
+            {item.variants === 1 ? 'measurement' : 'measurements'}
+          </p>
+        </li>
+      ))}
+    </ul>
+  )}
+</Base>

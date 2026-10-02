@@ -15,11 +15,8 @@ import { resultPaths } from '../../lib/importer.ts';
 import { compareRuns } from '../../lib/refs.ts';
 import { loadResults } from '../../lib/results.ts';
 import type { Result } from '../../lib/schema.ts';
-import { commitUrl, compareHref, dumpUrl, href } from '../../lib/site.ts';
-import { setLabel, subjectLabel } from '../../lib/benchmarks.ts';
-
-/** Above this, phpbench retries a subject; one that stays above it is shown with a warning. */
-const NOISY = 5;
+import { benchmarkHref, commitUrl, compareHref, dumpUrl, href } from '../../lib/site.ts';
+import { NOISY_RSTDEV, benchmarkSlug, setLabel, subjectLabel } from '../../lib/benchmarks.ts';
 
 export const getStaticPaths = (async () => {
   const results = await loadResults();
@@ -71,6 +68,13 @@ if (result.workflow_run !== null) {
   facts.push(['Workflow run', 'GitHub Actions log', result.workflow_run]);
 }
 facts.push(['Raw data', 'phpbench XML dump', dumpUrl(resultPaths(result).xml)]);
+if (result.queries !== null) {
+  facts.push([
+    'Queries',
+    `SQL and plans of ${result.queries.subjects.length} subjects${result.queries.analyzed ? ', analyzed' : ''}`,
+    dumpUrl(resultPaths(result).queries),
+  ]);
+}
 ---
 
 <Base title={`${result.ref} on ${DRIVER_LABELS[driver]}`} wide>
@@ -173,7 +177,11 @@ facts.push(['Raw data', 'phpbench XML dump', dumpUrl(resultPaths(result).xml)]);
         {
           result.subjects.map((subject) => (
             <tr>
-              <td class="text-ink-2">{subject.benchmark}</td>
+              <td>
+                <a class="text-ink-2" href={benchmarkHref(benchmarkSlug(subject.benchmark))}>
+                  {subject.benchmark}
+                </a>
+              </td>
               <td>
                 <code class="font-mono text-[0.8rem]">{subjectLabel(subject.subject)}</code>
               </td>
@@ -182,7 +190,7 @@ facts.push(['Raw data', 'phpbench XML dump', dumpUrl(resultPaths(result).xml)]);
                 {formatTime(subject.mode_us)}
               </td>
               <td class="num" data-value={subject.rstdev}>
-                {subject.rstdev > NOISY && (
+                {subject.rstdev > NOISY_RSTDEV && (
                   <span title="Above phpbench's retry threshold even after retries" aria-label="Noisy">
                     ⚠{' '}
                   </span>

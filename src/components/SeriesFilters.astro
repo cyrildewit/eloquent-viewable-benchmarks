@@ -1,0 +1,98 @@
+---
+/**
+ * The filter row of the pages that draw a series: runner, dataset size, optional indexes, the group when asked, and
+ * along releases or weekly branch runs, with the legend of databases. `src/scripts/series-filters.ts` reads it and
+ * keeps it in the URL.
+ */
+import DriverName from './DriverName.astro';
+import { referenceSeries, type IndexData } from '../lib/data.ts';
+import { DRIVER_ORDER, SIZE_ORDER } from '../lib/drivers.ts';
+import { GROUP_LABELS } from '../lib/benchmarks.ts';
+
+interface Props {
+  index: IndexData;
+  /** Offer the group filter; a page about one benchmark has no use for it. */
+  group?: boolean;
+}
+
+const { index, group = false } = Astro.props;
+const reference = referenceSeries(index.runs);
+
+const runners = [...new Set(index.runs.map((run) => run.runner))].sort((a, b) =>
+  a === 'gha' ? -1 : b === 'gha' ? 1 : a.localeCompare(b),
+);
+const sizes = SIZE_ORDER.filter((size) => index.runs.some((run) => run.size === size));
+const indexes = [...new Set(index.runs.map((run) => run.indexes))].sort((a, b) =>
+  a === 'none' ? -1 : b === 'none' ? 1 : a.localeCompare(b),
+);
+const groups = [...new Set(index.subjects.flatMap((subject) => subject.groups))];
+const drivers = DRIVER_ORDER.filter((driver) => index.runs.some((run) => run.driver === driver));
+const runnerName = (runner: string) => (runner === 'gha' ? 'GitHub Actions' : runner);
+---
+
+<form
+  id="series-filters"
+  class="z-10 -mx-4 mt-6 flex flex-wrap items-end gap-x-4 gap-y-3 border-b border-border bg-page/95 px-4 py-3 backdrop-blur md:sticky md:top-0"
+>
+  <label class="flex flex-col gap-1 text-xs text-ink-2">
+    Runner
+    <select name="runner" class="control">
+      {runners.map((runner) => (
+        <option value={runner} selected={runner === reference?.runner}>
+          {runnerName(runner)}
+        </option>
+      ))}
+    </select>
+  </label>
+  <label class="flex flex-col gap-1 text-xs text-ink-2">
+    Dataset
+    <select name="size" class="control">
+      {sizes.map((size) => (
+        <option value={size} selected={size === reference?.size}>
+          {size}
+        </option>
+      ))}
+    </select>
+  </label>
+  <label class="flex flex-col gap-1 text-xs text-ink-2">
+    Optional indexes
+    <select name="indexes" class="control">
+      {indexes.map((value) => (
+        <option value={value} selected={value === reference?.indexes}>
+          {value}
+        </option>
+      ))}
+    </select>
+  </label>
+  {group && (
+    <label class="flex flex-col gap-1 text-xs text-ink-2">
+      Group
+      <select name="group" class="control">
+        <option value="">All</option>
+        {groups.map((name) => (
+          <option value={name}>{GROUP_LABELS[name] ?? name}</option>
+        ))}
+      </select>
+    </label>
+  )}
+  <fieldset class="flex flex-col gap-1 text-xs text-ink-2">
+    <legend class="mb-1">Along</legend>
+    <div class="flex overflow-hidden rounded-md border border-border text-sm">
+      <label class="cursor-pointer px-3 py-1.5 text-ink has-checked:bg-wash has-checked:font-medium">
+        <input type="radio" name="view" value="releases" class="sr-only" checked />
+        Releases
+      </label>
+      <label class="cursor-pointer border-l border-border px-3 py-1.5 text-ink has-checked:bg-wash has-checked:font-medium">
+        <input type="radio" name="view" value="branch" class="sr-only" />
+        Weekly branch runs
+      </label>
+    </div>
+  </fieldset>
+  <ul class="ml-auto flex flex-wrap gap-x-4 gap-y-1 self-center text-sm" aria-label="Databases">
+    {drivers.map((driver) => (
+      <li>
+        <DriverName driver={driver} />
+      </li>
+    ))}
+  </ul>
+</form>

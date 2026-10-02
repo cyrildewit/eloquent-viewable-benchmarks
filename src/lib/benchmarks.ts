@@ -28,3 +28,30 @@ export function subjectLabel(subject: string): string {
 export function setLabel(set: string): string {
   return set === '' ? '—' : set.split(',').join(', ');
 }
+
+/** Above this relative deviation phpbench retries a subject; one that stays above it is shown with a warning. */
+export const NOISY_RSTDEV = 5;
+
+/** The page address of a benchmark class: `CountViewsBench` → `count-views`. Only the short name goes in. */
+export function benchmarkSlug(benchmark: string): string {
+  return benchmark
+    .replace(/Bench$/, '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .toLowerCase();
+}
+
+/** Slug to class name for every class given, refusing two classes that would share a page. */
+export function benchmarkSlugs(benchmarks: Iterable<string>): Map<string, string> {
+  const slugs = new Map<string, string>();
+  for (const benchmark of benchmarks) {
+    const slug = benchmarkSlug(benchmark);
+    const seen = slugs.get(slug);
+    if (seen !== undefined && seen !== benchmark) {
+      throw new Error(`${seen} and ${benchmark} would both be at /benchmarks/${slug}/`);
+    }
+    slugs.set(slug, benchmark);
+  }
+
+  return slugs;
+}

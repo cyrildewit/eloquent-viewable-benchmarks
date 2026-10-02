@@ -6,9 +6,9 @@ import { compare, largestChanges, summariseComparison, type ComparisonRow, type 
 import { latestPerRef, measurements, referenceSeries, seriesKey, type IndexedRun } from '../lib/data.ts';
 import { DRIVER_ORDER, type Driver } from '../lib/drivers.ts';
 import { formatChange, formatDate, formatTime } from '../lib/format.ts';
-import { setLabel, subjectLabel } from '../lib/benchmarks.ts';
+import { benchmarkSlug, setLabel, subjectLabel } from '../lib/benchmarks.ts';
 import { loadIndex } from '../lib/results.ts';
-import { compareHref, href } from '../lib/site.ts';
+import { benchmarkHref, compareHref, href } from '../lib/site.ts';
 
 const index = await loadIndex();
 const reference = referenceSeries(index.runs);
@@ -146,7 +146,11 @@ const runnerName = (runner: string) => (runner === 'gha' ? 'GitHub Actions' : ru
                       <DriverName driver={row.driver} />
                     </td>
                     <td>
-                      <span class="text-ink-2">{subject?.benchmark}</span>{' '}
+                      {subject && (
+                        <a class="text-ink-2" href={benchmarkHref(benchmarkSlug(subject.benchmark))}>
+                          {subject.benchmark}
+                        </a>
+                      )}{' '}
                       <code class="font-mono text-[0.8rem]">{subjectLabel(subject?.subject ?? '')}</code>
                     </td>
                     <td class="text-ink-2">{setLabel(subject?.set ?? '')}</td>

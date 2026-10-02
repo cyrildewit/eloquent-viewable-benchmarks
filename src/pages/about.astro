@@ -21,7 +21,8 @@ const harness = `${PACKAGE_REPO}/blob/9.x/benchmarks/README.md`;
       The paths that get expensive as the <code>views</code> table grows: counting views and unique visitors, counting
       them per interval, ordering models by views, recording and deleting views. Two groups only exercise PHP, building
       a series of buckets and managing cooldowns in the session, so they show changes in the package's own code without
-      a database in the way.
+      a database in the way. <a href={href('/benchmarks/')}>Each benchmark has a page</a> with its current numbers on
+      every database, its history, and the SQL and query plan behind each number where the run captured them.
     </p>
 
     <h2>The dataset</h2>

@@ -1,0 +1,223 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import DriverName from '../../components/DriverName.astro';
+import SeriesFilters from '../../components/SeriesFilters.astro';
+import { BENCHMARK_DESCRIPTIONS, GROUP_LABELS, benchmarkSlugs, setLabel, subjectLabel } from '../../lib/benchmarks.ts';
+import { GROUP_ORDER, referenceSeries, type IndexData, type SubjectInfo } from '../../lib/data.ts';
+import { DRIVER_LABELS } from '../../lib/drivers.ts';
+import { formatDate } from '../../lib/format.ts';
+import { queriesFor, type BenchmarkQueries } from '../../lib/queries.ts';
+import { loadIndex, loadResults } from '../../lib/results.ts';
+import { href, sourceUrl } from '../../lib/site.ts';
+
+export const getStaticPaths = (async () => {
+  const index = await loadIndex();
+  const results = await loadResults();
+  const slugs = benchmarkSlugs(index.subjects.map((subject) => subject.benchmark));
+  const reference = referenceSeries(index.runs);
+
+  return [...slugs].map(([slug, benchmark]) => {
+    // The newest run that measured this class, for the link to its source.
+    const newest = [...results]
+      .filter((result) => benchmark in result.classes)
+      .sort((a, b) => b.ran_at.localeCompare(a.ran_at))[0];
+
+    return {
+      params: { slug },
+      props: {
+        benchmark,
+        index,
+        subjects: index.subjects.filter((subject) => subject.benchmark === benchmark),
+        source: newest ? sourceUrl(newest.classes[benchmark] ?? '', newest.commit) : null,
+        queries: queriesFor(results, benchmark, reference),
+        reference: reference
+          ? `${reference.runner === 'gha' ? 'GitHub Actions' : reference.runner}, ${reference.size} dataset${
+              reference.indexes === 'none' ? '' : ` with the ${reference.indexes} indexes`
+            }`
+          : null,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  benchmark: string;
+  index: IndexData;
+  subjects: SubjectInfo[];
+  source: string | null;
+  queries: BenchmarkQueries;
+  reference: string | null;
+}
+
+const { benchmark, index, subjects, source, queries, reference } = Astro.props;
+const groups = [...new Set(subjects.flatMap((subject) => subject.groups))].sort(
+  (a, b) => GROUP_ORDER.indexOf(a) - GROUP_ORDER.indexOf(b),
+);
+const methods = [...new Set(subjects.map((subject) => subject.subject))];
+const subjectsOf = (method: string) => subjects.filter((subject) => subject.subject === method);
+const analyzed = queries.sources.some((item) => item.analyzed);
+
+/** Whether a plan is tabular (several columns) or lines (one column, as PostgreSQL returns it). */
+const tabular = (plan: { columns: string[] }) => plan.columns.length > 1;
+---
+
+<Base title={benchmark} current="benchmarks" wide description={BENCHMARK_DESCRIPTIONS[benchmark]}>
+  <p class="text-sm text-ink-2">
+    <a href={href('/benchmarks/')}>Benchmarks</a> / {benchmark}
+  </p>
+  <h1 class="mt-1 text-2xl font-semibold tracking-tight">{benchmark}</h1>
+  <p class="mt-2 max-w-3xl text-ink-2">
+    {BENCHMARK_DESCRIPTIONS[benchmark] ?? 'A benchmark of the package.'}
+    {groups.length > 0 && <> Group: {groups.map((group) => GROUP_LABELS[group] ?? group).join(', ')}.</>}
+    {source && (
+      <>
+        {' '}
+        <a href={source}>Source at the latest measured commit</a>.
+      </>
+    )}
+  </p>
+
+  <SeriesFilters index={index} />
+
+  <p id="benchmark-status" class="mt-4 text-sm text-ink-2" aria-live="polite">
+    Loading…
+  </p>
+
+  <section aria-labelledby="now" class="mt-6">
+    <h2 id="now" class="text-lg font-semibold">
+      Right now
+    </h2>
+    <div id="benchmark-now" class="mt-2" data-benchmark={benchmark} data-base={import.meta.env.BASE_URL}></div>
+    <noscript>
+      <p class="mt-2">The tables and charts need JavaScript. Every number is also on the run pages.</p>
+    </noscript>
+  </section>
+
+  <section aria-labelledby="trend" class="mt-10">
+    <h2 id="trend" class="text-lg font-semibold">
+      Over the releases
+    </h2>
+    <div id="benchmark-trends" class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
+  </section>
+
+  <section aria-labelledby="queries" class="mt-10">
+    <h2 id="queries" class="text-lg font-semibold">
+      Queries
+    </h2>
+    {queries.sources.length === 0 ? (
+      <p class="mt-2 text-ink-2">
+        No SQL has been captured for this benchmark yet
+        {reference && <> on {reference}</>}. Runs made with a package that writes <code>queries.json</code> carry it.
+      </p>
+    ) : (
+      <>
+        <p class="mt-2 max-w-3xl text-sm text-ink-2">
+          The statements each subject runs and the plan the database chose for them, as generated on {reference}
+          {analyzed ? ', executed for actual row counts' : ''}. From{' '}
+          {queries.sources.map((item, i) => (
+            <>
+              {i > 0 && ', '}
+              <a href={href(`/runs/${item.run.id}/`)}>
+                {item.run.ref} on {DRIVER_LABELS[item.driver]}
+              </a>{' '}
+              ({formatDate(item.run.ran_at)})
+            </>
+          ))}
+          . A plan is compared with the release before it; a changed plan is marked.
+        </p>
+
+        {methods.map((method) => {
+          const rows = subjectsOf(method).map((subject) => ({ subject, drivers: queries.subjects.get(subject.key) }));
+          const captured = rows.some((row) => row.drivers !== undefined);
+
+          return (
+            <div class="mt-6">
+              <h3 class="text-base font-medium">
+                <code class="font-mono">{subjectLabel(method)}</code>
+              </h3>
+              {captured ? (
+                rows.map(({ subject, drivers }) => (
+                  <div class="mt-3">
+                    {subject.set !== '' && <p class="text-sm text-ink-2">{setLabel(subject.set)}</p>}
+                    {drivers === undefined ? (
+                      <p class="mt-1 text-sm text-ink-2">No queries captured for this parameter set.</p>
+                    ) : (
+                      <div class="mt-1 space-y-2">
+                        {drivers.map((item, i) => (
+                          <details class="card text-sm" open={i === 0}>
+                            <summary class="flex cursor-pointer flex-wrap items-center gap-x-3 px-4 py-2">
+                              <DriverName driver={item.driver} />
+                              <span class="text-ink-2">
+                                {item.queries.length === 1 ? '1 statement' : `${item.queries.length} statements`}
+                              </span>
+                              {item.planChanged && (
+                                <span class="rounded bg-wash px-1.5 py-0.5 text-xs font-medium">
+                                  Plan changed in {item.planChanged}
+                                </span>
+                              )}
+                            </summary>
+                            <div class="space-y-4 border-t border-border px-4 py-3">
+                              {item.queries.length === 0 && <p class="text-ink-2">This variant ran no SQL.</p>}
+                              {item.queries.map((query) => (
+                                <div>
+                                  <pre
+                                    class="overflow-x-auto font-mono text-[0.8rem] leading-relaxed break-words whitespace-pre-wrap"
+                                    set:text={query.sql}
+                                  />
+                                  {query.plan.rows.length === 0 ? (
+                                    <p class="mt-2 text-ink-2">No plan was returned.</p>
+                                  ) : tabular(query.plan) ? (
+                                    <div class="table-wrap mt-2">
+                                      <table class="data-table text-xs">
+                                        <thead>
+                                          <tr>
+                                            {query.plan.columns.map((column) => (
+                                              <th>{column}</th>
+                                            ))}
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {query.plan.rows.map((row) => (
+                                            <tr>
+                                              {row.map((value) => (
+                                                <td class:list={[value === null && 'text-muted']}>{value ?? 'null'}</td>
+                                              ))}
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  ) : (
+                                    <pre
+                                      class="mt-2 overflow-x-auto rounded-md bg-wash p-3 font-mono text-xs leading-relaxed text-ink-2"
+                                      set:text={query.plan.rows.map((row) => row.join('  ')).join('\n')}
+                                    />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </details>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p class="mt-1 text-sm text-ink-2">
+                  No queries captured for this subject: only the read group's SQL is recorded.
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </>
+    )}
+  </section>
+
+  <script>
+    import { setupBenchmark } from '../../scripts/benchmark.ts';
+
+    setupBenchmark();
+  </script>
+</Base>

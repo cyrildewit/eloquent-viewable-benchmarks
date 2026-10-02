@@ -1,12 +1,12 @@
 /**
  * The compare page: the two picked runs, compared subject by subject, with the choice kept in the URL.
  */
-import { setLabel, subjectLabel } from '../lib/benchmarks.ts';
+import { benchmarkSlug, setLabel, subjectLabel } from '../lib/benchmarks.ts';
 import { compare, summariseComparison, type ComparisonRow, type Verdict } from '../lib/compare.ts';
 import { measurements, parseSeriesKey, seriesLabel, type IndexData, type IndexedRun } from '../lib/data.ts';
 import { DRIVER_LABELS } from '../lib/drivers.ts';
 import { formatChange, formatDeviation, formatTime } from '../lib/format.ts';
-import { href } from '../lib/site.ts';
+import { benchmarkHref, href } from '../lib/site.ts';
 import { setupSortableTables } from './sort-table.ts';
 import { fetchIndex, readParams, writeParams } from './index-data.ts';
 
@@ -202,8 +202,13 @@ function table(
     const tr = body.insertRow();
 
     const benchmark = tr.insertCell();
-    benchmark.className = 'text-ink-2';
-    benchmark.textContent = subject?.benchmark ?? '';
+    if (subject) {
+      const link = document.createElement('a');
+      link.className = 'text-ink-2';
+      link.href = benchmarkHref(benchmarkSlug(subject.benchmark), base);
+      link.textContent = subject.benchmark;
+      benchmark.append(link);
+    }
 
     const name = tr.insertCell();
     const code = document.createElement('code');
