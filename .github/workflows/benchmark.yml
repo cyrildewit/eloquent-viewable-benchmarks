@@ -99,6 +99,14 @@ jobs:
           make bench DRIVER="$DRIVER" ARGS="--dump-file=build/run.xml" || echo "::warning::phpbench exited with $?"
           test -s build/run.xml || { echo "::error::phpbench wrote no dump"; exit 1; }
 
+      # The SQL and plan of every read variant. A ref whose explain.php predates --output prints its report and writes
+      # nothing, and the run is imported without queries.
+      - name: Explain the queries
+        run: |
+          rm -f build/queries.json
+          make bench-explain DRIVER="$DRIVER" ARGS="--output=build/queries.json" || echo "::warning::bench-explain exited with $?"
+          test -s build/queries.json || echo "::warning::no queries.json, the run is imported without SQL"
+
       - name: Collect the run
         env:
           REF: ${{ inputs.ref }}
@@ -108,6 +116,7 @@ jobs:
         run: |
           mkdir -p ../out
           cp build/run.xml build/dataset.json ../out/
+          if [ -s build/queries.json ]; then cp build/queries.json ../out/; fi
           case "$DRIVER" in
             mysql) service=bench-mysql ;;
             mariadb) service=bench-mariadb ;;
