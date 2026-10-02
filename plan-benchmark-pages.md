@@ -1,7 +1,7 @@
 # Plan: a page per benchmark, with the SQL it measures
 
-> **Status:** implemented on sample data, see phase 9 in [`benchmark-repo.md`](benchmark-repo.md). Step 6 below, the
-> real fixture, waits for the package side.
+> **Status:** implemented, see phase 9 in [`benchmark-repo.md`](benchmark-repo.md). The real fixture of step 6 came
+> from the first 9.x run through the workflow.
 
 This plan adds a page per benchmark class to the site, such as `/benchmarks/count-views/`, that shows how fast every
 query of that benchmark is right now on every database, how it developed over the releases, and the SQL and query

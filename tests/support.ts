@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { queriesSchema } from '../src/lib/schema.ts';
 
 /** A real run: the full suite on SQLite at the small size, from the package's feature/benchmarks branch. */
 export const fixture = {
@@ -9,57 +10,11 @@ export const fixture = {
 };
 
 /**
- * A hand-built `queries.json` for two read variants of the fixture run, until the package's `bench-explain --output`
- * produces a real one. Its names must match variants in the fixture dump.
+ * The real `queries.json` of a 9.x run on GitHub Actions, SQLite at the small size: `make bench-explain --output`
+ * from the package. It was produced on a later commit than the dump above, but its class, subject and parameter set
+ * names must still match the dump's variants, which the import test asserts.
  */
-export const queries = {
-  schema_version: 1,
-  driver: 'sqlite',
-  analyzed: false,
-  group: 'read',
-  subjects: [
-    {
-      class: 'CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench',
-      subject: 'benchCount',
-      set: 'hot article,all time',
-      params: { target: 'hot', days: null },
-      queries: [
-        {
-          sql: 'select count(*) as aggregate from "views" where "views"."viewable_type" = \'article\' and "views"."viewable_id" = 1',
-          plan: {
-            columns: ['id', 'parent', 'notused', 'detail'],
-            rows: [
-              [
-                '3',
-                '0',
-                '0',
-                'SEARCH views USING COVERING INDEX views_viewable_type_viewable_id_viewed_at_index (viewable_type=? AND viewable_id=?)',
-              ],
-            ],
-          },
-        },
-      ],
-    },
-    {
-      class: 'CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench',
-      subject: 'benchOrderByViews',
-      set: 'all time',
-      params: { days: null },
-      queries: [
-        {
-          sql: 'select * from "articles" order by (select count(*) from "views" where "articles"."id" = "views"."viewable_id" and "views"."viewable_type" = \'article\') desc limit 20',
-          plan: {
-            columns: ['id', 'parent', 'notused', 'detail'],
-            rows: [
-              ['2', '0', '0', 'SCAN articles'],
-              ['9', '0', '0', 'CORRELATED SCALAR SUBQUERY 1'],
-            ],
-          },
-        },
-      ],
-    },
-  ],
-};
+export const queries = queriesSchema.parse(JSON.parse(read('main_sqlite/queries.json')));
 
 function read(path: string): string {
   return readFileSync(fileURLToPath(new URL(`fixtures/${path}`, import.meta.url)), 'utf8');

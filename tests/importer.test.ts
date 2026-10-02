@@ -150,25 +150,25 @@ describe('buildResult', () => {
 describe('buildResult with queries', () => {
   const result = buildResult(fixture.xml, fixture.meta, fixture.dataset, queries);
 
-  it('keeps the queries by short class name, without the parameters', () => {
-    expect(result.queries).toEqual({
-      analyzed: false,
-      group: 'read',
-      subjects: [
-        {
-          benchmark: 'CountViewsBench',
-          subject: 'benchCount',
-          set: 'hot article,all time',
-          queries: queries.subjects[0]?.queries,
-        },
-        {
-          benchmark: 'OrderByViewsBench',
-          subject: 'benchOrderByViews',
-          set: 'all time',
-          queries: queries.subjects[1]?.queries,
-        },
-      ],
+  it('keeps every query by short class name, without the parameters', () => {
+    const kept = result.queries;
+    if (kept === null) {
+      throw new Error('no queries');
+    }
+
+    expect(kept.analyzed).toBe(false);
+    expect(kept.group).toBe('read');
+    expect(kept.subjects).toHaveLength(queries.subjects.length);
+    expect(kept.subjects[0]).toEqual({
+      benchmark: 'CountViewsBench',
+      subject: 'benchCount',
+      set: 'hot article,all time',
+      queries: queries.subjects[0]?.queries,
     });
+    expect(new Set(kept.subjects.map((subject) => subject.benchmark))).toEqual(
+      new Set(['CountViewsBench', 'CountViewsByIntervalBench', 'OrderByViewsBench']),
+    );
+    expect(kept.subjects.some((subject) => 'params' in subject)).toBe(false);
     expect(resultSchema.parse(JSON.parse(serialise(result)))).toEqual(result);
   });
 

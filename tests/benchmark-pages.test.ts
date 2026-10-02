@@ -144,7 +144,8 @@ describe('queriesFor', () => {
     const found = queriesFor(results, 'CountViewsBench', reference);
     const entry = found.subjects.get('CountViewsBench::benchCount::hot article,all time');
 
-    expect([...found.subjects.keys()]).toEqual(['CountViewsBench::benchCount::hot article,all time']);
+    expect(found.subjects.size).toBe(24);
+    expect([...found.subjects.keys()].every((key) => key.startsWith('CountViewsBench::'))).toBe(true);
     expect(entry?.map((item) => [item.driver, item.planChanged])).toEqual([
       ['sqlite', 'v9.1.0'],
       ['pgsql', null],

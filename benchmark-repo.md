@@ -552,9 +552,9 @@ Small, and each useful on its own:
    too, so a refactor of the Makefile keeps those working or updates this repository in the same breath.
 5. **`make bench-explain ARGS=--output=<file>`**, writing the SQL and plan of every read variant as `queries.json`,
    keyed on class, subject and parameter set name as phpbench names them. Planned in
-   [plan-package-queries.md](plan-package-queries.md); until it lands, runs are imported without queries and the
-   benchmark pages say so. The real `tests/fixtures/main_sqlite/queries.json` here waits for it too; the tests use
-   a hand-built file from `tests/support.ts` meanwhile.
+   [plan-package-queries.md](plan-package-queries.md). *Done* on 9.x: the first run through the workflow imported
+   its queries with every name matching the dump, and its file is `tests/fixtures/main_sqlite/queries.json`. A ref
+   that predates it is imported without queries, and the benchmark pages say so.
 
 The `git` env provider in `phpbench.json` stays off, since the harness runs inside containers that cannot see a
 worktree. The commit is recorded by this repository instead.
@@ -583,8 +583,8 @@ Nothing has to be added to the package's workflows, secrets or release process.
    first release has a complete baseline in both series.
 9. **Benchmark pages.** *Done* on sample data: result format 2 with `classes` and `queries`, the raw queries file,
    the import, validation, workflow and local script steps, the `/benchmarks/` pages, and the trends page refactored
-   onto the shared filter row and subject cards. Waits for the package's `bench-explain --output` for real SQL and
-   the fixture.
+   onto the shared filter row and subject cards. Verified end to end with the first 9.x run on GitHub Actions,
+   whose `queries.json` is now the test fixture.
 
 If running this turns out to be rare, a few times a year before releases, phases 6 and 7 can wait. Phases 2 to 5 and
 8 alone give a versioned store of runs and a site to read them, fed by hand.
