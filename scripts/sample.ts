@@ -6,12 +6,14 @@
  *
  * The subjects and their rough proportions come from the real SQLite run in tests/fixtures; everything else is
  * invented: four releases and six weekly 9.x runs on every driver, a regression in v9.1.0 that v9.2.0 fixes, a
- * speed-up in v9.1.0, and a PHP and a Laravel upgrade along the way. The output is the same on every run.
+ * speed-up in v9.1.0, and a PHP and a Laravel upgrade along the way. Every run carries made-up SQL and plans for
+ * its read subjects, and v9.2.0 changes one plan on MySQL. The output is the same on every run.
  */
 import { createHash } from 'node:crypto';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fixtureRun } from './sample-fixture.ts';
+import { sampleQueries } from './sample-queries.ts';
 import { resultPaths, runId, serialise } from '../src/lib/importer.ts';
 import { resultSchema, type Result } from '../src/lib/schema.ts';
 
@@ -151,7 +153,7 @@ function run(
 
   const id = runId({ ref, commit, runner, driver, size, ran_at: ranAt });
 
-  return resultSchema.parse({
+  const result: Result = {
     ...base,
     id,
     ref,
@@ -174,7 +176,10 @@ function run(
     },
     workflow_run: null,
     subjects,
-  });
+    queries: null,
+  };
+
+  return resultSchema.parse({ ...result, queries: sampleQueries(result, ref) });
 }
 
 const base = fixtureRun();
