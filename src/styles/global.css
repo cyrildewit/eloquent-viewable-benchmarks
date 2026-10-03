@@ -184,6 +184,24 @@
     content: ' ↓';
   }
 
+  /*
+   * Highlighted SQL. Shiki writes both themes onto each token as --shiki-light and --shiki-dark; the page picks one
+   * with the same rule as the colour roles. The block takes the page's wash instead of the theme's background.
+   */
+  .sql {
+    overflow-x: auto;
+    border-radius: 6px;
+    background: var(--wash);
+    padding: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .sql span {
+    color: var(--shiki-light);
+  }
+
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -233,4 +251,15 @@
   .prose-lite strong {
     color: var(--ink);
   }
+}
+
+/* The dark half of the highlighted SQL, on the same switch as the dark colour roles. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sql span {
+    color: var(--shiki-dark);
+  }
+}
+
+:root[data-theme='dark'] .sql span {
+  color: var(--shiki-dark);
 }

@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { Code } from 'astro:components';
 import Base from '../../layouts/Base.astro';
 import DriverName from '../../components/DriverName.astro';
 import SeriesFilters from '../../components/SeriesFilters.astro';
@@ -9,6 +10,7 @@ import { DRIVER_LABELS } from '../../lib/drivers.ts';
 import { formatDate } from '../../lib/format.ts';
 import { queriesFor, type BenchmarkQueries } from '../../lib/queries.ts';
 import { loadIndex, loadResults } from '../../lib/results.ts';
+import { formatSql } from '../../lib/sql.ts';
 import { href, sourceUrl } from '../../lib/site.ts';
 
 export const getStaticPaths = (async () => {
@@ -161,9 +163,12 @@ const tabular = (plan: { columns: string[] }) => plan.columns.length > 1;
                               {item.queries.length === 0 && <p class="text-ink-2">This variant ran no SQL.</p>}
                               {item.queries.map((query) => (
                                 <div>
-                                  <pre
-                                    class="overflow-x-auto font-mono text-[0.8rem] leading-relaxed break-words whitespace-pre-wrap"
-                                    set:text={query.sql}
+                                  <Code
+                                    code={formatSql(query.sql, item.driver)}
+                                    lang="sql"
+                                    themes={{ light: 'github-light', dark: 'github-dark' }}
+                                    defaultColor={false}
+                                    class="sql"
                                   />
                                   {query.plan.rows.length === 0 ? (
                                     <p class="mt-2 text-ink-2">No plan was returned.</p>

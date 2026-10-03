@@ -140,6 +140,7 @@ eloquent-viewable-benchmarks/
 │   │   ├── trends.ts            the points, lines and version markers of a trend chart
 │   │   ├── snapshot.ts          the last point of a trend as tables, for a benchmark page
 │   │   ├── queries.ts           which run's SQL and plans a benchmark page shows, and whether a plan changed
+│   │   ├── sql.ts               captured SQL laid out per dialect (sql-formatter); Shiki highlights it at build time
 │   │   ├── discover.ts          the schedule's rules
 │   │   └── refs.ts, format.ts, drivers.ts, benchmarks.ts, site.ts, source.ts, results.ts
 │   ├── scripts/                 browser code: trends, benchmark, compare, charts, sortable tables, the theme toggle

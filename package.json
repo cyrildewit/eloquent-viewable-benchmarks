@@ -24,6 +24,7 @@
     "astro": "^7.3.5",
     "echarts": "^6.1.0",
     "fast-xml-parser": "^5.11.2",
+    "sql-formatter": "^15.9.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
