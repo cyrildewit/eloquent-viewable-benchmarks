@@ -19,6 +19,7 @@ export function setupBenchmark(): void {
   const cards = document.getElementById('benchmark-trends');
   const form = document.getElementById('series-filters');
   const status = document.getElementById('benchmark-status');
+  const heading = document.getElementById('trend');
   const benchmark = now?.dataset.benchmark;
   if (now === null || cards === null || !(form instanceof HTMLFormElement) || status === null || !benchmark) {
     return;
@@ -30,7 +31,7 @@ export function setupBenchmark(): void {
     .then((index) => {
       bindFilters(form, (filter) => {
         charts.dispose();
-        render(index, benchmark, filter, { now, cards, status }, charts, base);
+        render(index, benchmark, filter, { now, cards, status, heading }, charts, base);
       });
       onThemeChange(() => charts.redraw());
       window.addEventListener('resize', () => charts.resize());
@@ -44,7 +45,7 @@ function render(
   index: IndexData,
   benchmark: string,
   filter: SeriesFilter,
-  elements: { now: HTMLElement; cards: HTMLElement; status: HTMLElement },
+  elements: { now: HTMLElement; cards: HTMLElement; status: HTMLElement; heading: HTMLElement | null },
   charts: ChartSet,
   base: string,
 ): void {
@@ -52,6 +53,9 @@ function render(
   const subjects = positioned(index.subjects, (subject) => subject.benchmark === benchmark);
   elements.now.replaceChildren();
   elements.cards.replaceChildren();
+  if (elements.heading !== null) {
+    elements.heading.textContent = filter.view === 'releases' ? 'Over the releases' : 'Over the branch runs';
+  }
 
   if (trend.categories.length === 0) {
     elements.status.textContent = emptyStatus(filter.view);
