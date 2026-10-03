@@ -1,11 +1,14 @@
 /**
- * The theme toggle: system → light → dark → system. The choice is remembered per browser; "system" removes it.
+ * The theme switch: system, light or dark. The choice is remembered per browser; "system" removes it. The pressed
+ * button is styled from the root's data-theme in CSS, so it is right before this script runs; this keeps aria-pressed
+ * in step and lets Escape dismiss a tooltip.
  */
 
 type Choice = 'system' | 'light' | 'dark';
 
-const ORDER: Choice[] = ['system', 'light', 'dark'];
-const LABELS: Record<Choice, string> = { system: 'system', light: 'light', dark: 'dark' };
+function isChoice(value: string | undefined): value is Choice {
+  return value === 'system' || value === 'light' || value === 'dark';
+}
 
 function current(): Choice {
   const theme = document.documentElement.dataset.theme;
@@ -31,28 +34,39 @@ function apply(choice: Choice): void {
   }
 }
 
-function render(button: HTMLButtonElement, choice: Choice): void {
-  const label = button.querySelector('[data-theme-label]');
-  if (label !== null) {
-    label.textContent = `Theme: ${LABELS[choice]}`;
+function render(buttons: HTMLButtonElement[], choice: Choice): void {
+  for (const button of buttons) {
+    button.setAttribute('aria-pressed', String(button.dataset.choice === choice));
   }
-  button.setAttribute(
-    'aria-label',
-    choice === 'system' ? 'Colour theme: follows the system' : `Colour theme: ${LABELS[choice]}`,
-  );
 }
 
 export function setupThemeToggle(): void {
-  const button = document.getElementById('theme-toggle');
-  if (!(button instanceof HTMLButtonElement)) {
+  const group = document.getElementById('theme-switch');
+  if (group === null) {
     return;
   }
+  const buttons = [...group.querySelectorAll<HTMLButtonElement>('button[data-choice]')];
 
-  render(button, current());
-  button.addEventListener('click', () => {
-    const next = ORDER[(ORDER.indexOf(current()) + 1) % ORDER.length] ?? 'system';
-    apply(next);
-    render(button, next);
+  render(buttons, current());
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const choice = button.dataset.choice;
+      if (isChoice(choice)) {
+        apply(choice);
+        render(buttons, choice);
+      }
+    });
+    for (const leave of ['pointerleave', 'blur']) {
+      button.addEventListener(leave, () => delete button.dataset.tooltipHidden);
+    }
+  }
+  // Escape hides an open tooltip, hovered or focused, until the pointer or focus leaves its button.
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      for (const button of buttons) {
+        button.dataset.tooltipHidden = '';
+      }
+    }
   });
 }
 

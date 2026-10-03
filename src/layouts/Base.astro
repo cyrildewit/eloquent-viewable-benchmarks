@@ -26,6 +26,23 @@ const nav = [
   { key: 'compare', label: 'Compare', path: '/compare/' },
   { key: 'about', label: 'About', path: '/about/' },
 ] as const;
+
+/** The theme switch, left to right; the icons are stroke paths on a 24-unit grid. */
+const themeChoices = [
+  {
+    key: 'system',
+    label: 'System theme',
+    icon: '<rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />',
+  },
+  {
+    key: 'light',
+    label: 'Light theme',
+    icon:
+      '<circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41' +
+      'M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />',
+  },
+  { key: 'dark', label: 'Dark theme', icon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />' },
+] as const;
 ---
 
 <!doctype html>
@@ -62,7 +79,7 @@ const nav = [
           <span class="font-semibold">Eloquent Viewable</span>
           <span class="text-ink-2">benchmarks</span>
         </a>
-        <nav aria-label="Main" class="flex flex-wrap gap-1 text-sm">
+        <nav aria-label="Main" class="order-last flex w-full flex-wrap gap-1 text-sm lg:order-none lg:w-auto">
           {nav.map((item) => (
             <a
               href={href(item.path)}
@@ -76,14 +93,28 @@ const nav = [
             </a>
           ))}
         </nav>
-        <button
-          type="button"
-          id="theme-toggle"
-          class="rounded-md px-2.5 py-1.5 text-sm text-ink-2 hover:bg-wash hover:text-ink"
-          aria-label="Colour theme: follows the system"
-        >
-          <span data-theme-label>Theme: system</span>
-        </button>
+        <div id="theme-switch" class="theme-switch" role="group" aria-label="Colour theme">
+          {themeChoices.map((choice) => (
+            <button type="button" data-choice={choice.key} aria-label={choice.label} aria-pressed="false">
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <Fragment set:html={choice.icon} />
+              </svg>
+              <span class="tooltip" aria-hidden="true">
+                {choice.label}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </header>
 

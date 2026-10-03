@@ -218,6 +218,98 @@
     max-width: 100%;
   }
 
+  /*
+   * The theme switch: three icon buttons in a pill. The pressed one follows the root's data-theme, so it is right on
+   * the first paint; each has a tooltip on hover and keyboard focus, as icon-only buttons need.
+   */
+  .theme-switch {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--page);
+  }
+
+  .theme-switch button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    color: var(--muted);
+    cursor: pointer;
+    transition:
+      color 150ms,
+      background-color 150ms;
+  }
+
+  .theme-switch button:hover {
+    color: var(--ink);
+  }
+
+  :root:not([data-theme]) .theme-switch [data-choice='system'],
+  :root[data-theme='light'] .theme-switch [data-choice='light'],
+  :root[data-theme='dark'] .theme-switch [data-choice='dark'] {
+    color: var(--ink);
+    background: var(--raised);
+    box-shadow:
+      0 0 0 1px var(--border),
+      0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  .tooltip {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    z-index: 10;
+    translate: -50% -2px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--page);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 120ms,
+      translate 120ms;
+  }
+
+  /* The last button sits at the page's edge, so its tooltip aligns right instead of overflowing. */
+  .theme-switch button:last-child .tooltip {
+    left: auto;
+    right: 0;
+    translate: 0 -2px;
+  }
+
+  .theme-switch button:hover .tooltip,
+  .theme-switch button:focus-visible .tooltip {
+    opacity: 1;
+    translate: -50% 0;
+    transition-delay: 300ms;
+  }
+
+  .theme-switch button:last-child:hover .tooltip,
+  .theme-switch button:last-child:focus-visible .tooltip {
+    translate: 0 0;
+  }
+
+  .theme-switch button[data-tooltip-hidden] .tooltip {
+    opacity: 0;
+    transition-delay: 0ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-switch button,
+    .tooltip {
+      transition: none;
+    }
+  }
+
   .prose-lite {
     max-width: 72ch;
     line-height: 1.65;
