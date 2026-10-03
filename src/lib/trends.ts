@@ -11,7 +11,7 @@ export interface TrendFilter {
   runner: string;
   size: string;
   indexes: string;
-  /** Along the releases, or along the weekly runs of a branch. */
+  /** Along the releases, or along the runs of a branch, one point per day and commit. */
   view: 'releases' | 'branch';
 }
 
@@ -38,9 +38,20 @@ export function buildTrend(index: IndexData, filter: TrendFilter): Trend {
 
   const schema = Math.max(...matching.map((run) => run.schema));
   const runs = matching.filter((run) => run.schema === schema);
-  const keyOf = (run: IndexedRun) => (filter.view === 'releases' ? run.ref : run.ran_at.slice(0, 10));
+  // Two commits run on one day stay two points, and a commit run again a week later is a new point.
+  const keyOf = (run: IndexedRun) =>
+    filter.view === 'releases' ? run.ref : `${run.ran_at.slice(0, 10)}_${run.commit.slice(0, 7)}`;
 
-  const keys = [...new Set(runs.map(keyOf))].sort(filter.view === 'releases' ? compareVersions : undefined);
+  const firstRan = new Map<string, string>();
+  for (const run of runs) {
+    const key = keyOf(run);
+    const seen = firstRan.get(key);
+    if (seen === undefined || run.ran_at < seen) {
+      firstRan.set(key, run.ran_at);
+    }
+  }
+  const byRun = (a: string, b: string) => (firstRan.get(a) ?? '').localeCompare(firstRan.get(b) ?? '');
+  const keys = [...firstRan.keys()].sort(filter.view === 'releases' ? compareVersions : byRun);
   const position = new Map(keys.map((key, i) => [key, i]));
 
   const lines = DRIVER_ORDER.flatMap((driver) => {
@@ -80,10 +91,17 @@ export function buildTrend(index: IndexData, filter: TrendFilter): Trend {
   return {
     categories: keys.map((key) => ({
       key,
-      label: filter.view === 'releases' ? key : formatDate(`${key}T00:00:00Z`).replace(/ \d{4}$/, ''),
+      label: filter.view === 'releases' ? key : branchLabel(key),
     })),
     lines,
     markers,
     schema,
   };
+}
+
+/** `2026-10-03_10b5b1e` → `3 Oct · 10b5b1e`. */
+function branchLabel(key: string): string {
+  const [day, commit] = key.split('_');
+
+  return `${formatDate(`${day}T00:00:00Z`).replace(/ \d{4}$/, '')} · ${commit}`;
 }

@@ -473,9 +473,10 @@ the full comparison. Below that the ten largest changes across databases, and th
 
 **Trends (`/trends/`).** One chart per subject, grouped by benchmark with reading first, then writing, then PHP-only,
 one line per database. A filter row (runner, dataset size, optional indexes, group, and along releases or along the
-weekly branch runs) holds the shared legend and is sticky from tablet width up. The filters are kept in the URL. The x
-axis is the releases in version order, or the dates of the weekly runs; a database without a run at a point leaves a
-gap rather than a line drawn through it. The y axis starts at zero, in one unit per chart. The tooltip lists every
+branch runs) holds the shared legend and is sticky from tablet width up. The filters are kept in the URL. The x
+axis is the releases in version order, or the branch runs in the order they ran, one point per day and commit
+(`3 Oct · 10b5b1e`), so two commits run on one day stay apart and the newest run of a commit on a day stands for it;
+a database without a run at a point leaves a gap rather than a line drawn through it. The y axis starts at zero, in one unit per chart. The tooltip lists every
 database at that point, the value first, with its deviation, and the PHP and Laravel versions. A vertical hairline marks
 each point where PHP or Laravel changed, explained once above the charts. Each chart has a table of the same numbers,
 each linking to its run. Charts are drawn as they scroll into view and redrawn when the theme changes.

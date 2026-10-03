@@ -97,7 +97,7 @@ export function trendStatus(trend: Trend, view: 'releases' | 'branch', count: nu
 
 export function emptyStatus(view: 'releases' | 'branch'): string {
   return view === 'branch'
-    ? 'No weekly branch runs in this series yet.'
+    ? 'No branch runs in this series yet.'
     : 'No releases measured in this series yet. Try another runner or dataset size.';
 }
 

@@ -75,7 +75,7 @@ function renderSnapshot(root: HTMLElement, snapshot: Snapshot, filter: SeriesFil
   const intro = document.createElement('p');
   intro.className = 'text-sm text-ink-2';
   intro.append(
-    `${filter.view === 'releases' ? 'Release' : 'Weekly run of'} `,
+    `${filter.view === 'releases' ? 'Release' : 'Branch run of'} `,
     strong(snapshot.point.label),
     ` on ${runner}, ${filter.size} dataset${indexes}. Time per call, lower is faster; each number links to its run.`,
   );

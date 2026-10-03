@@ -1,7 +1,7 @@
 ---
 /**
  * The filter row of the pages that draw a series: runner, dataset size, optional indexes, the group when asked, and
- * along releases or weekly branch runs, with the legend of databases. `src/scripts/series-filters.ts` reads it and
+ * along releases or branch runs, with the legend of databases. `src/scripts/series-filters.ts` reads it and
  * keeps it in the URL.
  */
 import DriverName from './DriverName.astro';
@@ -84,7 +84,7 @@ const runnerName = (runner: string) => (runner === 'gha' ? 'GitHub Actions' : ru
       </label>
       <label class="cursor-pointer border-l border-border px-3 py-1.5 text-ink has-checked:bg-wash has-checked:font-medium">
         <input type="radio" name="view" value="branch" class="sr-only" />
-        Weekly branch runs
+        Branch runs
       </label>
     </div>
   </fieldset>

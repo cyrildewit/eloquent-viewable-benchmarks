@@ -24,6 +24,7 @@ const base = buildResult(fixture.xml, fixture.meta, fixture.dataset);
 function variant(overrides: {
   ref: string;
   kind?: Result['kind'];
+  commit?: string;
   runner?: string;
   driver?: Result['database']['driver'];
   size?: Result['dataset']['size'];
@@ -39,6 +40,7 @@ function variant(overrides: {
     id: `${overrides.ref.replace(/\W/g, '_')}_${overrides.driver ?? 'sqlite'}_${overrides.ran_at}`,
     ref: overrides.ref,
     kind: overrides.kind ?? 'release',
+    commit: overrides.commit ?? base.commit,
     runner: overrides.runner ?? 'gha',
     ran_at: overrides.ran_at,
     committed_at: overrides.ran_at,
@@ -225,7 +227,10 @@ describe('buildTrend', () => {
     variant({ ref: 'v9.10.0', ran_at: '2026-09-01T03:00:00Z', laravel: '13.40.0' }),
     variant({ ref: 'v9.2.0', ran_at: '2026-08-01T03:00:00Z', php: '8.5.14' }),
     variant({ ref: 'v9.2.0', driver: 'pgsql', ran_at: '2026-08-01T03:00:00Z', php: '8.5.14' }),
-    variant({ ref: '9.x', kind: 'branch', ran_at: '2026-09-07T03:00:00Z' }),
+    variant({ ref: '9.x', kind: 'branch', commit: 'b64eec6aaaa', ran_at: '2026-09-07T03:00:00Z' }),
+    variant({ ref: '9.x', kind: 'branch', commit: '10b5b1ebbbb', ran_at: '2026-09-14T17:00:00Z' }),
+    variant({ ref: '9.x', kind: 'branch', commit: '95c87e7cccc', ran_at: '2026-09-14T07:00:00Z' }),
+    variant({ ref: '9.x', kind: 'branch', commit: '95c87e7cccc', ran_at: '2026-09-14T09:00:00Z', factor: 2 }),
   ]);
   const filter = { runner: 'gha', size: 'medium', indexes: 'none' } as const;
 
@@ -244,10 +249,19 @@ describe('buildTrend', () => {
     ]);
   });
 
-  it('lays branch runs out by date', () => {
+  it('lays branch runs out per day and commit, in the order they ran, the newest run of each', () => {
     const trend = buildTrend(index, { ...filter, view: 'branch' });
 
-    expect(trend.categories).toEqual([{ key: '2026-09-07', label: '7 Sept' }]);
+    expect(trend.categories).toEqual([
+      { key: '2026-09-07_b64eec6', label: '7 Sept · b64eec6' },
+      { key: '2026-09-14_95c87e7', label: '14 Sept · 95c87e7' },
+      { key: '2026-09-14_10b5b1e', label: '14 Sept · 10b5b1e' },
+    ]);
+    expect(trend.lines[0]?.runs.map((run) => run?.ran_at)).toEqual([
+      '2026-09-07T03:00:00Z',
+      '2026-09-14T09:00:00Z',
+      '2026-09-14T17:00:00Z',
+    ]);
   });
 
   it('is empty for a series without runs', () => {

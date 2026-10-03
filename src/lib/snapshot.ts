@@ -1,6 +1,6 @@
 /**
  * The last point of a trend as tables: for one benchmark, every subject's parameter sets against the databases, each
- * cell the measurement of the latest release or weekly run. Pure, so it runs in the browser and in tests.
+ * cell the measurement of the latest release or branch run. Pure, so it runs in the browser and in tests.
  */
 import type { IndexedRun, SubjectInfo } from './data.ts';
 import type { Driver } from './drivers.ts';
