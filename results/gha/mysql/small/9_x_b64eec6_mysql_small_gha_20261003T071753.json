@@ -1,0 +1,740 @@
+{
+  "format": 2,
+  "id": "9_x_b64eec6_mysql_small_gha_20261003T071753",
+  "package": "cyrildewit/eloquent-viewable",
+  "ref": "9.x",
+  "kind": "branch",
+  "commit": "b64eec6c6cd209759f69d524f4463e8085755f8c",
+  "committed_at": "2026-10-03T07:10:21Z",
+  "ran_at": "2026-10-03T07:17:53Z",
+  "runner": "gha",
+  "machine": {
+    "label": "Ubuntu 24.04.5 LTS, 4 vCPU, 15 GB",
+    "os": "Linux",
+    "arch": "x86_64",
+    "kernel": "6.17.0-1022-azure",
+    "load": [
+      1.46923828125,
+      0.72705078125,
+      0.31298828125
+    ]
+  },
+  "php": {
+    "version": "8.5.11",
+    "opcache": true,
+    "xdebug": true
+  },
+  "laravel": "13.34.0",
+  "database": {
+    "driver": "mysql",
+    "image": "mysql:8.4",
+    "server_version": "8.4.11"
+  },
+  "dataset": {
+    "schema_version": 2,
+    "size": "small",
+    "seed": 20260101,
+    "anchor": "2026-01-01 00:00:00",
+    "articles": 1000,
+    "videos": 100,
+    "views": 1000000,
+    "hot_article_views": 120031,
+    "cold_article_views": 95,
+    "indexes": "none"
+  },
+  "phpbench": "1.7.0",
+  "workflow_run": "https://github.com/cyrildewit/eloquent-viewable-benchmarks/actions/runs/37105662895",
+  "classes": {
+    "BufferViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Recording\\BufferViewsBench",
+    "DestroyViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Recording\\DestroyViewsBench",
+    "RecordViewBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Recording\\RecordViewBench",
+    "CountViewsByIntervalBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsByIntervalBench",
+    "CountViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench",
+    "OrderByViewsBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\OrderByViewsBench",
+    "CooldownManagerBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Php\\CooldownManagerBench",
+    "ViewSeriesBench": "CyrildeWit\\EloquentViewable\\Benchmarks\\Php\\ViewSeriesBench"
+  },
+  "subjects": [
+    {
+      "benchmark": "BufferViewsBench",
+      "subject": "benchFlush",
+      "set": "100 views",
+      "params": {
+        "views": 100
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 5996.697,
+      "mean_us": 6017.6,
+      "min_us": 5827,
+      "max_us": 6196,
+      "stdev_us": 128.847,
+      "rstdev": 2.141,
+      "mem_peak": 6605952,
+      "rejects": 1
+    },
+    {
+      "benchmark": "BufferViewsBench",
+      "subject": "benchFlush",
+      "set": "1,000 views",
+      "params": {
+        "views": 1000
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 36625.035,
+      "mean_us": 36836.6,
+      "min_us": 36391,
+      "max_us": 37599,
+      "stdev_us": 440.098,
+      "rstdev": 1.195,
+      "mem_peak": 10015272,
+      "rejects": 1
+    },
+    {
+      "benchmark": "BufferViewsBench",
+      "subject": "benchFlush",
+      "set": "10,000 views",
+      "params": {
+        "views": 10000
+      },
+      "groups": [
+        "write"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 368328.922,
+      "mean_us": 369975.2,
+      "min_us": 364923,
+      "max_us": 376449,
+      "stdev_us": 4332.794,
+      "rstdev": 1.171,
+      "mem_peak": 10015392,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "all time",
+      "params": {
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 402389.168,
+      "mean_us": 403567.6,
+      "min_us": 401867,
+      "max_us": 408375,
+      "stdev_us": 2419.005,
+      "rstdev": 0.599,
+      "mem_peak": 5493144,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past year",
+      "params": {
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 538001.432,
+      "mean_us": 542305.6,
+      "min_us": 532756,
+      "max_us": 554548,
+      "stdev_us": 8338.451,
+      "rstdev": 1.538,
+      "mem_peak": 6519000,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past 30 days",
+      "params": {
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 495548.37,
+      "mean_us": 491361.4,
+      "min_us": 483587,
+      "max_us": 499757,
+      "stdev_us": 6681.472,
+      "rstdev": 1.36,
+      "mem_peak": 6519000,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByViews",
+      "set": "past day",
+      "params": {
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 477805.104,
+      "mean_us": 481995.4,
+      "min_us": 474396,
+      "max_us": 496730,
+      "stdev_us": 8336.885,
+      "rstdev": 1.73,
+      "mem_peak": 6519000,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "all time",
+      "params": {
+        "days": null
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 2724958.252,
+      "mean_us": 2714492.8,
+      "min_us": 2672236,
+      "max_us": 2764817,
+      "stdev_us": 34761.199,
+      "rstdev": 1.281,
+      "mem_peak": 5493144,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past year",
+      "params": {
+        "days": 365
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 1909203.145,
+      "mean_us": 1900277.2,
+      "min_us": 1860697,
+      "max_us": 1925925,
+      "stdev_us": 22190.546,
+      "rstdev": 1.168,
+      "mem_peak": 6519000,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past 30 days",
+      "params": {
+        "days": 30
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 587065.973,
+      "mean_us": 587069.4,
+      "min_us": 582384,
+      "max_us": 591878,
+      "stdev_us": 3282.14,
+      "rstdev": 0.559,
+      "mem_peak": 6519000,
+      "rejects": 0
+    },
+    {
+      "benchmark": "OrderByViewsBench",
+      "subject": "benchOrderByUniqueViews",
+      "set": "past day",
+      "params": {
+        "days": 1
+      },
+      "groups": [
+        "read"
+      ],
+      "revs": 1,
+      "iterations": 5,
+      "mode_us": 461488.008,
+      "mean_us": 463933.8,
+      "min_us": 461036,
+      "max_us": 473868,
+      "stdev_us": 4979.539,
+      "rstdev": 1.073,
+      "mem_peak": 6519000,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "empty session",
+      "params": {
+        "entries": 0
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 4.079,
+      "mean_us": 4.144,
+      "min_us": 4,
+      "max_us": 4.33,
+      "stdev_us": 0.121,
+      "rstdev": 2.91,
+      "mem_peak": 5654584,
+      "rejects": 1
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "100 cooldowns",
+      "params": {
+        "entries": 100
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 10.195,
+      "mean_us": 10.304,
+      "min_us": 10.11,
+      "max_us": 10.51,
+      "stdev_us": 0.168,
+      "rstdev": 1.633,
+      "mem_peak": 5654584,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "1,000 cooldowns",
+      "params": {
+        "entries": 1000
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 62.424,
+      "mean_us": 62.806,
+      "min_us": 61.66,
+      "max_us": 64.45,
+      "stdev_us": 0.949,
+      "rstdev": 1.512,
+      "mem_peak": 5654584,
+      "rejects": 0
+    },
+    {
+      "benchmark": "CooldownManagerBench",
+      "subject": "benchPush",
+      "set": "10,000 cooldowns",
+      "params": {
+        "entries": 10000
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 100,
+      "iterations": 5,
+      "mode_us": 700.068,
+      "mean_us": 695.228,
+      "min_us": 682.07,
+      "max_us": 703.71,
+      "stdev_us": 8.169,
+      "rstdev": 1.175,
+      "mem_peak": 7576544,
+      "rejects": 1
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "168 buckets",
+      "params": {
+        "hours": 168
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 6931.691,
+      "mean_us": 7061,
+      "min_us": 6891.6,
+      "max_us": 7357.2,
+      "stdev_us": 189.489,
+      "rstdev": 2.684,
+      "mem_peak": 5092824,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "720 buckets",
+      "params": {
+        "hours": 720
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 16699.573,
+      "mean_us": 16889.12,
+      "min_us": 16540.2,
+      "max_us": 17521.4,
+      "stdev_us": 360.641,
+      "rstdev": 2.135,
+      "mem_peak": 5092824,
+      "rejects": 0
+    },
+    {
+      "benchmark": "ViewSeriesBench",
+      "subject": "benchFill",
+      "set": "8,760 buckets",
+      "params": {
+        "hours": 8760
+      },
+      "groups": [
+        "php"
+      ],
+      "revs": 10,
+      "iterations": 5,
+      "mode_us": 163374.245,
+      "mean_us": 163086.18,
+      "min_us": 161741.3,
+      "max_us": 163948.8,
+      "stdev_us": 746.762,
+      "rstdev": 0.458,
+      "mem_peak": 17193248,
+      "rejects": 0
+    }
+  ],
+  "errors": [
+    {
+      "benchmark": "BufferViewsBench",
+      "subject": "benchRecord",
+      "set": "",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "100 views",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "1,000 views",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "DestroyViewsBench",
+      "subject": "benchDestroy",
+      "set": "10,000 views",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "RecordViewBench",
+      "subject": "benchRecord",
+      "set": "",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "RecordViewBench",
+      "subject": "benchRecordQueued",
+      "set": "",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,7 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,7 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,30 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,30 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,1 year by day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,1 year by day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,2 years by week",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,2 years by week",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "hot article,2 years by month",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchCountByInterval",
+      "set": "all articles,2 years by month",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,7 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,7 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,30 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,30 days by hour",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,1 year by day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,1 year by day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,2 years by week",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,2 years by week",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "hot article,2 years by month",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsByIntervalBench",
+      "subject": "benchUniqueCountByInterval",
+      "set": "all articles,2 years by month",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,all time",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,all time",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,all time",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past year",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past year",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past year",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past 30 days",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past 30 days",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past 30 days",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "hot article,past day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "cold article,past day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchCount",
+      "set": "all articles,past day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,all time",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,all time",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,all time",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past year",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past year",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past year",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past 30 days",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past 30 days",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past 30 days",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "hot article,past day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "cold article,past day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    },
+    {
+      "benchmark": "CountViewsBench",
+      "subject": "benchUniqueCount",
+      "set": "all articles,past day",
+      "message": "Script \"/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template\" did not return an array, got: \nIn EncryptionServiceProvider.php line 83:\n                                                     \n  No application encryption key has been specified."
+    }
+  ],
+  "queries": null
+}

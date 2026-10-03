@@ -1,0 +1,1109 @@
+<?xml version="1.0"?>
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.7.0">
+  <suite tag="" context="" date="2026-10-03T07:17:32+00:00" config-path="/var/www/html/phpbench.json" uuid="135288b1e173e7ef78a9b4bc98c64eccc2589fdd">
+    <env>
+      <uname>
+        <value name="os" type="string">Linux</value>
+        <value name="host" type="string">cf268c8cbed4</value>
+        <value name="release" type="string">6.17.0-1022-azure</value>
+        <value name="version" type="string">#22-Ubuntu SMP Mon Jul 27 17:24:03 UTC 2026</value>
+        <value name="machine" type="string">x86_64</value>
+      </uname>
+      <php>
+        <value name="xdebug" type="boolean">1</value>
+        <value name="version" type="string">8.5.11</value>
+        <value name="ini" type="boolean"></value>
+        <value name="extensions" type="string">Core, date, lexbor, openssl, pcre, sqlite3, zlib, ctype, curl, uri, json, fileinfo, filter, hash, iconv, SPL, mbstring, Zend OPcache, session, standard, PDO, pdo_sqlite, Phar, posix, random, readline, Reflection, libxml, SimpleXML, tokenizer, dom, xml, xmlreader, xmlwriter, mysqlnd, intl, pdo_mysql, pdo_pgsql, redis, sodium, zip, xdebug</value>
+      </php>
+      <opcache>
+        <value name="extension_loaded" type="boolean">1</value>
+        <value name="enabled" type="boolean">1</value>
+      </opcache>
+      <unix-sysload>
+        <value name="l1" type="double">0.9736328125</value>
+        <value name="l5" type="double">0.6953125</value>
+        <value name="l15" type="double">0.3076171875</value>
+      </unix-sysload>
+    </env>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Recording\BufferViewsBench">
+      <subject name="benchRecord">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="write"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="50" warmup="5" retry-threshold="5">
+          <parameter-set name=""/>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+      <subject name="benchFlush">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="write"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="0" retry-threshold="5">
+          <parameter-set name="100 views">
+            <parameter name="views" value="100" type="integer"/>
+          </parameter-set>
+          <iteration time-net="6141" time-revs="1" time-avg="6141" mem-peak="6630680" mem-real="10485760" mem-final="5526568" comp-z-value="-0.35003862718791" comp-deviation="-0.60211712149169"/>
+          <iteration time-net="6195" time-revs="1" time-avg="6195" mem-peak="6630680" mem-real="10485760" mem-final="5526568" comp-z-value="0.15808196066551" comp-deviation="0.27192386131883"/>
+          <iteration time-net="6014" time-revs="1" time-avg="6014" mem-peak="6630680" mem-real="10485760" mem-final="5526568" comp-z-value="-1.545062972695" comp-deviation="-2.657732025509"/>
+          <iteration time-net="6344" time-revs="1" time-avg="6344" mem-peak="6630680" mem-real="10485760" mem-final="5526568" comp-z-value="1.5601183975203" comp-deviation="2.6836295361108"/>
+          <iteration time-net="6197" time-revs="1" time-avg="6197" mem-peak="6630680" mem-real="10485760" mem-final="5526568" comp-z-value="0.17690124169712" comp-deviation="0.30429574957108" reject-count="1"/>
+          <stats max="6344" mean="6178.2" min="6014" mode="6178.6771037181" rstdev="1.720144791816" stdev="106.27398552797" sum="30891" variance="11294.16"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="0" retry-threshold="5">
+          <parameter-set name="1,000 views">
+            <parameter name="views" value="1000" type="integer"/>
+          </parameter-set>
+          <iteration time-net="40909" time-revs="1" time-avg="40909" mem-peak="10208656" mem-real="12582912" mem-final="5575720" comp-z-value="0.059904833956187" comp-deviation="0.091995869972642"/>
+          <iteration time-net="40886" time-revs="1" time-avg="40886" mem-peak="10208656" mem-real="12582912" mem-final="5575720" comp-z-value="0.023260919568092" comp-deviation="0.035721800574481"/>
+          <iteration time-net="40482" time-revs="1" time-avg="40482" mem-peak="10208576" mem-real="12582912" mem-final="5575720" comp-z-value="-0.62039740272713" comp-deviation="-0.95274446189757"/>
+          <iteration time-net="40102" time-revs="1" time-avg="40102" mem-peak="10208576" mem-real="12582912" mem-final="5575720" comp-z-value="-1.2258185969652" comp-deviation="-1.882489956302"/>
+          <iteration time-net="41978" time-revs="1" time-avg="41978" mem-peak="10208656" mem-real="12582912" mem-final="5575720" comp-z-value="1.763050246168" comp-deviation="2.7075167476524"/>
+          <stats max="41978" mean="40871.4" min="40102" mode="40660.02739726" rstdev="1.5357002748714" stdev="627.6622021438" sum="204357" variance="393959.84"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="0" retry-threshold="5">
+          <parameter-set name="10,000 views">
+            <parameter name="views" value="10000" type="integer"/>
+          </parameter-set>
+          <iteration time-net="385895" time-revs="1" time-avg="385895" mem-peak="10208664" mem-real="12582912" mem-final="5575728" comp-z-value="-0.30196912506412" comp-deviation="-0.38190443147509"/>
+          <iteration time-net="386284" time-revs="1" time-avg="386284" mem-peak="10208664" mem-real="12582912" mem-final="5575728" comp-z-value="-0.22256802350271" comp-deviation="-0.28148478577831"/>
+          <iteration time-net="379584" time-revs="1" time-avg="379584" mem-peak="10208664" mem-real="12582912" mem-final="5575728" comp-z-value="-1.5901448370282" comp-deviation="-2.0110776551058"/>
+          <iteration time-net="391488" time-revs="1" time-avg="391488" mem-peak="10208744" mem-real="12582912" mem-final="5575728" comp-z-value="0.83965134031615" comp-deviation="1.0619183921292"/>
+          <iteration time-net="393621" time-revs="1" time-avg="393621" mem-peak="10208664" mem-real="12582912" mem-final="5575728" comp-z-value="1.2750306452788" comp-deviation="1.61254848023"/>
+          <stats max="393621" mean="387374.4" min="379584" mode="388209.47553816" rstdev="1.264713508025" stdev="4899.1763634309" sum="1936872" variance="24001929.04"/>
+        </variant>
+      </subject>
+    </benchmark>
+    <result key="time" class="PhpBench\Model\Result\TimeResult"/>
+    <result key="mem" class="PhpBench\Model\Result\MemoryResult"/>
+    <result key="comp" class="PhpBench\Model\Result\ComputedResult"/>
+    <result key="reject" class="PhpBench\Model\Result\RejectionCountResult"/>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Recording\DestroyViewsBench">
+      <subject name="benchDestroy">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="write"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="0" retry-threshold="5">
+          <parameter-set name="100 views">
+            <parameter name="views" value="100" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="0" retry-threshold="5">
+          <parameter-set name="1,000 views">
+            <parameter name="views" value="1000" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="0" retry-threshold="5">
+          <parameter-set name="10,000 views">
+            <parameter name="views" value="10000" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+    </benchmark>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Recording\RecordViewBench">
+      <subject name="benchRecord">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="write"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="50" warmup="5" retry-threshold="5">
+          <parameter-set name=""/>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+      <subject name="benchRecordQueued">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="write"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="50" warmup="5" retry-threshold="5">
+          <parameter-set name=""/>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+    </benchmark>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Querying\CountViewsByIntervalBench">
+      <subject name="benchCountByInterval">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="read"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,7 days by hour">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="7" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,7 days by hour">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="7" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,30 days by hour">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,30 days by hour">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,1 year by day">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+            <parameter name="granularity" value="day" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,1 year by day">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+            <parameter name="granularity" value="day" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,2 years by week">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="week" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,2 years by week">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="week" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,2 years by month">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="month" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,2 years by month">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="month" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+      <subject name="benchUniqueCountByInterval">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="read"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,7 days by hour">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="7" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,7 days by hour">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="7" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,30 days by hour">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,30 days by hour">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+            <parameter name="granularity" value="hour" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,1 year by day">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+            <parameter name="granularity" value="day" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,1 year by day">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+            <parameter name="granularity" value="day" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,2 years by week">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="week" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,2 years by week">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="week" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,2 years by month">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="month" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,2 years by month">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="730" type="integer"/>
+            <parameter name="granularity" value="month" type="string"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+    </benchmark>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Querying\CountViewsBench">
+      <subject name="benchCount">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="read"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,all time">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,all time">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,all time">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,past year">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,past year">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,past year">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,past 30 days">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,past 30 days">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,past 30 days">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,past day">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,past day">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,past day">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+      <subject name="benchUniqueCount">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="read"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,all time">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,all time">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,all time">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,past year">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,past year">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,past year">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,past 30 days">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,past 30 days">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,past 30 days">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="hot article,past day">
+            <parameter name="target" value="hot" type="string"/>
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="cold article,past day">
+            <parameter name="target" value="cold" type="string"/>
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="3" warmup="1" retry-threshold="5">
+          <parameter-set name="all articles,past day">
+            <parameter name="target" value="type" type="string"/>
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <errors>
+            <error exception-class="RuntimeException" code="0" file="/var/www/html/vendor/phpbench/phpbench/lib/Remote/Payload.php" line="245">Script "/var/www/html/vendor/phpbench/phpbench/lib/Executor/Benchmark/template/remote.template" did not return an array, got: 
+In EncryptionServiceProvider.php line 83:
+                                                     
+  No application encryption key has been specified.  
+                                                     
+
+</error>
+          </errors>
+        </variant>
+      </subject>
+    </benchmark>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Querying\OrderByViewsBench">
+      <subject name="benchOrderByViews">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="read"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="all time">
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <iteration time-net="52026" time-revs="1" time-avg="52026" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="-0.30219778712922" comp-deviation="-0.22591372320391"/>
+          <iteration time-net="52839" time-revs="1" time-avg="52839" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="1.7834287063857" comp-deviation="1.3332361661406"/>
+          <iteration time-net="51762" time-revs="1" time-avg="51762" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="-0.97944919461745" comp-deviation="-0.732205938194"/>
+          <iteration time-net="51825" time-revs="1" time-avg="51825" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="-0.81783238146685" comp-deviation="-0.61138620507137"/>
+          <iteration time-net="52267" time-revs="1" time-avg="52267" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="0.31605065682783" comp-deviation="0.2362697003287"/>
+          <stats max="52839" mean="52143.8" min="51762" mode="51953.794520548" rstdev="0.74756908496922" stdev="389.81092852818" sum="260719" variance="151952.56"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="past year">
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <iteration time-net="66364" time-revs="1" time-avg="66364" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="1.3113217860121" comp-deviation="0.38572660303438"/>
+          <iteration time-net="65767" time-revs="1" time-avg="65767" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-1.7587139247692" comp-deviation="-0.51732744406964"/>
+          <iteration time-net="66107" time-revs="1" time-avg="66107" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.010284876753036" comp-deviation="-0.0030253066904657"/>
+          <iteration time-net="66193" time-revs="1" time-avg="66193" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.43196482362753" comp-deviation="0.12706288099956"/>
+          <iteration time-net="66114" time-revs="1" time-avg="66114" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.025712191882591" comp-deviation="0.0075632667261644"/>
+          <stats max="66364" mean="66109" min="65767" mode="66164.221135029" rstdev="0.29415099112127" stdev="194.46027872036" sum="330545" variance="37814.8"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="past 30 days">
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <iteration time-net="15015" time-revs="1" time-avg="15015" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="1.0830344100054" comp-deviation="2.7580071174377"/>
+          <iteration time-net="14820" time-revs="1" time-avg="14820" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.55898550193826" comp-deviation="1.423487544484"/>
+          <iteration time-net="13979" time-revs="1" time-avg="13979" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-1.7011433784948" comp-deviation="-4.3320558445114"/>
+          <iteration time-net="14830" time-revs="1" time-avg="14830" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.58585980491607" comp-deviation="1.4919244456611" reject-count="1"/>
+          <iteration time-net="14416" time-revs="1" time-avg="14416" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.5267363383649" comp-deviation="-1.3413632630714"/>
+          <stats max="15015" mean="14612" min="13979" mode="14812.260273972" rstdev="2.5465553928467" stdev="372.10267400275" sum="73060" variance="138460.4"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="past day">
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <iteration time-net="5194" time-revs="1" time-avg="5194" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.62649846383221" comp-deviation="1.3898649176232"/>
+          <iteration time-net="5093" time-revs="1" time-avg="5093" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.26221424469382" comp-deviation="-0.58171312563442"/>
+          <iteration time-net="4989" time-revs="1" time-avg="4989" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-1.1773243604038" comp-deviation="-2.6118528929492"/>
+          <iteration time-net="5304" time-revs="1" time-avg="5304" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="1.5944033939101" comp-deviation="3.5371281330522"/>
+          <iteration time-net="5034" time-revs="1" time-avg="5034" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.78136325264467" comp-deviation="-1.7334270320918" reject-count="1"/>
+          <stats max="5304" mean="5122.8" min="4989" mode="5064.8219178082" rstdev="2.2184650048805" stdev="113.64752527002" sum="25614" variance="12915.76"/>
+        </variant>
+      </subject>
+      <subject name="benchOrderByUniqueViews">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="read"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="all time">
+            <parameter name="days" xsi:nil="true"/>
+          </parameter-set>
+          <iteration time-net="1263074" time-revs="1" time-avg="1263074" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="-1.2129326075974" comp-deviation="-1.1201963514159"/>
+          <iteration time-net="1283710" time-revs="1" time-avg="1283710" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="0.53629706914063" comp-deviation="0.49529381629569"/>
+          <iteration time-net="1282997" time-revs="1" time-avg="1282997" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="0.47585896294204" comp-deviation="0.4394765799331"/>
+          <iteration time-net="1264132" time-revs="1" time-avg="1264132" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="-1.123250256464" comp-deviation="-1.0373707748779"/>
+          <iteration time-net="1293003" time-revs="1" time-avg="1293003" mem-peak="5517360" mem-real="8388608" mem-final="4512656" comp-z-value="1.3240268319787" comp-deviation="1.222796730065"/>
+          <stats max="1293003" mean="1277383.2" min="1263074" mode="1284217.5792563" rstdev="0.92354376854857" stdev="11797.192944086" sum="6386916" variance="139173761.36"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="past year">
+            <parameter name="days" value="365" type="integer"/>
+          </parameter-set>
+          <iteration time-net="809175" time-revs="1" time-avg="809175" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="1.4356949427705" comp-deviation="4.1872410206545"/>
+          <iteration time-net="751141" time-revs="1" time-avg="751141" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-1.1263621139921" comp-deviation="-3.2850639138685"/>
+          <iteration time-net="753300" time-revs="1" time-avg="753300" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-1.0310476227361" comp-deviation="-3.0070767623085"/>
+          <iteration time-net="775399" time-revs="1" time-avg="775399" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.055431623539152" comp-deviation="-0.16166774779934"/>
+          <iteration time-net="794258" time-revs="1" time-avg="794258" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.77714641749691" comp-deviation="2.2665674033219"/>
+          <stats max="809175" mean="776654.6" min="751141" mode="764315.05870841" rstdev="2.9165255765087" stdev="22651.330050132" sum="3883273" variance="513082753.04"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="past 30 days">
+            <parameter name="days" value="30" type="integer"/>
+          </parameter-set>
+          <iteration time-net="64153" time-revs="1" time-avg="64153" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.42594400068263" comp-deviation="-0.82490036576354"/>
+          <iteration time-net="63481" time-revs="1" time-avg="63481" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.96236523092761" comp-deviation="-1.8637553991089"/>
+          <iteration time-net="63999" time-revs="1" time-avg="63999" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.5488738659471" comp-deviation="-1.0629713109052"/>
+          <iteration time-net="64740" time-revs="1" time-avg="64740" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.042626329903397" comp-deviation="0.082551873185484"/>
+          <iteration time-net="67060" time-revs="1" time-avg="67060" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="1.8945567676539" comp-deviation="3.6690752025922"/>
+          <stats max="67060" mean="64686.6" min="63481" mode="64104.348336595" rstdev="1.9366404138608" stdev="1252.7468379525" sum="323433" variance="1569374.64"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="5">
+          <parameter-set name="past day">
+            <parameter name="days" value="1" type="integer"/>
+          </parameter-set>
+          <iteration time-net="7116" time-revs="1" time-avg="7116" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="0.97809811069466" comp-deviation="3.1663187195546"/>
+          <iteration time-net="7220" time-revs="1" time-avg="7220" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="1.4438591157874" comp-deviation="4.6740895383902"/>
+          <iteration time-net="6709" time-revs="1" time-avg="6709" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.8446396688508" comp-deviation="-2.7342843887729" reject-count="2"/>
+          <iteration time-net="6716" time-revs="1" time-avg="6716" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.8132903704311" comp-deviation="-2.6327998144282"/>
+          <iteration time-net="6727" time-revs="1" time-avg="6727" mem-peak="6478128" mem-real="10485760" mem-final="5583528" comp-z-value="-0.76402718720014" comp-deviation="-2.4733240547437" reject-count="1"/>
+          <stats max="7220" mean="6897.6" min="6709" mode="6736" rstdev="3.2372199526138" stdev="223.29048345149" sum="34488" variance="49858.64"/>
+        </variant>
+      </subject>
+    </benchmark>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Php\CooldownManagerBench">
+      <subject name="benchPush">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="php"/>
+        <variant sleep="0" output-time-unit="microseconds" output-time-precision="1" output-mode="time" revs="100" warmup="0" retry-threshold="5">
+          <parameter-set name="empty session">
+            <parameter name="entries" value="0" type="integer"/>
+          </parameter-set>
+          <iteration time-net="431" time-revs="100" time-avg="4.31" mem-peak="5654584" mem-real="8388608" mem-final="4626848" comp-z-value="-0.1507556722889" comp-deviation="-0.09272137227632"/>
+          <iteration time-net="430" time-revs="100" time-avg="4.3" mem-peak="5654584" mem-real="8388608" mem-final="4626848" comp-z-value="-0.52764485301109" comp-deviation="-0.32452480296709"/>
+          <iteration time-net="436" time-revs="100" time-avg="4.36" mem-peak="5654584" mem-real="8388608" mem-final="4626848" comp-z-value="1.7336902313221" comp-deviation="1.0662957811776"/>
+          <iteration time-net="428" time-revs="100" time-avg="4.28" mem-peak="5654584" mem-real="8388608" mem-final="4626848" comp-z-value="-1.2814232144555" comp-deviation="-0.78813166434863"/>
+          <iteration time-net="432" time-revs="100" time-avg="4.32" mem-peak="5654584" mem-real="8388608" mem-final="4626848" comp-z-value="0.22613350843333" comp-deviation="0.13908205841447" reject-count="1"/>
+          <stats max="4.36" mean="4.314" min="4.28" mode="4.3056751467711" rstdev="0.61504400377476" stdev="0.026532998322843" sum="21.57" variance="0.000704"/>
+        </variant>
+        <variant sleep="0" output-time-unit="microseconds" output-time-precision="1" output-mode="time" revs="100" warmup="0" retry-threshold="5">
+          <parameter-set name="100 cooldowns">
+            <parameter name="entries" value="100" type="integer"/>
+          </parameter-set>
+          <iteration time-net="1015" time-revs="100" time-avg="10.15" mem-peak="5654584" mem-real="8388608" mem-final="4641120" comp-z-value="-1.1590501676789" comp-deviation="-1.3413685847589"/>
+          <iteration time-net="1026" time-revs="100" time-avg="10.26" mem-peak="5654584" mem-real="8388608" mem-final="4641120" comp-z-value="-0.23516959923919" comp-deviation="-0.27216174183515"/>
+          <iteration time-net="1051" time-revs="100" time-avg="10.51" mem-peak="5654584" mem-real="8388608" mem-final="4641120" comp-z-value="1.8645589653964" comp-deviation="2.1578538102644"/>
+          <iteration time-net="1027" time-revs="100" time-avg="10.27" mem-peak="5654584" mem-real="8388608" mem-final="4641120" comp-z-value="-0.15118045665377" comp-deviation="-0.17496111975117"/>
+          <iteration time-net="1025" time-revs="100" time-avg="10.25" mem-peak="5654584" mem-real="8388608" mem-final="4641120" comp-z-value="-0.31915874182462" comp-deviation="-0.36936236391913"/>
+          <stats max="10.51" mean="10.288" min="10.15" mode="10.241585127202" rstdev="1.1572998496219" stdev="0.1190630085291" sum="51.44" variance="0.014176"/>
+        </variant>
+        <variant sleep="0" output-time-unit="microseconds" output-time-precision="1" output-mode="time" revs="100" warmup="0" retry-threshold="5">
+          <parameter-set name="1,000 cooldowns">
+            <parameter name="entries" value="1000" type="integer"/>
+          </parameter-set>
+          <iteration time-net="6599" time-revs="100" time-avg="65.99" mem-peak="5654584" mem-real="8388608" mem-final="4731488" comp-z-value="1.5729615721159" comp-deviation="3.7676510362613"/>
+          <iteration time-net="6465" time-revs="100" time-avg="64.65" mem-peak="5654584" mem-real="8388608" mem-final="4731488" comp-z-value="0.693258522602" comp-deviation="1.6605340126427"/>
+          <iteration time-net="6198" time-revs="100" time-avg="61.98" mem-peak="5654584" mem-real="8388608" mem-final="4731488" comp-z-value="-1.0595826282951" comp-deviation="-2.5379752806869"/>
+          <iteration time-net="6220" time-revs="100" time-avg="62.2" mem-peak="5654584" mem-real="8388608" mem-final="4731488" comp-z-value="-0.91515376941968" comp-deviation="-2.1920306947196" reject-count="1"/>
+          <iteration time-net="6315" time-revs="100" time-avg="63.15" mem-peak="5654584" mem-real="8388608" mem-final="4731488" comp-z-value="-0.29148369700311" comp-deviation="-0.69817907349749"/>
+          <stats max="65.99" mean="63.594" min="61.98" mode="62.701956947163" rstdev="2.3952594284889" stdev="1.5232412809532" sum="317.97" variance="2.320264"/>
+        </variant>
+        <variant sleep="0" output-time-unit="microseconds" output-time-precision="1" output-mode="time" revs="100" warmup="0" retry-threshold="5">
+          <parameter-set name="10,000 cooldowns">
+            <parameter name="entries" value="10000" type="integer"/>
+          </parameter-set>
+          <iteration time-net="71691" time-revs="100" time-avg="716.91" mem-peak="7576544" mem-real="10485760" mem-final="5921896" comp-z-value="1.258506047258" comp-deviation="2.2754508103173"/>
+          <iteration time-net="68592" time-revs="100" time-avg="685.92" mem-peak="7576544" mem-real="10485760" mem-final="5921896" comp-z-value="-1.186704134844" comp-deviation="-2.1456288518603"/>
+          <iteration time-net="71259" time-revs="100" time-avg="712.59" mem-peak="7576544" mem-real="10485760" mem-final="5921896" comp-z-value="0.91764422129223" comp-deviation="1.6591531613787"/>
+          <iteration time-net="68732" time-revs="100" time-avg="687.32" mem-peak="7576544" mem-real="10485760" mem-final="5921896" comp-z-value="-1.0762396542069" comp-deviation="-1.9459027619265"/>
+          <iteration time-net="70206" time-revs="100" time-avg="702.06" mem-peak="7576544" mem-real="10485760" mem-final="5921896" comp-z-value="0.086793520500547" comp-deviation="0.15692764209083"/>
+          <stats max="716.91" mean="700.96" min="685.92" mode="708.48023483366" rstdev="1.8080571128561" stdev="12.673757138276" sum="3504.8" variance="160.62412"/>
+        </variant>
+      </subject>
+    </benchmark>
+    <benchmark class="\CyrildeWit\EloquentViewable\Benchmarks\Php\ViewSeriesBench">
+      <subject name="benchFill">
+        <executor name="remote">
+          <parameter name="php_config" type="collection"/>
+          <parameter name="safe_parameters" value="1" type="boolean"/>
+          <parameter name="executor" value="remote" type="string"/>
+        </executor>
+        <group name="php"/>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="3" output-mode="time" revs="10" warmup="0" retry-threshold="5">
+          <parameter-set name="168 buckets">
+            <parameter name="hours" value="168" type="integer"/>
+          </parameter-set>
+          <iteration time-net="69298" time-revs="10" time-avg="6929.8" mem-peak="5092824" mem-real="6291456" mem-final="1932512" comp-z-value="0.26429621902789" comp-deviation="0.12657057320867"/>
+          <iteration time-net="69509" time-revs="10" time-avg="6950.9" mem-peak="5092824" mem-real="6291456" mem-final="1932512" comp-z-value="0.90090012559039" comp-deviation="0.43143804977287"/>
+          <iteration time-net="69287" time-revs="10" time-avg="6928.7" mem-peak="5092824" mem-real="6291456" mem-final="1932512" comp-z-value="0.2311083376431" comp-deviation="0.11067700807972"/>
+          <iteration time-net="69391" time-revs="10" time-avg="6939.1" mem-peak="5092824" mem-real="6291456" mem-final="1932512" comp-z-value="0.54488467073554" comp-deviation="0.26094344202607"/>
+          <iteration time-net="68567" time-revs="10" time-avg="6856.7" mem-peak="5092824" mem-real="6291456" mem-final="1932512" comp-z-value="-1.9411893529968" comp-deviation="-0.92962907308727"/>
+          <stats max="6950.9" mean="6921.04" min="6856.7" mode="6936.5211350294" rstdev="0.47889664738379" stdev="33.144628524091" sum="34605.2" variance="1098.5664"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="3" output-mode="time" revs="10" warmup="0" retry-threshold="5">
+          <parameter-set name="720 buckets">
+            <parameter name="hours" value="720" type="integer"/>
+          </parameter-set>
+          <iteration time-net="168897" time-revs="10" time-avg="16889.7" mem-peak="5092824" mem-real="6291456" mem-final="1957088" comp-z-value="1.1877630105482" comp-deviation="0.89064908067812"/>
+          <iteration time-net="167592" time-revs="10" time-avg="16759.2" mem-peak="5092824" mem-real="6291456" mem-final="1957088" comp-z-value="0.14817164316699" comp-deviation="0.11110712877676"/>
+          <iteration time-net="165121" time-revs="10" time-avg="16512.1" mem-peak="5092824" mem-real="6291456" mem-final="1957088" comp-z-value="-1.8202806700889" comp-deviation="-1.3649451035208"/>
+          <iteration time-net="167382" time-revs="10" time-avg="16738.2" mem-peak="5092824" mem-real="6291456" mem-final="1957088" comp-z-value="-0.019118921698947" comp-deviation="-0.014336403713116"/>
+          <iteration time-net="168038" time-revs="10" time-avg="16803.8" mem-peak="5092824" mem-real="6291456" mem-final="1957088" comp-z-value="0.50346493807273" comp-deviation="0.37752529777906" reject-count="1"/>
+          <stats max="16889.7" mean="16740.6" min="16512.1" mode="16787.725831703" rstdev="0.74985419883305" stdev="125.53009200985" sum="83703" variance="15757.804"/>
+        </variant>
+        <variant sleep="0" output-time-unit="milliseconds" output-time-precision="3" output-mode="time" revs="10" warmup="0" retry-threshold="5">
+          <parameter-set name="8,760 buckets">
+            <parameter name="hours" value="8760" type="integer"/>
+          </parameter-set>
+          <iteration time-net="1654307" time-revs="10" time-avg="165430.7" mem-peak="17193248" mem-real="20971520" mem-final="2186464" comp-z-value="1.2836116497235" comp-deviation="2.3674547250397"/>
+          <iteration time-net="1581640" time-revs="10" time-avg="158164" mem-peak="17193248" mem-real="20971520" mem-final="2186464" comp-z-value="-1.1543956204352" comp-deviation="-2.1291325664996"/>
+          <iteration time-net="1607920" time-revs="10" time-avg="160792" mem-peak="17193248" mem-real="20971520" mem-final="2186464" comp-z-value="-0.27269098064314" comp-deviation="-0.50294304413519"/>
+          <iteration time-net="1647504" time-revs="10" time-avg="164750.4" mem-peak="17193248" mem-real="20971520" mem-final="2186464" comp-z-value="1.0553682454424" comp-deviation="1.9464894540867"/>
+          <iteration time-net="1588868" time-revs="10" time-avg="158886.8" mem-peak="17193248" mem-real="20971520" mem-final="2186464" comp-z-value="-0.91189329408753" comp-deviation="-1.6818685684916"/>
+          <stats max="165430.7" mean="161604.78" min="158164" mode="159614.49589041" rstdev="1.8443699272671" stdev="2980.5899633462" sum="808023.9" variance="8883916.5296"/>
+        </variant>
+      </subject>
+    </benchmark>
+  </suite>
+</phpbench>
