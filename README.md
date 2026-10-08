@@ -17,7 +17,7 @@ more, and keeps the results. It contains no benchmark code.
 | Path                                         | Contents                                                           |
 |----------------------------------------------|--------------------------------------------------------------------|
 | `runs/<runner>/<driver>/<size>/<id>.xml`     | the raw phpbench dump of a run, exactly as phpbench wrote it       |
-| `runs/<runner>/<driver>/<size>/<id>.queries.json` | the SQL and query plans the package captured for that run, when it did |
+| `runs/<runner>/<driver>/<size>/<id>.queries.json` | the SQL and query plans the package captured for that run, when it did, with the time of each statement when it ran them for real |
 | `results/<runner>/<driver>/<size>/<id>.json` | the same run reduced to what the website draws, plus its metadata  |
 
 Both are generated. Do not edit them by hand; import a run again instead.

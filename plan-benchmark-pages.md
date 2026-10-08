@@ -144,6 +144,12 @@ the same way `dataset.json` is; the package plan defines how it is produced, thi
 - `plan.columns` and `plan.rows` are the explain statement's result as strings, `null` kept as `null`. The columns
   differ per driver and that is fine; the site does not interpret them.
 - `analyzed` says whether the queries were executed (`--analyze`), and `group` which phpbench group was captured.
+- `executed`, added later, says whether every variant ran for real (`--execute`) instead of under `pretend()`, so a
+  subject whose later statements need the rows of an earlier one reports all of them. It is absent, and read as
+  `false`, in a file from a package that predates it.
+- `timings_ms`, per subject and only when `executed`, is the time of each statement in milliseconds, in the order of
+  `queries`. It sits beside the queries and not inside them, because a query object is read strictly: `sql` and
+  `plan`, nothing else. [plan-executed-queries.md](plan-executed-queries.md) has the details.
 - Unknown keys are ignored, so the package can add fields first, as with `dataset.json`.
 
 ## Data changes in this repository
