@@ -152,11 +152,12 @@ pkg_make bench DRIVER="$driver" ARGS="--dump-file=build/run.xml"
 cp "$package/build/run.xml" "$out/run.xml"
 cp "$package/$dataset" "$out/dataset.json"
 
-# The SQL and plan of every read variant. A ref whose explain.php predates --output prints its report and writes
-# nothing, and the run is imported without queries.
+# The SQL and plan of every read variant, each run for real once more with --execute so every statement it makes is
+# listed with its time. A ref whose explain.php predates --execute ignores it and captures under pretend(); one that
+# predates --output prints its report and writes nothing, and the run is imported without queries.
 step "Explaining the queries"
 rm -f "$package/build/queries.json"
-pkg_make bench-explain DRIVER="$driver" ARGS="--output=build/queries.json" || echo "bench-explain failed, continuing without queries"
+pkg_make bench-explain DRIVER="$driver" ARGS="--execute --output=build/queries.json" || echo "bench-explain failed, continuing without queries"
 if [[ -s "$package/build/queries.json" ]]; then
     cp "$package/build/queries.json" "$out/queries.json"
 else

@@ -99,12 +99,13 @@ jobs:
           make bench DRIVER="$DRIVER" ARGS="--dump-file=build/run.xml" || echo "::warning::phpbench exited with $?"
           test -s build/run.xml || { echo "::error::phpbench wrote no dump"; exit 1; }
 
-      # The SQL and plan of every read variant. A ref whose explain.php predates --output prints its report and writes
-      # nothing, and the run is imported without queries.
+      # The SQL and plan of every read variant, each run for real once more with --execute so every statement it makes
+      # is listed with its time. A ref whose explain.php predates --execute ignores it and captures under pretend();
+      # one that predates --output prints its report and writes nothing, and the run is imported without queries.
       - name: Explain the queries
         run: |
           rm -f build/queries.json
-          make bench-explain DRIVER="$DRIVER" ARGS="--output=build/queries.json" || echo "::warning::bench-explain exited with $?"
+          make bench-explain DRIVER="$DRIVER" ARGS="--execute --output=build/queries.json" || echo "::warning::bench-explain exited with $?"
           test -s build/queries.json || echo "::warning::no queries.json, the run is imported without SQL"
 
       - name: Collect the run
