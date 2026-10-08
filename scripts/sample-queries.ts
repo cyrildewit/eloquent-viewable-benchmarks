@@ -1,7 +1,8 @@
 /**
  * Made-up SQL and query plans for the read subjects of a sample run, so the benchmark pages have something to show.
  * The statements resemble what the package generates; the plans are a few rows in each driver's explain columns.
- * One release changes the plan on one database, so the "plan changed" note can be seen.
+ * One release changes the plan on one database, so the "plan changed" note can be seen. The SQLite and Postgres runs
+ * are executed, with a made-up time per statement, so both kinds of run show up on the pages.
  */
 import type { Result, SubjectQueries } from '../src/lib/schema.ts';
 
@@ -36,12 +37,16 @@ const COLUMNS: Record<Driver, string[]> = {
 
 const INDEX = 'views_viewable_type_viewable_id_viewed_at_index';
 
+/** The databases whose sample runs are executed. Not MySQL, whose plan change needs two runs captured alike. */
+const EXECUTED: Driver[] = ['sqlite', 'pgsql'];
+
 export function sampleQueries(result: Result, ref: string): NonNullable<Result['queries']> {
   const driver = result.database.driver;
   const q = QUOTE[driver];
   const hot = 1;
   const cold = result.dataset.articles - 21;
   const anchor = result.dataset.anchor;
+  const executed = EXECUTED.includes(driver);
 
   const subjects: SubjectQueries[] = result.subjects
     .filter((subject) => subject.groups.includes('read'))
@@ -83,10 +88,12 @@ export function sampleQueries(result: Result, ref: string): NonNullable<Result['
         subject: subject.subject,
         set: subject.set,
         queries: [{ sql, plan: { columns: COLUMNS[driver], rows: plan(driver, subject.benchmark, rows, changed) } }],
+        // Roughly a millisecond per ten thousand rows read, rounded to two decimals as Laravel's query log is.
+        timings_ms: executed ? [Math.round((rows / 10_000 + 0.05) * 100) / 100] : null,
       };
     });
 
-  return { analyzed: false, group: 'read', subjects };
+  return { analyzed: false, executed, group: 'read', subjects };
 }
 
 function since(anchor: string, days: number): string {

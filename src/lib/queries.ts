@@ -11,12 +11,16 @@ export interface QuerySource {
   driver: Driver;
   run: RunSummary;
   analyzed: boolean;
+  /** Whether the variants ran for real, so every statement is listed with its time. */
+  executed: boolean;
 }
 
 export interface DriverQueries {
   driver: Driver;
   run: RunSummary;
   queries: Query[];
+  /** The time of each query in milliseconds, one execution each, or null when the run was not executed. */
+  timings: number[] | null;
   /** The ref whose run changed the plan against the release before it, when it did. */
   planChanged: string | null;
 }
@@ -57,9 +61,14 @@ export function queriesFor(results: Result[], benchmark: string, reference: Seri
     if (current?.queries == null) {
       continue;
     }
-    sources.push({ driver, run: chosen, analyzed: current.queries.analyzed });
+    sources.push({ driver, run: chosen, analyzed: current.queries.analyzed, executed: current.queries.executed });
 
-    const earlier = new Map(before?.queries?.subjects.map((subject) => [keyOf(subject), subject]) ?? []);
+    // An executed run lists statements a pretend() run never saw, so two runs are only compared when they were
+    // captured the same way; otherwise every multi-statement subject would show as a changed plan.
+    const comparable = before?.queries?.executed === current.queries.executed;
+    const earlier = new Map(
+      comparable ? (before?.queries?.subjects.map((subject) => [keyOf(subject), subject]) ?? []) : [],
+    );
     for (const subject of current.queries.subjects) {
       if (subject.benchmark !== benchmark) {
         continue;
@@ -67,7 +76,10 @@ export function queriesFor(results: Result[], benchmark: string, reference: Seri
       const old = earlier.get(keyOf(subject));
       const planChanged = old !== undefined && !samePlans(old.queries, subject.queries) ? chosen.ref : null;
       const key = keyOf(subject);
-      subjects.set(key, [...(subjects.get(key) ?? []), { driver, run: chosen, queries: subject.queries, planChanged }]);
+      subjects.set(key, [
+        ...(subjects.get(key) ?? []),
+        { driver, run: chosen, queries: subject.queries, timings: subject.timings_ms, planChanged },
+      ]);
     }
   }
 
