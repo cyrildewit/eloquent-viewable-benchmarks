@@ -9,7 +9,7 @@ export const SIZES = ['small', 'medium', 'large'] as const;
 export const KINDS = ['release', 'branch', 'commit'] as const;
 
 /** Bump when the result file changes shape, and migrate the existing files in the same commit. */
-export const RESULT_FORMAT = 2;
+export const RESULT_FORMAT = 3;
 
 const runner = z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'lowercase letters, digits and dashes');
 const commit = z.string().regex(/^[0-9a-f]{40}$/, 'a full 40-character commit hash');
@@ -75,15 +75,32 @@ export const queriesSchema = z.object({
   schema_version: z.int().positive(),
   driver: z.enum(DRIVERS),
   analyzed: z.boolean(),
+  /** Whether the variants ran for real (`--execute`). Absent in a file from a package that predates it. */
+  executed: z.boolean().default(false),
   group: z.string().min(1),
   subjects: z.array(
-    z.object({
-      class: z.string().min(1),
-      subject: z.string().min(1),
-      set: z.string(),
-      params: z.record(z.string(), paramValue),
-      queries: z.array(querySchema),
-    }),
+    z
+      .object({
+        class: z.string().min(1),
+        subject: z.string().min(1),
+        set: z.string(),
+        params: z.record(z.string(), paramValue),
+        queries: z.array(querySchema),
+        /**
+         * The time of each statement in milliseconds, in the order of `queries`, when the file was executed. It sits
+         * beside the queries because `querySchema` is strict and readers of the first version refuse other keys there.
+         */
+        timings_ms: z.array(z.number().nonnegative()).optional(),
+      })
+      .superRefine((subject, context) => {
+        if (subject.timings_ms !== undefined && subject.timings_ms.length !== subject.queries.length) {
+          context.addIssue({
+            code: 'custom',
+            path: ['timings_ms'],
+            message: `${subject.class}::${subject.subject} (${subject.set}) has ${subject.timings_ms.length} timings for ${subject.queries.length} queries`,
+          });
+        }
+      }),
   ),
 });
 
@@ -93,6 +110,8 @@ export const subjectQueriesSchema = z.strictObject({
   subject: z.string().min(1),
   set: z.string(),
   queries: z.array(querySchema),
+  /** The time of each query in milliseconds, one execution each, or null when the run was not executed. */
+  timings_ms: z.array(z.number().nonnegative()).nullable(),
 });
 
 /** One variant of a subject: a benchmark method with one parameter set. */
@@ -179,6 +198,7 @@ export const resultSchema = z.strictObject({
   queries: z
     .strictObject({
       analyzed: z.boolean(),
+      executed: z.boolean(),
       group: z.string().min(1),
       subjects: z.array(subjectQueriesSchema),
     })

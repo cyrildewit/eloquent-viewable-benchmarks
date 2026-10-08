@@ -158,6 +158,58 @@ describe('queriesFor', () => {
     expect(queriesFor(results, 'ViewSeriesBench', reference).subjects.size).toBe(0);
   });
 
+  it('passes on whether a run was executed and the time of each statement', () => {
+    const timed: Result['queries'] = {
+      ...(changed as NonNullable<Result['queries']>),
+      executed: true,
+      subjects: (changed?.subjects ?? []).map((subject) => ({
+        ...subject,
+        timings_ms: subject.queries.map(() => 2.5),
+      })),
+    };
+    const found = queriesFor(
+      [run({ ref: 'v9.2.0', ran_at: '2026-09-15T03:00:00Z', queries: timed }), ...results],
+      'CountViewsBench',
+      reference,
+    );
+    const entry = found.subjects.get('CountViewsBench::benchCount::hot article,all time');
+
+    expect(found.sources.map((source) => [source.driver, source.run.ref, source.executed])).toEqual([
+      ['sqlite', 'v9.2.0', true],
+      ['pgsql', '9.x', false],
+    ]);
+    expect(entry?.[0]?.timings).toEqual([2.5]);
+    expect(entry?.[1]?.timings).toBeNull();
+  });
+
+  it('only compares the plans of two runs captured the same way', () => {
+    const executedLike = (source: Result['queries'], executed: boolean): Result['queries'] => ({
+      ...(source as NonNullable<Result['queries']>),
+      executed,
+      subjects: (source?.subjects ?? []).map((subject) => ({
+        ...subject,
+        timings_ms: executed ? subject.queries.map(() => 1) : null,
+      })),
+    });
+    const planOf = (runs: Result[]) =>
+      queriesFor(runs, 'CountViewsBench', reference)
+        .subjects.get('CountViewsBench::benchCount::hot article,all time')
+        ?.find((item) => item.driver === 'sqlite')?.planChanged;
+
+    const before = run({ ref: 'v9.0.0', ran_at: '2026-07-01T03:00:00Z', queries: executedLike(base.queries, false) });
+    const after = (executed: boolean) =>
+      run({ ref: 'v9.1.0', ran_at: '2026-08-01T03:00:00Z', queries: executedLike(changed, executed) });
+
+    expect(planOf([before, after(true)])).toBeNull();
+    expect(planOf([before, after(false)])).toBe('v9.1.0');
+    expect(
+      planOf([
+        run({ ref: 'v9.0.0', ran_at: '2026-07-01T03:00:00Z', queries: executedLike(base.queries, true) }),
+        after(true),
+      ]),
+    ).toBe('v9.1.0');
+  });
+
   it('compares plans row for row, not the SQL', () => {
     const [query] = base.queries?.subjects[0]?.queries ?? [];
     if (query === undefined) {

@@ -71,7 +71,7 @@ describe('buildResult', () => {
     ]);
     expect(classes.CountViewsBench).toBe('CyrildeWit\\EloquentViewable\\Benchmarks\\Querying\\CountViewsBench');
     expect(rest).toEqual({
-      format: 2,
+      format: 3,
       id: 'main_b4cb999_sqlite_small_cyril_20261002T105351',
       package: 'cyrildewit/eloquent-viewable',
       ref: 'main',
@@ -157,6 +157,7 @@ describe('buildResult with queries', () => {
     }
 
     expect(kept.analyzed).toBe(false);
+    expect(kept.executed).toBe(false);
     expect(kept.group).toBe('read');
     expect(kept.subjects).toHaveLength(queries.subjects.length);
     expect(kept.subjects[0]).toEqual({
@@ -164,7 +165,9 @@ describe('buildResult with queries', () => {
       subject: 'benchCount',
       set: 'hot article,all time',
       queries: queries.subjects[0]?.queries,
+      timings_ms: null,
     });
+    expect(kept.subjects.every((subject) => subject.timings_ms === null)).toBe(true);
     expect(new Set(kept.subjects.map((subject) => subject.benchmark))).toEqual(
       new Set(['CountViewsBench', 'CountViewsByIntervalBench', 'OrderByViewsBench']),
     );
@@ -201,5 +204,53 @@ describe('buildResult with queries', () => {
 
   it('refuses a malformed queries file', () => {
     expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, { subjects: [] })).toThrow();
+  });
+
+  it('still refuses a key inside a query, which the package relies on', () => {
+    const subject = queries.subjects[0];
+    const query = subject?.queries[0];
+    const timed = { ...queries, subjects: [{ ...subject, queries: [{ ...query, time: 1.5 }] }] };
+
+    expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, timed)).toThrow(/time/);
+  });
+});
+
+describe('buildResult with executed queries', () => {
+  /** The real fixture as `--execute` writes it: `executed` in the header and a time per statement beside them. */
+  const executed = {
+    ...queries,
+    executed: true,
+    subjects: queries.subjects.map((subject, i) => ({
+      ...subject,
+      timings_ms: subject.queries.map((_, q) => i + q + 0.25),
+    })),
+  };
+
+  it('keeps that the run was executed and the time of every statement', () => {
+    const kept = buildResult(fixture.xml, fixture.meta, fixture.dataset, executed).queries;
+    if (kept === null) {
+      throw new Error('no queries');
+    }
+
+    expect(kept.executed).toBe(true);
+    expect(kept.subjects.map((subject) => subject.timings_ms)).toEqual(
+      executed.subjects.map((subject) => subject.timings_ms),
+    );
+    expect(kept.subjects[0]?.queries).toEqual(queries.subjects[0]?.queries);
+  });
+
+  it('refuses timings that do not match the queries, naming the variant', () => {
+    const [first, ...rest] = executed.subjects;
+    const short = { ...executed, subjects: [{ ...first, timings_ms: [] }, ...rest] };
+
+    expect(() => buildResult(fixture.xml, fixture.meta, fixture.dataset, short)).toThrow(
+      /CountViewsBench::benchCount \(hot article,all time\) has 0 timings for 1 queries/,
+    );
+  });
+
+  it('reads a file from a package that predates --execute as not executed', () => {
+    const { executed: _, ...old } = queries;
+
+    expect(buildResult(fixture.xml, fixture.meta, fixture.dataset, old).queries?.executed).toBe(false);
   });
 });

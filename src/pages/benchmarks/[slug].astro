@@ -7,7 +7,7 @@ import SeriesFilters from '../../components/SeriesFilters.astro';
 import { BENCHMARK_DESCRIPTIONS, GROUP_LABELS, benchmarkSlugs, setLabel, subjectLabel } from '../../lib/benchmarks.ts';
 import { GROUP_ORDER, referenceSeries, type IndexData, type SubjectInfo } from '../../lib/data.ts';
 import { DRIVER_LABELS } from '../../lib/drivers.ts';
-import { formatDate } from '../../lib/format.ts';
+import { formatDate, formatTime } from '../../lib/format.ts';
 import { queriesFor, type BenchmarkQueries } from '../../lib/queries.ts';
 import { loadIndex, loadResults } from '../../lib/results.ts';
 import { formatSql } from '../../lib/sql.ts';
@@ -59,6 +59,9 @@ const groups = [...new Set(subjects.flatMap((subject) => subject.groups))].sort(
 const methods = [...new Set(subjects.map((subject) => subject.subject))];
 const subjectsOf = (method: string) => subjects.filter((subject) => subject.subject === method);
 const analyzed = queries.sources.some((item) => item.analyzed);
+const executed = queries.sources.some((item) => item.executed);
+/** A query time in milliseconds, as the site prints times. */
+const formatMillis = (millis: number) => formatTime(millis * 1_000);
 
 /** Whether a plan is tabular (several columns) or lines (one column, as PostgreSQL returns it). */
 const tabular = (plan: { columns: string[] }) => plan.columns.length > 1;
@@ -116,7 +119,8 @@ const tabular = (plan: { columns: string[] }) => plan.columns.length > 1;
       <>
         <p class="mt-2 max-w-3xl text-sm text-ink-2">
           The statements each subject runs and the plan the database chose for them, as generated on {reference}
-          {analyzed ? ', executed for actual row counts' : ''}. From{' '}
+          {analyzed ? ', executed for actual row counts' : ''}
+          {executed ? ', each statement run for real and timed once' : ''}. From{' '}
           {queries.sources.map((item, i) => (
             <>
               {i > 0 && ', '}
@@ -152,6 +156,8 @@ const tabular = (plan: { columns: string[] }) => plan.columns.length > 1;
                               <DriverName driver={item.driver} />
                               <span class="text-ink-2">
                                 {item.queries.length === 1 ? '1 statement' : `${item.queries.length} statements`}
+                                {item.timings !== null &&
+                                  `, ${formatMillis(item.timings.reduce((total, time) => total + time, 0))}`}
                               </span>
                               {item.planChanged && (
                                 <span class="rounded bg-wash px-1.5 py-0.5 text-xs font-medium">
@@ -161,8 +167,11 @@ const tabular = (plan: { columns: string[] }) => plan.columns.length > 1;
                             </summary>
                             <div class="space-y-4 border-t border-border px-4 py-3">
                               {item.queries.length === 0 && <p class="text-ink-2">This variant ran no SQL.</p>}
-                              {item.queries.map((query) => (
+                              {item.queries.map((query, q) => (
                                 <div>
+                                  {item.timings?.[q] !== undefined && (
+                                    <p class="mb-1 text-xs text-ink-2">Ran in {formatMillis(item.timings[q])}</p>
+                                  )}
                                   <Code
                                     code={formatSql(query.sql, item.driver)}
                                     lang="sql"

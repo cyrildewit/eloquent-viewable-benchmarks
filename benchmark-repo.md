@@ -241,7 +241,7 @@ fourth when it is there:
 | `run.xml`      | `make bench ARGS="--dump-file=build/run.xml"` | phpbench's dump, kept byte for byte in `runs/`        |
 | `meta.json`    | the workflow, or `scripts/run.sh`           | what neither phpbench nor the package can know          |
 | `dataset.json` | `make bench-describe` in the package        | the seeded dataset and the database server             |
-| `queries.json` | `make bench-explain ARGS="--output=build/queries.json"`, optional | the SQL and query plan of every read variant, kept byte for byte in `runs/`; its format is in [plan-benchmark-pages.md](plan-benchmark-pages.md#the-queries-file) |
+| `queries.json` | `make bench-explain ARGS="--execute --output=build/queries.json"`, optional | the SQL and query plan of every read variant, with the time of each statement when executed, kept byte for byte in `runs/`; its format is in [plan-benchmark-pages.md](plan-benchmark-pages.md#the-queries-file) |
 
 ```json
 {
@@ -280,7 +280,7 @@ An import never overwrites an existing run; it fails instead.
 
 ```json
 {
-  "format": 2,
+  "format": 3,
   "id": "v9_0_0_a1b2c3d_mysql_medium_gha_20261005T031244",
   "package": "cyrildewit/eloquent-viewable",
   "ref": "v9.0.0",
@@ -321,11 +321,13 @@ An import never overwrites an existing run; it fails instead.
   "errors": [],
   "queries": {
     "analyzed": false,
+    "executed": true,
     "group": "read",
     "subjects": [
       {
         "benchmark": "CountViewsBench", "subject": "benchUniqueCount", "set": "hot article,all time",
-        "queries": [{ "sql": "select count(distinct `visitor`) …", "plan": { "columns": ["id", "select_type", "…"], "rows": [["1", "SIMPLE", "…"]] } }]
+        "queries": [{ "sql": "select count(distinct `visitor`) …", "plan": { "columns": ["id", "select_type", "…"], "rows": [["1", "SIMPLE", "…"]] } }],
+        "timings_ms": [131.42]
       }
     ]
   }
@@ -347,7 +349,10 @@ package, see below. A subject whose `rstdev` stays above the retry threshold eve
 shows it with a warning instead of hiding it. `classes` maps every short class name to the fully qualified one from
 the dump, so the site can link a benchmark to its file in the package. `queries` is the package's `queries.json`
 with each class shortened and the parameters dropped, or `null` for a run imported without one; the import refuses a
-queries file whose class, subject or parameter set name is not a variant in the dump.
+queries file whose class, subject or parameter set name is not a variant in the dump. `executed` says whether the
+package ran every variant for real (`--execute`), and then `timings_ms` holds the time of each statement, one
+execution each, in the order of `queries`; it is `null` for a run captured under `pretend()`. Format 3 added both;
+the results of format 2 were migrated to `executed: false` and `timings_ms: null`.
 
 The schema lives once, as zod, in `src/lib/schema.ts`, imported from `astro/zod` so the scripts and the site share
 Astro's copy. `src/content.config.ts` uses it for the collection, and the import and `validate.ts` use it too, so a
@@ -556,7 +561,10 @@ Small, and each useful on its own:
    keyed on class, subject and parameter set name as phpbench names them. Planned in
    [plan-package-queries.md](plan-package-queries.md). *Done* on 9.x: the first run through the workflow imported
    its queries with every name matching the dump, and its file is `tests/fixtures/main_sqlite/queries.json`. A ref
-   that predates it is imported without queries, and the benchmark pages say so.
+   that predates it is imported without queries, and the benchmark pages say so. `--execute`, added in
+   [eloquent-viewable#388](https://github.com/cyrildewit/eloquent-viewable/pull/388), runs every variant for real so
+   a subject that reads rows reports all its statements, each with its time, beside the queries rather than in them;
+   a ref that predates it ignores the option. Planned in [plan-executed-queries.md](plan-executed-queries.md).
 
 The `git` env provider in `phpbench.json` stays off, since the harness runs inside containers that cannot see a
 worktree. The commit is recorded by this repository instead.
@@ -587,6 +595,10 @@ Nothing has to be added to the package's workflows, secrets or release process.
    the import, validation, workflow and local script steps, the `/benchmarks/` pages, and the trends page refactored
    onto the shared filter row and subject cards. Verified end to end with the first 9.x run on GitHub Actions,
    whose `queries.json` is now the test fixture.
+10. **Executed queries.** *Done* on sample data: result format 3 with `executed` and `timings_ms`, the migration of
+    every result, the import, the plan comparison between runs captured alike, the times on the benchmark pages, and
+    `--execute` in the workflow and the local script. Still to do: one workflow run at `medium` on all four drivers to
+    measure how long the explain step takes, and the first real executed run.
 
 If running this turns out to be rare, a few times a year before releases, phases 6 and 7 can wait. Phases 2 to 5 and
 8 alone give a versioned store of runs and a site to read them, fed by hand.
