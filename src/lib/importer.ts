@@ -128,6 +128,7 @@ export function deriveQueries(raw: unknown, dump: Dump, driver: string): NonNull
 
   return {
     analyzed: file.analyzed,
+    executed: file.executed,
     group: file.group,
     subjects: file.subjects.map((subject) => {
       const benchmark = subject.class.split('\\').at(-1) ?? subject.class;
@@ -139,7 +140,13 @@ export function deriveQueries(raw: unknown, dump: Dump, driver: string): NonNull
         throw new Error(`queries.json has ${label}, which is not a variant in the dump; the names have drifted`);
       }
 
-      return { benchmark, subject: subject.subject, set: subject.set, queries: subject.queries };
+      return {
+        benchmark,
+        subject: subject.subject,
+        set: subject.set,
+        queries: subject.queries,
+        timings_ms: subject.timings_ms ?? null,
+      };
     }),
   };
 }

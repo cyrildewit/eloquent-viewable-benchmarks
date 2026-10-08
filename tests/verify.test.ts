@@ -74,6 +74,15 @@ describe('verifyResult', () => {
     ]);
   });
 
+  it('rejects a statement time edited by hand', () => {
+    const edited = JSON.parse(serialise(withQueries));
+    edited.queries.subjects[0].timings_ms = edited.queries.subjects[0].queries.map(() => 1);
+
+    expect(verifyResult(path, JSON.stringify(edited), fixture.xml, rawQueries)).toEqual([
+      expect.stringMatching(/does not match runs\/.+\.queries\.json/),
+    ]);
+  });
+
   it('rejects a queries file that cannot be read', () => {
     expect(verifyResult(path, serialise(withQueries), fixture.xml, '{')).toEqual([
       expect.stringMatching(/queries file .+ cannot be read/),
